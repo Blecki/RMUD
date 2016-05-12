@@ -26,11 +26,16 @@ namespace DelmudGameplay
             Perform<MudObject, MudObject>("attack")
                 .When((actor, victim) => Object.ReferenceEquals(victim, this))
                 .When((actor, victim) => actor.State == ObjectState.Alive && victim.State == ObjectState.Alive)
+                .When((actor, victim) => MudObject.IsVisibleTo(actor, victim))
                 .Do((actor, victim) =>
                 {
                     // Now actor is an aggressor.
                     victim.SetProperty("combatant", actor);
-                    Core.AddTimer(TimeSpan.FromSeconds(2), () => ConsiderPerformRule("attack", victim, actor));
+                    Core.AddTimer(TimeSpan.FromSeconds(2), () =>
+                    {
+                        if (ConsiderCheckRule("can attack?", actor, victim) == SharpRuleEngine.CheckResult.Allow)
+                            ConsiderPerformRule("attack", actor, victim);
+                    });
                     return SharpRuleEngine.PerformResult.Continue;
                 })
                 .Name("Fight back rule");
@@ -41,7 +46,12 @@ namespace DelmudGameplay
                 .Do((actor, victim) =>
                 {
                     actor.SetProperty("combatant", victim);
-                    Core.AddTimer(TimeSpan.FromSeconds(2), () => ConsiderPerformRule("attack", actor, victim));
+                    Core.AddTimer(TimeSpan.FromSeconds(2), () =>
+                    {
+                        if (ConsiderCheckRule("can attack?", actor, victim) == SharpRuleEngine.CheckResult.Allow)
+                            ConsiderPerformRule("attack", actor, victim);
+                    });
+                
                     return SharpRuleEngine.PerformResult.Continue;
                 })
                 .Name("Keep attacking rule.");
