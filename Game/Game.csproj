@@ -1,0 +1,396 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F430938B-D039-4B18-9D91-3A1819CA0CD5}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WpfConsole</RootNamespace>
+    <AssemblyName>WpfConsole</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <InstallUrl>http://www.omnisu.com/wpfconsole/</InstallUrl>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>index.html</WebPage>
+    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>B62B346D0E1B219FCA54BFE7E397BE38C4D85FA4</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>WpfConsole_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Admin\Cons.cs" />
+    <Compile Include="Admin\Dump.cs" />
+    <Compile Include="Admin\DumpMessages.cs" />
+    <Compile Include="Admin\Force.cs" />
+    <Compile Include="Admin\Inspect.cs" />
+    <Compile Include="Admin\Instance.cs" />
+    <Compile Include="Admin\Move.cs" />
+    <Compile Include="Admin\Properties.cs" />
+    <Compile Include="Admin\ReadLog.cs" />
+    <Compile Include="Admin\Reload.cs" />
+    <Compile Include="Admin\Rules.cs" />
+    <Compile Include="Admin\Save.cs" />
+    <Compile Include="Admin\Scope.cs" />
+    <Compile Include="Admin\Set.cs" />
+    <Compile Include="Admin\Sonar.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Admin\Stats.cs" />
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Core\Client.cs" />
+    <Compile Include="Core\CommandQueue.cs" />
+    <Compile Include="Core\ErrorLog.cs" />
+    <Compile Include="Core\ExecuteCommand.cs" />
+    <Compile Include="Core\FindLocale.cs" />
+    <Compile Include="Core\FormatMessage.cs" />
+    <Compile Include="Core\Heartbeat.cs" />
+    <Compile Include="Core\IsVisibleTo.cs" />
+    <Compile Include="Core\ManPages.cs" />
+    <Compile Include="Core\MarkForUpdate.cs" />
+    <Compile Include="Core\MessageTable.cs" />
+    <Compile Include="Core\Meta\Alias.cs" />
+    <Compile Include="Core\Meta\Man.cs" />
+    <Compile Include="Core\Meta\Version.cs" />
+    <Compile Include="Core\ModuleAssembly.cs" />
+    <Compile Include="Core\Move.cs" />
+    <Compile Include="Core\MudCore.cs" />
+    <Compile Include="Core\ObjectContainsObject.cs" />
+    <Compile Include="Core\Parser\ClientCommandHandler.cs" />
+    <Compile Include="Core\Parser\CommandEntry.cs" />
+    <Compile Include="Core\Parser\CommandFactory.cs" />
+    <Compile Include="Core\Parser\CommandParser.cs" />
+    <Compile Include="Core\Parser\CommandTokenMatcher.cs" />
+    <Compile Include="Core\Parser\DisambigCommandHandler.cs" />
+    <Compile Include="Core\Parser\MatchContext.cs" />
+    <Compile Include="Core\Parser\Matchers\CardinalMatcher.cs" />
+    <Compile Include="Core\Parser\Matchers\FailIf.cs" />
+    <Compile Include="Core\Parser\Matchers\FailIfNoMatches.cs" />
+    <Compile Include="Core\Parser\Matchers\FirstOfMatcher.cs" />
+    <Compile Include="Core\Parser\Matchers\GenericMatcher.cs" />
+    <Compile Include="Core\Parser\Matchers\InScopeObjectSource.cs" />
+    <Compile Include="Core\Parser\Matchers\KeywordMatcher.cs" />
+    <Compile Include="Core\Parser\Matchers\NumberMatcher.cs" />
+    <Compile Include="Core\Parser\Matchers\ObjectMatcher.cs" />
+    <Compile Include="Core\Parser\Matchers\OptionalMatcher.cs" />
+    <Compile Include="Core\Parser\Matchers\OrMatcher.cs" />
+    <Compile Include="Core\Parser\Matchers\PathMatcher.cs" />
+    <Compile Include="Core\Parser\Matchers\RankGate.cs" />
+    <Compile Include="Core\Parser\Matchers\RelativeLocationMatcher.cs" />
+    <Compile Include="Core\Parser\Matchers\RestMatcher.cs" />
+    <Compile Include="Core\Parser\Matchers\ScoreGate.cs" />
+    <Compile Include="Core\Parser\Matchers\SequenceMatcher.cs" />
+    <Compile Include="Core\Parser\Matchers\SingleWordMatcher.cs" />
+    <Compile Include="Core\Parser\ParserCommandHandler.cs" />
+    <Compile Include="Core\Parser\PossibleMatch.cs" />
+    <Compile Include="Core\PendingMessages.cs" />
+    <Compile Include="Core\Random.cs" />
+    <Compile Include="Core\Rules\RuleEngine.cs" />
+    <Compile Include="Core\SendMessage.cs" />
+    <Compile Include="Core\Serialization\ContainerSerializer.cs" />
+    <Compile Include="Core\Serialization\DictionaryStringObjectSerializer.cs" />
+    <Compile Include="Core\Serialization\ObjectSerialization.cs" />
+    <Compile Include="Core\Serialization\PersistAttribute.cs" />
+    <Compile Include="Core\Serialization\PersistentValueSerializer.cs" />
+    <Compile Include="Core\StandardMessages.cs" />
+    <Compile Include="Core\Startup.cs" />
+    <Compile Include="Core\StringIterator.cs" />
+    <Compile Include="Core\Time.cs" />
+    <Compile Include="Core\WorldDataService.cs" />
+    <Compile Include="Database\Bar.cs">
+      <LastGenOutput>Bar2.cs</LastGenOutput>
+    </Compile>
+    <Compile Include="Database\Cloak.cs" />
+    <Compile Include="Database\Cloakroom.cs" />
+    <Compile Include="Database\Foyer.cs" />
+    <Compile Include="Database\Outside.cs" />
+    <Compile Include="Database\Player.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="GameInfo.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="HelperExtensions.cs" />
+    <Compile Include="ReverseLineReader.cs" />
+    <Compile Include="RuleEngine\GlobalRules.cs" />
+    <Compile Include="RuleEngine\Rule.cs" />
+    <Compile Include="RuleEngine\RuleBook.cs" />
+    <Compile Include="RuleEngine\RuleBuilderGen1.cs">
+      <DependentUpon>RuleBuilderGen.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="RuleEngine\RuleDelegatesGen1.cs">
+      <DependentUpon>RuleDelegatesGen.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="RuleEngine\RuleEngine.cs" />
+    <Compile Include="RuleEngine\RuleEngineAddRuleGen1.cs">
+      <DependentUpon>RuleEngineAddRuleGen.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="RuleEngine\RuleResult.cs" />
+    <Compile Include="RuleEngine\RuleSet.cs" />
+    <Compile Include="RuleEngine\RuleSetAddRuleGen1.cs">
+      <DependentUpon>RuleSetAddRuleGen.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="RuleEngine\RuleSource.cs" />
+    <Compile Include="RuleEngine\RuleSourceAddRuleGen.cs">
+      <DependentUpon>RuleSourceAddRuleGen.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="RuntimeDatabase\Compile.cs" />
+    <Compile Include="RuntimeDatabase\Database.cs" />
+    <Compile Include="RuntimeDatabase\EnumerateDatabase.cs" />
+    <Compile Include="RuntimeDatabase\GetObject.cs" />
+    <Compile Include="RuntimeDatabase\InitialBulkCompile.cs" />
+    <Compile Include="RuntimeDatabase\Initialize.cs" />
+    <Compile Include="RuntimeDatabase\LoadSourceFile.cs" />
+    <Compile Include="RuntimeDatabase\Persistence.cs" />
+    <Compile Include="RuntimeDatabase\Preprocess.cs" />
+    <Compile Include="RuntimeDatabase\ReloadObject.cs" />
+    <Compile Include="settings.cs" />
+    <Compile Include="SinglePlayer\CompiledDatabase.cs" />
+    <Compile Include="SinglePlayer\Driver.cs" />
+    <Compile Include="SinglePlayer\DummyClient.cs" />
+    <Compile Include="SinglePlayer\GameInfo.cs" />
+    <Compile Include="StandardActions\Close.cs" />
+    <Compile Include="StandardActions\Clothing\Clothing.cs" />
+    <Compile Include="StandardActions\Clothing\Messages.cs" />
+    <Compile Include="StandardActions\Clothing\NPCExtension.cs" />
+    <Compile Include="StandardActions\Clothing\Remove.cs" />
+    <Compile Include="StandardActions\Clothing\Rules.cs" />
+    <Compile Include="StandardActions\Clothing\Wear.cs" />
+    <Compile Include="StandardActions\DescribeRules.cs" />
+    <Compile Include="StandardActions\Drop.cs" />
+    <Compile Include="StandardActions\Examine.cs" />
+    <Compile Include="StandardActions\Go.cs" />
+    <Compile Include="StandardActions\Inventory.cs" />
+    <Compile Include="StandardActions\Lock.cs" />
+    <Compile Include="StandardActions\Look.cs" />
+    <Compile Include="StandardActions\LookUnderOrBehind.cs" />
+    <Compile Include="StandardActions\MiscRules.cs" />
+    <Compile Include="StandardActions\Open.cs" />
+    <Compile Include="StandardActions\Pull.cs" />
+    <Compile Include="StandardActions\PushBetweenRooms.cs" />
+    <Compile Include="StandardActions\Put.cs" />
+    <Compile Include="StandardActions\Say.cs" />
+    <Compile Include="StandardActions\Take.cs" />
+    <Compile Include="StandardActions\Unlock.cs" />
+    <Compile Include="WorldModel\BasicDoor.cs" />
+    <Compile Include="WorldModel\Directions.cs" />
+    <Compile Include="WorldModel\EnumerateObjectTree.cs" />
+    <Compile Include="WorldModel\Gender.cs" />
+    <Compile Include="WorldModel\LockedDoor.cs" />
+    <Compile Include="WorldModel\MudObject.cs" />
+    <Compile Include="WorldModel\MudObjectRules.cs" />
+    <Compile Include="WorldModel\NounList.cs" />
+    <Compile Include="WorldModel\ObjectDecorators\Actor.cs" />
+    <Compile Include="WorldModel\ObjectDecorators\Container.cs" />
+    <Compile Include="WorldModel\ObjectDecorators\Room.cs" />
+    <Compile Include="WorldModel\ObjectDecorators\Scenery.cs" />
+    <Compile Include="WorldModel\ObjectProperties\BoolSerializer.cs" />
+    <Compile Include="WorldModel\ObjectProperties\DefaultSerializer.cs" />
+    <Compile Include="WorldModel\ObjectProperties\EnumSerializer.cs" />
+    <Compile Include="WorldModel\ObjectProperties\IntSerializer.cs" />
+    <Compile Include="WorldModel\ObjectProperties\PropertyManifest.cs" />
+    <Compile Include="WorldModel\ObjectProperties\StringSerializer.cs" />
+    <Compile Include="WorldModel\ObjectProperties\TypeSerializer.cs" />
+    <Compile Include="WorldModel\ObjectState.cs" />
+    <Compile Include="WorldModel\Portal.cs" />
+    <Compile Include="WorldModel\RelativeLocations.cs" />
+    <Compile Include="WorldModel\RoomLightingRules.cs" />
+    <Compile Include="WorldModel\RoomType.cs" />
+    <Compile Include="WorldModel\Settings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="RuleEngine\RuleGen.t4" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="MSHTML">
+      <Guid>{3050F1C5-98B5-11CF-BB82-00AA00BDCE0B}</Guid>
+      <VersionMajor>4</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RuleEngine\RuleBuilderGen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RuleBuilderGen1.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RuleEngine\RuleDelegatesGen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RuleDelegatesGen1.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RuleEngine\RuleEngineAddRuleGen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RuleEngineAddRuleGen1.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RuleEngine\RuleSetAddRuleGen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RuleSetAddRuleGen1.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RuleEngine\RuleSourceAddRuleGen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RuleSourceAddRuleGen.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Documentation\CommandProcessing.txt" />
+    <Resource Include="Documentation\RuleOrder.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
