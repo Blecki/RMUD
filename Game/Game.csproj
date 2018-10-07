@@ -60,10 +60,16 @@
     <ManifestKeyFile>WpfConsole_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -110,7 +116,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\Client.cs" />
     <Compile Include="Core\CommandQueue.cs" />
     <Compile Include="Core\ErrorLog.cs" />
     <Compile Include="Core\ExecuteCommand.cs" />
@@ -214,21 +219,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="RuntimeDatabase\Compile.cs" />
-    <Compile Include="RuntimeDatabase\Database.cs" />
-    <Compile Include="RuntimeDatabase\EnumerateDatabase.cs" />
-    <Compile Include="RuntimeDatabase\GetObject.cs" />
-    <Compile Include="RuntimeDatabase\InitialBulkCompile.cs" />
-    <Compile Include="RuntimeDatabase\Initialize.cs" />
-    <Compile Include="RuntimeDatabase\LoadSourceFile.cs" />
-    <Compile Include="RuntimeDatabase\Persistence.cs" />
-    <Compile Include="RuntimeDatabase\Preprocess.cs" />
-    <Compile Include="RuntimeDatabase\ReloadObject.cs" />
-    <Compile Include="settings.cs" />
+    <Compile Include="Core\Persistence.cs" />
     <Compile Include="SinglePlayer\CompiledDatabase.cs" />
     <Compile Include="SinglePlayer\Driver.cs" />
-    <Compile Include="SinglePlayer\DummyClient.cs" />
-    <Compile Include="SinglePlayer\GameInfo.cs" />
     <Compile Include="StandardActions\Close.cs" />
     <Compile Include="StandardActions\Clothing\Clothing.cs" />
     <Compile Include="StandardActions\Clothing\Messages.cs" />
@@ -300,6 +293,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

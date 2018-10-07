@@ -22,9 +22,9 @@ the weather outside seems to be getting worse."
             SetProperty("long", "You are standing in a spacious hall, splendidly decorated in red and gold, with glittering chandeliers overhead.");
             SetProperty("ambient light", LightingLevel.Bright);
 
-            OpenLink(Direction.NORTH, "Outside");
-            OpenLink(Direction.SOUTH, "Bar");
-            OpenLink(Direction.WEST, "Cloakroom");
+            OpenLink(Direction.NORTH, "CloakOfDarkness.Outside");
+            OpenLink(Direction.SOUTH, "CloakOfDarkness.Bar");
+            OpenLink(Direction.WEST, "CloakOfDarkness.Cloakroom");
 
             Check<MudObject, MudObject>("can go?")
                .First

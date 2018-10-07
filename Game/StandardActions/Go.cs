@@ -113,7 +113,7 @@ namespace StandardActionsModule
                 .Name("Report arrival rule.");
 
             GlobalRules.Perform<MudObject, MudObject>("go")
-                .When((actor, link) => actor.GetProperty<Client>("client") != null)
+                .When((actor, link) => actor.GetProperty<bool>("listens?"))
                 .Do((actor, link) =>
                 {
                     Core.EnqueuActorCommand(actor, "look", HelperExtensions.MakeDictionary("AUTO", true));

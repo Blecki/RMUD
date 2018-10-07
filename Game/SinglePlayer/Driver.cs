@@ -8,8 +8,8 @@ namespace RMUD.SinglePlayer
 {
     public class Driver
     {
-        private DummyClient Client;
         public MudObject Player { get; private set; }
+        public Action<String> Output;
         
         public bool IsRunning
         {
@@ -25,55 +25,27 @@ namespace RMUD.SinglePlayer
 
         public void SwitchPlayerCharacter(MudObject NewCharacter)
         {
-            //NewCharacter.Rank = 500;
+            if (Player != null)
+                Player.SetProperty("output", null);
+
             NewCharacter.SetProperty("command handler", Core.ParserCommandHandler);
-            var client = Player.GetProperty<Client>("client");
-            if (client != null)
-                Core.TiePlayerToClient(client, NewCharacter);
+            NewCharacter.SetProperty("output", Output); // There should be a perform rulebook for handling this.
+            NewCharacter.SetProperty("listens?", true);
             Player = NewCharacter;
         }
-
-        private void DetectAndAssignDriver(System.Reflection.Assembly Assembly)
-        {
-            foreach (var type in Assembly.GetTypes().Where(t => t.Name == "Game"))
-            {
-                try
-                {
-                    var property = type.GetProperty("Driver");
-                    if (property != null && property.PropertyType == typeof(Driver) && property.CanWrite)
-                        property.SetValue(null, this);
-                }
-                catch (Exception e) { }
-            }
-        }
-
+        
         public bool Start(
             System.Reflection.Assembly DatabaseAssembly, 
             Action<String> Output)
         {
-            GameInfo gameInfo = null;
-            foreach (var type in DatabaseAssembly.GetTypes())
-                if (type.IsSubclassOf(typeof(GameInfo)))
-                    gameInfo = Activator.CreateInstance(type) as GameInfo;
+            this.Output = Output;
 
-            if (gameInfo == null) throw new InvalidOperationException("No GameInfo defined in game assembly.");
-
-            var assemblies = new List<ModuleAssembly>();
-            foreach (var module in gameInfo.Modules)
-                assemblies.Add(new ModuleAssembly(module));
-
-            if (RMUD.Core.Start(StartupFlags.Silent | StartupFlags.SingleThreaded,
+            if (RMUD.Core.Start(StartupFlags.Silent,
                 "database/",
-                new RMUD.SinglePlayer.CompiledDatabase(DatabaseAssembly, gameInfo.DatabaseNameSpace),
-                assemblies.ToArray()))
+                new RMUD.SinglePlayer.CompiledDatabase(DatabaseAssembly)))
             {
-                Player = RMUD.MudObject.GetObject(RMUD.Core.SettingsObject.PlayerBaseObject);
-                Player.SetProperty("command handler", Core.ParserCommandHandler);
-                Client = new DummyClient(Output);
-                RMUD.Core.TiePlayerToClient(Client, Player);
-                //Player.Rank = 500;
+                SwitchPlayerCharacter(RMUD.MudObject.GetObject("CloakOfDarkness.Player"));
 
-                DetectAndAssignDriver(DatabaseAssembly);
                 Core.GlobalRules.ConsiderPerformRule("singleplayer game started", Player);
 
                 return true;
@@ -86,7 +58,6 @@ namespace RMUD.SinglePlayer
         {
             RMUD.Core.EnqueuActorCommand(Player, Command);
             RMUD.Core.ProcessCommands();
-            RMUD.Core.SendPendingMessages(); // This is a hack, in case messages are never sent.
         }
     }
 }

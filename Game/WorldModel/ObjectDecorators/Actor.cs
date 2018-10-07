@@ -13,8 +13,9 @@ namespace RMUD
             PropertyManifest.RegisterProperty("preserve?", typeof(bool), false, new BoolSerializer());
             PropertyManifest.RegisterProperty("gender", typeof(Gender), Gender.Male, new EnumSerializer<Gender>());
             PropertyManifest.RegisterProperty("rank", typeof(int), 0, new IntSerializer());
-            PropertyManifest.RegisterProperty("client", typeof(Client), null, new DefaultSerializer());
             PropertyManifest.RegisterProperty("command handler", typeof(ClientCommandHandler), null, new DefaultSerializer());
+            PropertyManifest.RegisterProperty("output", typeof(Action<String>), null, new DefaultSerializer());
+            PropertyManifest.RegisterProperty("listens?", typeof(bool), false, new BoolSerializer());
         }
     }
 

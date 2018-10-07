@@ -39,11 +39,11 @@ namespace RMUD
                     // Use this when testing a command in the debugger. Otherwise, the command processing thread might
                     // be aborted while you are debugging it.
                     Command.RawCommand = Command.RawCommand.Substring("@DEBUG ".Length);
-                    if (Command.Actor.GetProperty<int>("rank") < 500)
-                    {
-                        MudObject.SendMessage(Command.Actor, "You do not have sufficient rank to use the debug command.");
-                        return;
-                    }
+                    //if (Command.Actor.GetProperty<int>("rank") < 500)
+                    //{
+                    //    MudObject.SendMessage(Command.Actor, "You do not have sufficient rank to use the debug command.");
+                    //    return;
+                    //}
 
                     // This will be reset by the command queue before the next command is parsed.
                     Core.CommandTimeoutEnabled = false;

@@ -30,9 +30,11 @@ to the game, they would automatically be described correctly as well.]
             SetProperty("short", "Cloakroom");
             SetProperty("long", "The walls of this small room were clearly once lined with hooks, though now only one remains.");
 
-            OpenLink(Direction.EAST, "Foyer");
+            OpenLink(Direction.EAST, "CloakOfDarkness.Foyer");
 
-            Move(MudObject.GetObject("Hook"), this);
+            Move(MudObject.GetObject("CloakOfDarkness.Hook"), this);
+
+            SetProperty("ambient light", LightingLevel.Bright);
         }
     }
 

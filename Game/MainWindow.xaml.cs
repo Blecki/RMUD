@@ -30,6 +30,9 @@ namespace WpfConsole
         {
             InitializeComponent();
 
+            Driver = new RMUD.SinglePlayer.Driver();
+            CloakOfDarkness.Game.Driver = Driver;
+
             try
             {
                 TextBox_TextChanged(null, null);
@@ -54,6 +57,8 @@ namespace WpfConsole
                     if (ShuttingDown) return;
                     Dispatcher.Invoke(new Action(() => Close()));
                 };
+
+            
         }
 
         public String PrepareString(String s)

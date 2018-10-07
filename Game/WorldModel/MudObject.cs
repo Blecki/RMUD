@@ -113,7 +113,7 @@ namespace RMUD
         public void Destroy(bool DestroyChildren)
         {
             State = ObjectState.Destroyed;
-            MudObject.ForgetInstance(this);
+            MudObject.ForgetInstance(this); 
 
             if (DestroyChildren)
                 foreach (var child in EnumerateObjects())

@@ -18,7 +18,7 @@ There seems to be some sort of message scrawled in the sawdust on the floor."
             SetProperty("short", "Foyer Bar");
             SetProperty("long", "The bar, much rougher than you'd have guessed after the opulence of the foyer to the north, is completely empty. There seems to be some sort of message scrawled in the sawdust on the floor.");
             
-            OpenLink(Direction.NORTH, "Foyer");
+            OpenLink(Direction.NORTH, "CloakOfDarkness.Foyer");
 
             // The scrawled message is scenery in the Bar. Understand "floor" or "sawdust" as the message.
 

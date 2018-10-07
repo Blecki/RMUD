@@ -9,10 +9,10 @@ namespace RMUD
 {
     internal struct PendingMessage
     {
-        public Client Destination;
+        public MudObject Destination;
         public String Message;
 
-        public PendingMessage(Client Destination, String Message)
+        public PendingMessage(MudObject Destination, String Message)
         {
             this.Destination = Destination;
             this.Message = Message;
@@ -28,8 +28,11 @@ namespace RMUD
         /// </summary>
         public static void SendPendingMessages()
         {
-			foreach (var message in PendingMessages)
-				message.Destination.Send(message.Message + "\r\n");
+            foreach (var message in PendingMessages)
+            {
+                var handler = message.Destination.GetProperty<Action<String>>("output");
+                handler?.Invoke(message.Message + "\r\n");
+            }
             PendingMessages.Clear();
         }
 

@@ -11,7 +11,6 @@ namespace RMUD
     {
         Silent = 1,
         SearchDirectory = 2,
-        SingleThreaded = 4,
         NoLog = 8
     }
 
@@ -71,7 +70,7 @@ namespace RMUD
         /// <param name="Database"></param>
         /// <param name="Assemblies">Modules to integrate</param>
         /// <returns></returns>
-        public static bool Start(StartupFlags Flags, String DatabasePath, WorldDataService Database, params ModuleAssembly[] Assemblies)
+        public static bool Start(StartupFlags Flags, String DatabasePath, WorldDataService Database)
         {
             Core.DatabasePath = DatabasePath;
 
@@ -87,12 +86,7 @@ namespace RMUD
 
                 DefaultParser = new CommandParser();
 
-                // Integrate modules. The Core assembly is always integrated.
-                IntegratedModules.Add(new ModuleAssembly(Assembly.GetExecutingAssembly(), "Core.dll"));
-                IntegratedModules.AddRange(Assemblies);
-                
-                foreach (var startupAssembly in IntegratedModules)
-                    IntegrateModule(startupAssembly);
+                IntegrateModule(new ModuleAssembly(Assembly.GetExecutingAssembly(), "Core.dll"));
 
                 InitializeCommandProcessor();
 
@@ -102,9 +96,6 @@ namespace RMUD
                 Database.Initialize();
 
                 GlobalRules.ConsiderPerformRule("at startup");
-
-                if ((Flags & StartupFlags.SingleThreaded) == 0)
-                    StartThreadedCommandProcesor();
             }
             catch (Exception e)
             {
