@@ -22,16 +22,11 @@ namespace WpfConsole
     {
         public List<String> CommandMemory = new List<string>();
         public int MemoryScrollIndex = 0;
-        private RMUD.SinglePlayer.Driver Driver = new RMUD.SinglePlayer.Driver();
         private Action AfterNavigating;
-        private bool ShuttingDown = false;
 
         public MainWindow()
         {
             InitializeComponent();
-
-            Driver = new RMUD.SinglePlayer.Driver();
-            CloakOfDarkness.Game.Driver = Driver;
 
             try
             {
@@ -46,19 +41,10 @@ namespace WpfConsole
             AfterNavigating = () =>
                 {
                     Action<String> output = s => Dispatcher.Invoke(new Action<String>(Output), System.Windows.Threading.DispatcherPriority.Normal, PrepareString(s));
-                    Driver.Start(typeof(CloakOfDarkness.Game).Assembly, output);
+                    Game.Game.Begin(output);
                 };
 
-            Clear();
-
-            //Driver.BlockOnInput = false;
-            RMUD.Core.OnShutDown += () =>
-                {
-                    if (ShuttingDown) return;
-                    Dispatcher.Invoke(new Action(() => Close()));
-                };
-
-            
+            Clear();            
         }
 
         public String PrepareString(String s)
@@ -145,7 +131,7 @@ body
                 {
                     InputBox.Clear();
                     (OutputBox.Document as dynamic).body.innerHTML += "<font color=red>" + saveInput + "</font><br>";
-                    Driver.Input(saveInput);
+                    Game.Game.Input(saveInput);
                     CommandMemory.Add(saveInput);
                     MemoryScrollIndex = CommandMemory.Count;
                 }
@@ -167,12 +153,6 @@ body
         private void OutputBox_Navigated(object sender, NavigationEventArgs e)
         {
             
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            ShuttingDown = true;
-            RMUD.Core.Shutdown();
         }
 
         private void OutputBox_LoadCompleted(object sender, NavigationEventArgs e)

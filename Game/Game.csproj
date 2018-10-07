@@ -94,182 +94,180 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Admin\Cons.cs" />
-    <Compile Include="Admin\Dump.cs" />
-    <Compile Include="Admin\DumpMessages.cs" />
-    <Compile Include="Admin\Force.cs" />
-    <Compile Include="Admin\Inspect.cs" />
-    <Compile Include="Admin\Instance.cs" />
-    <Compile Include="Admin\Move.cs" />
-    <Compile Include="Admin\Properties.cs" />
-    <Compile Include="Admin\ReadLog.cs" />
-    <Compile Include="Admin\Reload.cs" />
-    <Compile Include="Admin\Rules.cs" />
-    <Compile Include="Admin\Save.cs" />
-    <Compile Include="Admin\Scope.cs" />
-    <Compile Include="Admin\Set.cs" />
-    <Compile Include="Admin\Sonar.cs">
+    <Compile Include="SFS\Commands\Admin\Cons.cs" />
+    <Compile Include="SFS\Commands\Admin\Dump.cs" />
+    <Compile Include="SFS\Commands\Admin\DumpMessages.cs" />
+    <Compile Include="SFS\Commands\Admin\Force.cs" />
+    <Compile Include="SFS\Commands\Admin\Inspect.cs" />
+    <Compile Include="SFS\Commands\Admin\Instance.cs" />
+    <Compile Include="SFS\Commands\Admin\Move.cs" />
+    <Compile Include="SFS\Commands\Admin\Properties.cs" />
+    <Compile Include="SFS\Commands\Admin\ReadLog.cs" />
+    <Compile Include="SFS\Commands\Admin\Reload.cs" />
+    <Compile Include="SFS\Commands\Admin\Rules.cs" />
+    <Compile Include="SFS\Commands\Admin\Save.cs" />
+    <Compile Include="SFS\Commands\Admin\Scope.cs" />
+    <Compile Include="SFS\Commands\Admin\Set.cs" />
+    <Compile Include="SFS\Commands\Admin\Sonar.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="Admin\Stats.cs" />
+    <Compile Include="SFS\Commands\Admin\Stats.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Core\CommandQueue.cs" />
-    <Compile Include="Core\ErrorLog.cs" />
-    <Compile Include="Core\ExecuteCommand.cs" />
-    <Compile Include="Core\FindLocale.cs" />
-    <Compile Include="Core\FormatMessage.cs" />
-    <Compile Include="Core\Heartbeat.cs" />
-    <Compile Include="Core\IsVisibleTo.cs" />
-    <Compile Include="Core\ManPages.cs" />
-    <Compile Include="Core\MarkForUpdate.cs" />
-    <Compile Include="Core\MessageTable.cs" />
-    <Compile Include="Core\Meta\Alias.cs" />
-    <Compile Include="Core\Meta\Man.cs" />
-    <Compile Include="Core\Meta\Version.cs" />
-    <Compile Include="Core\ModuleAssembly.cs" />
-    <Compile Include="Core\Move.cs" />
-    <Compile Include="Core\MudCore.cs" />
-    <Compile Include="Core\ObjectContainsObject.cs" />
-    <Compile Include="Core\Parser\ClientCommandHandler.cs" />
-    <Compile Include="Core\Parser\CommandEntry.cs" />
-    <Compile Include="Core\Parser\CommandFactory.cs" />
-    <Compile Include="Core\Parser\CommandParser.cs" />
-    <Compile Include="Core\Parser\CommandTokenMatcher.cs" />
-    <Compile Include="Core\Parser\DisambigCommandHandler.cs" />
-    <Compile Include="Core\Parser\MatchContext.cs" />
-    <Compile Include="Core\Parser\Matchers\CardinalMatcher.cs" />
-    <Compile Include="Core\Parser\Matchers\FailIf.cs" />
-    <Compile Include="Core\Parser\Matchers\FailIfNoMatches.cs" />
-    <Compile Include="Core\Parser\Matchers\FirstOfMatcher.cs" />
-    <Compile Include="Core\Parser\Matchers\GenericMatcher.cs" />
-    <Compile Include="Core\Parser\Matchers\InScopeObjectSource.cs" />
-    <Compile Include="Core\Parser\Matchers\KeywordMatcher.cs" />
-    <Compile Include="Core\Parser\Matchers\NumberMatcher.cs" />
-    <Compile Include="Core\Parser\Matchers\ObjectMatcher.cs" />
-    <Compile Include="Core\Parser\Matchers\OptionalMatcher.cs" />
-    <Compile Include="Core\Parser\Matchers\OrMatcher.cs" />
-    <Compile Include="Core\Parser\Matchers\PathMatcher.cs" />
-    <Compile Include="Core\Parser\Matchers\RankGate.cs" />
-    <Compile Include="Core\Parser\Matchers\RelativeLocationMatcher.cs" />
-    <Compile Include="Core\Parser\Matchers\RestMatcher.cs" />
-    <Compile Include="Core\Parser\Matchers\ScoreGate.cs" />
-    <Compile Include="Core\Parser\Matchers\SequenceMatcher.cs" />
-    <Compile Include="Core\Parser\Matchers\SingleWordMatcher.cs" />
-    <Compile Include="Core\Parser\ParserCommandHandler.cs" />
-    <Compile Include="Core\Parser\PossibleMatch.cs" />
-    <Compile Include="Core\PendingMessages.cs" />
-    <Compile Include="Core\Random.cs" />
-    <Compile Include="Core\Rules\RuleEngine.cs" />
-    <Compile Include="Core\SendMessage.cs" />
-    <Compile Include="Core\Serialization\ContainerSerializer.cs" />
-    <Compile Include="Core\Serialization\DictionaryStringObjectSerializer.cs" />
-    <Compile Include="Core\Serialization\ObjectSerialization.cs" />
-    <Compile Include="Core\Serialization\PersistAttribute.cs" />
-    <Compile Include="Core\Serialization\PersistentValueSerializer.cs" />
-    <Compile Include="Core\StandardMessages.cs" />
-    <Compile Include="Core\Startup.cs" />
-    <Compile Include="Core\StringIterator.cs" />
-    <Compile Include="Core\Time.cs" />
-    <Compile Include="Core\WorldDataService.cs" />
-    <Compile Include="Database\Bar.cs">
+    <Compile Include="SFS\CommandQueue.cs" />
+    <Compile Include="SFS\ExecuteCommand.cs" />
+    <Compile Include="SFS\FindLocale.cs" />
+    <Compile Include="SFS\FormatMessage.cs" />
+    <Compile Include="SFS\Heartbeat.cs" />
+    <Compile Include="SFS\IsVisibleTo.cs" />
+    <Compile Include="SFS\ManPages.cs" />
+    <Compile Include="SFS\MarkForUpdate.cs" />
+    <Compile Include="SFS\MessageTable.cs" />
+    <Compile Include="SFS\Commands\Meta\Alias.cs" />
+    <Compile Include="SFS\Commands\Meta\Man.cs" />
+    <Compile Include="SFS\Commands\Meta\Version.cs" />
+    <Compile Include="SFS\ModuleAssembly.cs" />
+    <Compile Include="SFS\Move.cs" />
+    <Compile Include="SFS\MudCore.cs" />
+    <Compile Include="SFS\ObjectContainsObject.cs" />
+    <Compile Include="SFS\Parser\ClientCommandHandler.cs" />
+    <Compile Include="SFS\Parser\CommandEntry.cs" />
+    <Compile Include="SFS\Parser\CommandFactory.cs" />
+    <Compile Include="SFS\Parser\CommandParser.cs" />
+    <Compile Include="SFS\Parser\CommandTokenMatcher.cs" />
+    <Compile Include="SFS\Parser\DisambigCommandHandler.cs" />
+    <Compile Include="SFS\Parser\MatchContext.cs" />
+    <Compile Include="SFS\Parser\Matchers\CardinalMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\FailIf.cs" />
+    <Compile Include="SFS\Parser\Matchers\FailIfNoMatches.cs" />
+    <Compile Include="SFS\Parser\Matchers\FirstOfMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\GenericMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\InScopeObjectSource.cs" />
+    <Compile Include="SFS\Parser\Matchers\KeywordMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\NumberMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\ObjectMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\OptionalMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\OrMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\PathMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\DebugGate.cs" />
+    <Compile Include="SFS\Parser\Matchers\RelativeLocationMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\RestMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\ScoreGate.cs" />
+    <Compile Include="SFS\Parser\Matchers\SequenceMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\SingleWordMatcher.cs" />
+    <Compile Include="SFS\Parser\ParserCommandHandler.cs" />
+    <Compile Include="SFS\Parser\PossibleMatch.cs" />
+    <Compile Include="SFS\PendingMessages.cs" />
+    <Compile Include="SFS\Random.cs" />
+    <Compile Include="SFS\Rules\SFSRuleEngine.cs" />
+    <Compile Include="SFS\SendMessage.cs" />
+    <Compile Include="SFS\Serialization\ContainerSerializer.cs" />
+    <Compile Include="SFS\Serialization\DictionaryStringObjectSerializer.cs" />
+    <Compile Include="SFS\Serialization\ObjectSerialization.cs" />
+    <Compile Include="SFS\Serialization\PersistAttribute.cs" />
+    <Compile Include="SFS\Serialization\PersistentValueSerializer.cs" />
+    <Compile Include="SFS\StandardMessages.cs" />
+    <Compile Include="SFS\Startup.cs" />
+    <Compile Include="SFS\StringIterator.cs" />
+    <Compile Include="SFS\Time.cs" />
+    <Compile Include="SFS\WorldDataService.cs" />
+    <Compile Include="Game\Database\Bar.cs">
       <LastGenOutput>Bar2.cs</LastGenOutput>
     </Compile>
-    <Compile Include="Database\Cloak.cs" />
-    <Compile Include="Database\Cloakroom.cs" />
-    <Compile Include="Database\Foyer.cs" />
-    <Compile Include="Database\Outside.cs" />
-    <Compile Include="Database\Player.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="GameInfo.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Game\Database\Cloak.cs" />
+    <Compile Include="Game\Database\Cloakroom.cs" />
+    <Compile Include="Game\Database\Foyer.cs" />
+    <Compile Include="Game\Database\Outside.cs" />
+    <Compile Include="Game\Database\Player.cs" />
+    <Compile Include="Game\Game.cs" />
+    <Compile Include="Game\GameInfo.cs" />
     <Compile Include="HelperExtensions.cs" />
     <Compile Include="ReverseLineReader.cs" />
-    <Compile Include="RuleEngine\GlobalRules.cs" />
-    <Compile Include="RuleEngine\Rule.cs" />
-    <Compile Include="RuleEngine\RuleBook.cs" />
-    <Compile Include="RuleEngine\RuleBuilderGen1.cs">
+    <Compile Include="SFS\Rules\GlobalRules.cs" />
+    <Compile Include="SFS\Rules\Rule.cs" />
+    <Compile Include="SFS\Rules\RuleBook.cs" />
+    <Compile Include="SFS\Rules\RuleBuilderGen1.cs">
       <DependentUpon>RuleBuilderGen.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="RuleEngine\RuleDelegatesGen1.cs">
+    <Compile Include="SFS\Rules\RuleDelegatesGen1.cs">
       <DependentUpon>RuleDelegatesGen.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="RuleEngine\RuleEngine.cs" />
-    <Compile Include="RuleEngine\RuleEngineAddRuleGen1.cs">
+    <Compile Include="SFS\Rules\RuleEngine.cs" />
+    <Compile Include="SFS\Rules\RuleEngineAddRuleGen1.cs">
       <DependentUpon>RuleEngineAddRuleGen.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="RuleEngine\RuleResult.cs" />
-    <Compile Include="RuleEngine\RuleSet.cs" />
-    <Compile Include="RuleEngine\RuleSetAddRuleGen1.cs">
+    <Compile Include="SFS\Rules\RuleResult.cs" />
+    <Compile Include="SFS\Rules\RuleSet.cs" />
+    <Compile Include="SFS\Rules\RuleSetAddRuleGen1.cs">
       <DependentUpon>RuleSetAddRuleGen.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="RuleEngine\RuleSource.cs" />
-    <Compile Include="RuleEngine\RuleSourceAddRuleGen.cs">
+    <Compile Include="SFS\Rules\RuleSource.cs" />
+    <Compile Include="SFS\Rules\RuleSourceAddRuleGen.cs">
       <DependentUpon>RuleSourceAddRuleGen.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Core\Persistence.cs" />
-    <Compile Include="SinglePlayer\CompiledDatabase.cs" />
-    <Compile Include="SinglePlayer\Driver.cs" />
-    <Compile Include="StandardActions\Close.cs" />
-    <Compile Include="StandardActions\Clothing\Clothing.cs" />
-    <Compile Include="StandardActions\Clothing\Messages.cs" />
-    <Compile Include="StandardActions\Clothing\NPCExtension.cs" />
-    <Compile Include="StandardActions\Clothing\Remove.cs" />
-    <Compile Include="StandardActions\Clothing\Rules.cs" />
-    <Compile Include="StandardActions\Clothing\Wear.cs" />
-    <Compile Include="StandardActions\DescribeRules.cs" />
-    <Compile Include="StandardActions\Drop.cs" />
-    <Compile Include="StandardActions\Examine.cs" />
-    <Compile Include="StandardActions\Go.cs" />
-    <Compile Include="StandardActions\Inventory.cs" />
-    <Compile Include="StandardActions\Lock.cs" />
-    <Compile Include="StandardActions\Look.cs" />
-    <Compile Include="StandardActions\LookUnderOrBehind.cs" />
-    <Compile Include="StandardActions\MiscRules.cs" />
-    <Compile Include="StandardActions\Open.cs" />
-    <Compile Include="StandardActions\Pull.cs" />
-    <Compile Include="StandardActions\PushBetweenRooms.cs" />
-    <Compile Include="StandardActions\Put.cs" />
-    <Compile Include="StandardActions\Say.cs" />
-    <Compile Include="StandardActions\Take.cs" />
-    <Compile Include="StandardActions\Unlock.cs" />
-    <Compile Include="WorldModel\BasicDoor.cs" />
-    <Compile Include="WorldModel\Directions.cs" />
-    <Compile Include="WorldModel\EnumerateObjectTree.cs" />
-    <Compile Include="WorldModel\Gender.cs" />
-    <Compile Include="WorldModel\LockedDoor.cs" />
-    <Compile Include="WorldModel\MudObject.cs" />
-    <Compile Include="WorldModel\MudObjectRules.cs" />
-    <Compile Include="WorldModel\NounList.cs" />
-    <Compile Include="WorldModel\ObjectDecorators\Actor.cs" />
-    <Compile Include="WorldModel\ObjectDecorators\Container.cs" />
-    <Compile Include="WorldModel\ObjectDecorators\Room.cs" />
-    <Compile Include="WorldModel\ObjectDecorators\Scenery.cs" />
-    <Compile Include="WorldModel\ObjectProperties\BoolSerializer.cs" />
-    <Compile Include="WorldModel\ObjectProperties\DefaultSerializer.cs" />
-    <Compile Include="WorldModel\ObjectProperties\EnumSerializer.cs" />
-    <Compile Include="WorldModel\ObjectProperties\IntSerializer.cs" />
-    <Compile Include="WorldModel\ObjectProperties\PropertyManifest.cs" />
-    <Compile Include="WorldModel\ObjectProperties\StringSerializer.cs" />
-    <Compile Include="WorldModel\ObjectProperties\TypeSerializer.cs" />
-    <Compile Include="WorldModel\ObjectState.cs" />
-    <Compile Include="WorldModel\Portal.cs" />
-    <Compile Include="WorldModel\RelativeLocations.cs" />
-    <Compile Include="WorldModel\RoomLightingRules.cs" />
-    <Compile Include="WorldModel\RoomType.cs" />
-    <Compile Include="WorldModel\Settings.cs" />
+    <Compile Include="SFS\Persistence.cs" />
+    <Compile Include="SFS\CompiledDatabase.cs" />
+    <Compile Include="SFS\Driver.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Close.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Clothing\Clothing.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Clothing\Messages.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Clothing\NPCExtension.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Clothing\Remove.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Clothing\Rules.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Clothing\Wear.cs" />
+    <Compile Include="SFS\Commands\StandardActions\DescribeRules.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Drop.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Examine.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Go.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Inventory.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Lock.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Look.cs" />
+    <Compile Include="SFS\Commands\StandardActions\LookUnderOrBehind.cs" />
+    <Compile Include="SFS\Commands\StandardActions\MiscRules.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Open.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Pull.cs" />
+    <Compile Include="SFS\Commands\StandardActions\PushBetweenRooms.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Put.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Say.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Take.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Unlock.cs" />
+    <Compile Include="SFS\WorldModel\BasicDoor.cs" />
+    <Compile Include="SFS\WorldModel\Directions.cs" />
+    <Compile Include="SFS\WorldModel\EnumerateObjectTree.cs" />
+    <Compile Include="SFS\WorldModel\Gender.cs" />
+    <Compile Include="SFS\WorldModel\LockedDoor.cs" />
+    <Compile Include="SFS\WorldModel\MudObject.cs" />
+    <Compile Include="SFS\WorldModel\MudObjectRules.cs" />
+    <Compile Include="SFS\WorldModel\NounList.cs" />
+    <Compile Include="SFS\WorldModel\ObjectDecorators\Actor.cs" />
+    <Compile Include="SFS\WorldModel\ObjectDecorators\Container.cs" />
+    <Compile Include="SFS\WorldModel\ObjectDecorators\Room.cs" />
+    <Compile Include="SFS\WorldModel\ObjectDecorators\Scenery.cs" />
+    <Compile Include="SFS\WorldModel\ObjectProperties\BoolSerializer.cs" />
+    <Compile Include="SFS\WorldModel\ObjectProperties\DefaultSerializer.cs" />
+    <Compile Include="SFS\WorldModel\ObjectProperties\EnumSerializer.cs" />
+    <Compile Include="SFS\WorldModel\ObjectProperties\IntSerializer.cs" />
+    <Compile Include="SFS\WorldModel\ObjectProperties\PropertyManifest.cs" />
+    <Compile Include="SFS\WorldModel\ObjectProperties\StringSerializer.cs" />
+    <Compile Include="SFS\WorldModel\ObjectProperties\TypeSerializer.cs" />
+    <Compile Include="SFS\WorldModel\ObjectState.cs" />
+    <Compile Include="SFS\WorldModel\Portal.cs" />
+    <Compile Include="SFS\WorldModel\RelativeLocations.cs" />
+    <Compile Include="SFS\WorldModel\RoomLightingRules.cs" />
+    <Compile Include="SFS\WorldModel\RoomType.cs" />
+    <Compile Include="SFS\WorldModel\Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindow.xaml.cs">
@@ -299,7 +297,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="RuleEngine\RuleGen.t4" />
+    <None Include="SFS\Rules\RuleGen.t4" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -339,31 +337,31 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="RuleEngine\RuleBuilderGen.tt">
+    <None Include="SFS\Rules\RuleBuilderGen.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>RuleBuilderGen1.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="RuleEngine\RuleDelegatesGen.tt">
+    <None Include="SFS\Rules\RuleDelegatesGen.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>RuleDelegatesGen1.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="RuleEngine\RuleEngineAddRuleGen.tt">
+    <None Include="SFS\Rules\RuleEngineAddRuleGen.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>RuleEngineAddRuleGen1.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="RuleEngine\RuleSetAddRuleGen.tt">
+    <None Include="SFS\Rules\RuleSetAddRuleGen.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>RuleSetAddRuleGen1.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="RuleEngine\RuleSourceAddRuleGen.tt">
+    <None Include="SFS\Rules\RuleSourceAddRuleGen.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>RuleSourceAddRuleGen.cs</LastGenOutput>
     </None>
@@ -374,6 +372,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

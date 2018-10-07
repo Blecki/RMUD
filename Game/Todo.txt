@@ -1,0 +1,9 @@
+﻿Move everything into SFS namespace
+Normalive verb tense of rule names
+Make sure all standard rules have descriptive names
+Revisit output of !RULES so there's no new lines
+Remove rank gate - maybe switch to debug gate?
+Revisit property system. What is the benefit over subclassing?
+Revisit property system. Serializers can go?
+Make persistence work (for save games)
+Use attributes to mark startup entry functions instead of magic signature

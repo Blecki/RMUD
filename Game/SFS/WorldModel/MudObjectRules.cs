@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace SFS
+{
+    public class MudObjectRules 
+    {
+        public static void AtStartup(SFSRuleEngine GlobalRules)
+        {
+            GlobalRules.DeclareValueRuleBook<MudObject, MudObject, String, String>("printed name", "[Viewer, Object, Article -> String] : Find the name that should be displayed for an object.", "actor", "item", "article");
+
+            GlobalRules.Value<MudObject, MudObject, String, String>("printed name")
+               .Last
+               .Do((viewer, thing, article) => (String.IsNullOrEmpty(article) ? (thing.GetProperty<String>("short")) : (article + " " + thing.GetProperty<String>("short"))))
+               .Name("Default name of a thing.");
+        }
+    }
+}
