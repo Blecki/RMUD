@@ -8,21 +8,22 @@ namespace SFS.SinglePlayer
 {
     public class Driver
     {
-        public MudObject Player { get; private set; }
+        public Actor Player { get; private set; }
         public Action<String> Output;
 
         public Driver()
         {
         }
 
-        public void SwitchPlayerCharacter(MudObject NewCharacter)
+        public void SwitchPlayerCharacter(Actor NewCharacter)
         {
             if (Player != null)
-                Player.SetProperty("output", null);
+                Player.Output = null;
 
-            NewCharacter.SetProperty("command handler", Core.ParserCommandHandler);
-            NewCharacter.SetProperty("output", Output); // There should be a perform rulebook for handling this.
-            NewCharacter.SetProperty("listens?", true);
+            NewCharacter.CommandHandler = Core.ParserCommandHandler;
+            NewCharacter.Output = Output;
+            NewCharacter.Listens = true;
+            //NewCharacter.SetProperty("output", Output); // There should be a perform rulebook for handling this.
             Player = NewCharacter;
         }
         
@@ -34,7 +35,7 @@ namespace SFS.SinglePlayer
 
             if (SFS.Core.Start(new SFS.SinglePlayer.CompiledDatabase(DatabaseAssembly)))
             {
-                SwitchPlayerCharacter(SFS.MudObject.GetObject("Game.Player"));
+                SwitchPlayerCharacter(SFS.MudObject.GetObject("Game.Player") as Actor);
                 Core.GlobalRules.ConsiderPerformRule("singleplayer game started", Player);
 
                 return true;

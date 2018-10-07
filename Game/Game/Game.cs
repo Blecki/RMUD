@@ -9,9 +9,9 @@ namespace Game
     public static class Game
     {
         public static SFS.SinglePlayer.Driver Driver { get; set; }
-        internal static SFS.MudObject Player { get { return Driver.Player; } }
+        internal static SFS.Actor Player { get { return Driver.Player; } }
 
-        public static void SwitchPlayerCharacter(SFS.MudObject NewCharacter)
+        public static void SwitchPlayerCharacter(SFS.Actor NewCharacter)
         {
             Driver.SwitchPlayerCharacter(NewCharacter);
         }
@@ -21,8 +21,8 @@ namespace Game
             Driver = new SFS.SinglePlayer.Driver();
             Driver.Start(System.Reflection.Assembly.GetExecutingAssembly(), Output);
 
-            SwitchPlayerCharacter(SFS.MudObject.GetObject("Game.Player"));
-            SFS.MudObject.Move(Player, SFS.MudObject.GetObject("Game.Foyer"));
+            SwitchPlayerCharacter(SFS.MudObject.GetObject("Game.Player") as SFS.Actor);
+            SFS.MudObject.Move(Player, SFS.MudObject.GetObject("Game.Foyer") as SFS.Room);
             SFS.MudObject.SendMessage(Player, "Hurrying through the rainswept November night, you're glad to see the bright lights of the Opera House. It's surprising that there aren't more people about but, hey, what do you expect in a cheap demo game...?");
 
             Driver.Input("look");

@@ -17,7 +17,7 @@ namespace SFS
         public List<MudObject> DisambigObjects = null;
 
 		public DisambigCommandHandler(
-            MudObject Actor, 
+            Actor Actor, 
             CommandParser.MatchedCommand MatchedCommand, 
             ParserCommandHandler ParentHandler)
 		{
@@ -85,8 +85,8 @@ namespace SFS
 
         public void HandleCommand(PendingCommand Command)
         {
-            Command.Actor.SetProperty("command handler", ParentHandler);
-            
+            Command.Actor.CommandHandler = ParentHandler;
+
             //Just retry if the attempt to help has failed.
             if (DisambigObjects == null)
             {
@@ -110,7 +110,7 @@ namespace SFS
                     {
                         // WHat? There are still multiple options?
                         MudObject.SendMessage(Command.Actor, "That helped narrow it down, but I'm still not sure what you mean.");
-                        Command.Actor.SetProperty("command handler", new DisambigCommandHandler(Command.Actor, MatchedCommand, ParentHandler));
+                        Command.Actor.CommandHandler = new DisambigCommandHandler(Command.Actor, MatchedCommand, ParentHandler);
                     }
                 }
             }

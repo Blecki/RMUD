@@ -5,7 +5,7 @@ using System.Text;
 using SFS;
 using SFS.Rules;
 
-namespace SFS.Commands.StandardActions.Clothing
+namespace SFS.Commands.StandardActions
 {
 	internal class Remove : CommandFactory
 	{
@@ -26,10 +26,10 @@ namespace SFS.Commands.StandardActions.Clothing
 
         public static void AtStartup(SFS.SFSRuleEngine GlobalRules)
         {
-            GlobalRules.DeclareCheckRuleBook<MudObject, MudObject>("can remove?", "[Actor, Item] : Can the actor remove the item?", "actor", "item");
-            GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("removed", "[Actor, Item] : Handle the actor removing the item.", "actor", "item");
+            GlobalRules.DeclareCheckRuleBook<Actor, Clothing>("can remove?", "[Actor, Item] : Can the actor remove the item?", "actor", "item");
+            GlobalRules.DeclarePerformRuleBook<Actor, Clothing>("removed", "[Actor, Item] : Handle the actor removing the item.", "actor", "item");
 
-            GlobalRules.Check<MudObject, MudObject>("can remove?")
+            GlobalRules.Check<Actor, Clothing>("can remove?")
                 .When((a, b) => !a.Contains(b, RelativeLocations.Worn))
                 .Do((actor, item) =>
                 {
@@ -37,9 +37,9 @@ namespace SFS.Commands.StandardActions.Clothing
                     return CheckResult.Disallow;
                 });
            
-            GlobalRules.Check<MudObject, MudObject>("can remove?").Do((a, b) => CheckResult.Allow);
+            GlobalRules.Check<Actor, Clothing>("can remove?").Do((a, b) => CheckResult.Allow);
 
-            GlobalRules.Perform<MudObject, MudObject>("removed").Do((actor, target) =>
+            GlobalRules.Perform<Actor, Clothing>("removed").Do((actor, target) =>
                 {
                     MudObject.SendMessage(actor, "@clothing you remove", target);
                     MudObject.SendExternalMessage(actor, "@clothing they remove", actor, target);

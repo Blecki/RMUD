@@ -13,21 +13,19 @@ namespace SFS
     /// TODO: "Locked" should be a property.
     /// TODO: Sync locked state with opposite side of portal
     /// </summary>
-	public class LockedDoor : BasicDoor
+	public class LockedDoor : Door
 	{
         public Func<MudObject, bool> IsMatchingKey;
 
-        public bool Locked { get; set; }
+        public bool Locked = true;
 
 		public LockedDoor()
 		{
 			Locked = true;
 
-            SetProperty("lockable?", true);
-
-            Check<MudObject, MudObject, MudObject>("can lock?").Do((actor, door, key) =>
+            Check<Actor, LockedDoor, MudObject>("can lock?").Do((actor, door, key) =>
                 {
-                    if (GetProperty<bool>("open?")) {
+                    if (Open) {
                         MudObject.SendMessage(actor, "@close it first");
                         return CheckResult.Disallow;
                     }
@@ -41,19 +39,19 @@ namespace SFS
                     return CheckResult.Allow;
                 });
 
-            Perform<MudObject, MudObject, MudObject>("locked").Do((a,b,c) =>
+            Perform<Actor, LockedDoor, MudObject>("locked").Do((a,b,c) =>
                 {
                     Locked = true;
                     return PerformResult.Continue;
                 });
 
-             Perform<MudObject, MudObject, MudObject>("unlocked").Do((a,b,c) =>
+             Perform<Actor, LockedDoor, MudObject>("unlocked").Do((a,b,c) =>
                 {
                     Locked = false;
                     return PerformResult.Continue;
                 });
 
-             Check<MudObject, MudObject>("can open?")
+             Check<Actor, LockedDoor>("can open?")
                  .First
                  .When((a, b) => Locked)
                  .Do((a, b) =>
@@ -63,7 +61,7 @@ namespace SFS
                  })
                  .Name("Can't open locked door rule.");
 
-             Perform<MudObject, MudObject>("close")
+             Perform<Actor, LockedDoor>("close")
                  .Do((a, b) => { Locked = false; return PerformResult.Continue; });
         }
         

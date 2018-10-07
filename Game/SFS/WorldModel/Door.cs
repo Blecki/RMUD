@@ -10,24 +10,24 @@ namespace SFS
     /// A basic door object. Doors are openable. When used as a portal, a door will automatically sync it's open state
     /// with the opposite side of the portal.
     /// </summary>
-    public class BasicDoor : MudObject
+    public class Door : Portal
     {
-        public BasicDoor()
+        public bool Open = false;
+
+        public Door()
         {
-            GetProperty<NounList>("nouns").Add("DOOR");
+            Nouns = new NounList();
+            Nouns.Add("DOOR");
+            Nouns.Add("CLOSED", actor => !Open);
+            Nouns.Add("OPEN", actor => Open);
 
-            // Doors can be referred to as 'the open door' or 'the closed door' as appropriate.
-            GetProperty<NounList>("nouns").Add("CLOSED", actor => !GetProperty<bool>("open?"));
-            GetProperty<NounList>("nouns").Add("OPEN", actor => GetProperty<bool>("open?"));
+            // Todo: Port these rules to OpenableContainer.
 
-            SetProperty("open?", false);
-            SetProperty("openable?", true);
-
-            Check<MudObject, MudObject>("can open?")
+            Check<Actor, Door>("can open?")
                 .Last
                 .Do((a, b) =>
                 {
-                    if (GetProperty<bool>("open?"))
+                    if (Open)
                     {
                         MudObject.SendMessage(a, "@already open");
                         return CheckResult.Disallow;
@@ -36,11 +36,11 @@ namespace SFS
                 })
                 .Name("Can open doors rule.");
 
-            Check<MudObject, MudObject>("can close?")
+            Check<Actor, Door>("can close?")
                 .Last
                 .Do((a, b) =>
                 {
-                    if (!GetProperty<bool>("open?"))
+                    if (!Open)
                     {
                         MudObject.SendMessage(a, "@already closed");
                         return CheckResult.Disallow;
@@ -49,17 +49,17 @@ namespace SFS
                 })
                 .Name("Can close doors rule.");
 
-            Perform<MudObject, MudObject>("opened").Do((a, b) =>
+            Perform<Actor, Door>("opened").Do((a, b) =>
             {
-                SetProperty("open?", true);
+                Open = true;
 
                 // Doors are usually two-sided. If there is an opposite side, we need to open it and emit appropriate
                 // messages.
-                var otherSide = Portal.FindOppositeSide(this);
+                var otherSide = Portal.FindOppositeSide(this) as Door;
                 if (otherSide != null)
                 {
-                    otherSide.SetProperty("open?", true);
-                    
+                    otherSide.Open = true;
+
                     // This message is defined in the standard actions module. It is perhaps a bit coupled?
                     MudObject.SendLocaleMessage(otherSide, "@they open", a, this);
                     Core.MarkLocaleForUpdate(otherSide);
@@ -69,16 +69,16 @@ namespace SFS
             })
             .Name("Open a door rule");
 
-            Perform<MudObject, MudObject>("close").Do((a, b) =>
+            Perform<Actor, Door>("close").Do((a, b) =>
             {
-                SetProperty("open?", false);
+                Open = false;
 
                 // Doors are usually two-sided. If there is an opposite side, we need to close it and emit
                 // appropriate messages.
-                var otherSide = Portal.FindOppositeSide(this);
+                var otherSide = Portal.FindOppositeSide(this) as Door;
                 if (otherSide != null)
                 {
-                    otherSide.SetProperty("open?", false);
+                    otherSide.Open = false;
                     MudObject.SendLocaleMessage(otherSide, "@they close", a, this);
                     Core.MarkLocaleForUpdate(otherSide);
                 }

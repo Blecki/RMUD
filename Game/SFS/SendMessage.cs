@@ -32,13 +32,13 @@ namespace SFS
 
     public partial class MudObject
     {
-        public static void SendMessage(MudObject Actor, String Message, params Object[] MentionedObjects)
+        public static void SendMessage(Actor Actor, String Message, params Object[] MentionedObjects)
         {
             if (String.IsNullOrEmpty(Message)) return;
             if (Core.SilentFlag) return;
             Core.OutputQueryTriggered = true;
 
-            if (Actor != null && Actor.GetProperty<bool>("listens?"))
+            if (Actor != null && Actor.Listens)
                 Core.PendingMessages.Add(new PendingMessage(Actor, Core.FormatMessage(Actor, Message, MentionedObjects)));
         }
 
@@ -48,13 +48,14 @@ namespace SFS
             if (Core.SilentFlag) return;
             Core.OutputQueryTriggered = true;
 
-            var locale = MudObject.FindLocale(Object);
-            foreach (var actor in locale.EnumerateObjects())
-                if (actor.GetProperty<bool>("listens?"))
-                    Core.PendingMessages.Add(new PendingMessage(actor, Core.FormatMessage(actor, Message, MentionedObjects)));
+            var locale = MudObject.FindLocale(Object) as Container;
+            if (locale != null)
+                foreach (var actor in locale.EnumerateObjects().OfType<Actor>())
+                    if (actor.Listens)
+                        Core.PendingMessages.Add(new PendingMessage(actor, Core.FormatMessage(actor, Message, MentionedObjects)));
         }
 
-        public static void SendExternalMessage(MudObject Actor, String Message, params Object[] MentionedObjects)
+        public static void SendExternalMessage(Actor Actor, String Message, params Object[] MentionedObjects)
         {
             if (String.IsNullOrEmpty(Message)) return;
             if (Core.SilentFlag) return;
@@ -63,8 +64,8 @@ namespace SFS
             if (Actor == null) return;
             if (Actor.Location == null) return;
 
-            foreach (var other in Actor.Location.EnumerateObjects().Where(a => !Object.ReferenceEquals(a, Actor)))
-                if (other.GetProperty<bool>("listens?"))
+            foreach (var other in Actor.Location.EnumerateObjects().OfType<Actor>().Where(a => !Object.ReferenceEquals(a, Actor)))
+                if (other.Listens)
                     Core.PendingMessages.Add(new PendingMessage(other, Core.FormatMessage(other, Message, MentionedObjects)));
         }
     }

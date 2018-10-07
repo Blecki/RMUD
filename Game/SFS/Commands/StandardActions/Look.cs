@@ -29,11 +29,11 @@ namespace SFS.Commands.StandardActions
             Core.StandardMessage("through", "through <the0>");
             Core.StandardMessage("to", "to <the0>");
 
-            GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("describe in locale", "[Actor, Item] : Generate a locale description for the item.", "actor", "item");
+            GlobalRules.DeclarePerformRuleBook<Actor, MudObject>("describe in locale", "[Actor, Item] : Generate a locale description for the item.", "actor", "item");
 
-            GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("describe locale", "[Actor, Room] : Generates a description of the locale.", "actor", "room");
+            GlobalRules.DeclarePerformRuleBook<Actor, Room>("describe locale", "[Actor, Room] : Generates a description of the locale.", "actor", "room");
 
-            GlobalRules.Perform<MudObject, MudObject>("describe locale")
+            GlobalRules.Perform<Actor, Room>("describe locale")
                 .First
                 .When((viewer, room) => room == null)
                 .Do((viewer, room) =>
@@ -43,7 +43,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Can't describe the locale if there isn't one rule.");
 
-            GlobalRules.Perform<MudObject, MudObject>("describe locale")
+            GlobalRules.Perform<Actor, Room>("describe locale")
                 .First
                 .Do((viewer, room) =>
                 {
@@ -52,18 +52,19 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Update room lighting before generating description rule.");
 
-            GlobalRules.Perform<MudObject, MudObject>("describe locale")
+            GlobalRules.Perform<Actor, Room>("describe locale")
                 .First
                 .Do((viewer, room) =>
                 {
-                    if (!String.IsNullOrEmpty(room.GetProperty<String>("short"))) MudObject.SendMessage(viewer, room.GetProperty<String>("short"));
+                    if (!String.IsNullOrEmpty(room.Short))
+                        MudObject.SendMessage(viewer, room.Short);
                     return SFS.Rules.PerformResult.Continue;
                 })
                 .Name("Display room name rule.");
 
-            GlobalRules.Perform<MudObject, MudObject>("describe locale")
+            GlobalRules.Perform<Actor, Room>("describe locale")
                 .First
-                .When((viewer, room) => room.GetProperty<LightingLevel>("light") == LightingLevel.Dark)
+                .When((viewer, room) => room.Light == LightingLevel.Dark)
                 .Do((viewer, room) =>
                 {
                     MudObject.SendMessage(viewer, "@dark");
@@ -71,7 +72,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Can't see in darkness rule.");
 
-            GlobalRules.Perform<MudObject, MudObject>("describe locale")
+            GlobalRules.Perform<Actor, Room>("describe locale")
                 .Do((viewer, room) =>
                 {
                     GlobalRules.ConsiderPerformRule("describe", viewer, room);
@@ -79,9 +80,10 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Include describe rules in locale description rule.");
 
+            // Todo: THIS IS A FUCKING HACK.
             var describingLocale = false;
 
-            GlobalRules.Value<MudObject, MudObject, String, String>("printed name")
+            GlobalRules.Value<Actor, Container, String, String>("printed name")
                 .When((viewer, container, article) => describingLocale && (container.LocationsSupported & RelativeLocations.On) == RelativeLocations.On)                    
                 .Do((viewer, container, article) =>
                     {
@@ -89,9 +91,9 @@ namespace SFS.Commands.StandardActions
                         .Where(t => GlobalRules.ConsiderCheckRule("should be listed?", viewer, t) == SFS.Rules.CheckResult.Allow));
 
                         if (subObjects.Count > 0)
-                            return container.GetProperty<String>("short") + " " + Core.FormatMessage(viewer, Core.GetMessage("on which"), subObjects);
+                            return container.Short + " " + Core.FormatMessage(viewer, Core.GetMessage("on which"), subObjects);
                         else
-                            return container.GetProperty<String>("short");
+                            return container.Short;
                     })
                     .Name("List contents of container after name when describing locale rule");
 
@@ -102,13 +104,11 @@ namespace SFS.Commands.StandardActions
                 .Do((viewer, item) => SFS.Rules.CheckResult.Disallow)
                 .Name("Don't list yourself rule.");
 
-            GlobalRules.Check<MudObject, MudObject>("should be listed in locale?")
-               .When((viewer, item) => item.GetProperty<bool>("scenery?"))
+            GlobalRules.Check<Actor, Scenery>("should be listed in locale?")
                .Do((viewer, item) => SFS.Rules.CheckResult.Disallow)
                .Name("Don't list scenery objects rule.");
 
-            GlobalRules.Check<MudObject, MudObject>("should be listed in locale?")
-                .When((viewer, item) => item.GetProperty<bool>("portal?"))
+            GlobalRules.Check<Actor, Portal>("should be listed in locale?")
                 .Do((viewer, item) => SFS.Rules.CheckResult.Disallow)
                 .Name("Don't list portals rule.");
 
@@ -116,7 +116,7 @@ namespace SFS.Commands.StandardActions
                .Do((viewer, item) => SFS.Rules.CheckResult.Allow)
                .Name("List objects by default rule.");
 
-            GlobalRules.Perform<MudObject, MudObject>("describe locale")
+            GlobalRules.Perform<Actor, Room>("describe locale")
                 .Do((viewer, room) =>
                 {
                     var visibleThings = room.EnumerateObjects(RelativeLocations.Contents)
@@ -142,24 +142,24 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("List contents of room rule.");
 
-            GlobalRules.Perform<MudObject, MudObject>("describe locale")
+            GlobalRules.Perform<Actor, Room>("describe locale")
                 .Last
                 .Do((viewer, room) =>
                 {
-                    if (room.EnumerateObjects().Where(l => l.GetProperty<bool>("portal?")).Count() > 0)
+                    if (room.EnumerateObjects().OfType<Portal>().Count() > 0)
                     {
                         MudObject.SendMessage(viewer, "@obvious exits");
 
-                        foreach (var link in room.EnumerateObjects<MudObject>().Where(l => l.GetProperty<bool>("portal?")))
+                        foreach (var link in room.EnumerateObjects<MudObject>().OfType<Portal>())
                         {
                             var builder = new StringBuilder();
                             builder.Append("  ^");
-                            builder.Append(link.GetProperty<Direction>("link direction").ToString());
+                            builder.Append(link.Direction.ToString());
 
-                            if (!link.GetProperty<bool>("link anonymous?"))
+                            if (!link.Anonymous)
                                 builder.Append(" " + Core.FormatMessage(viewer, Core.GetMessage("through"), link));
 
-                            var destinationRoom = MudObject.GetObject(link.GetProperty<String>("link destination"));
+                            var destinationRoom = MudObject.GetObject(link.Destination);
                             if (destinationRoom != null)
                                 builder.Append(" " + Core.FormatMessage(viewer, Core.GetMessage("to"), destinationRoom));
 

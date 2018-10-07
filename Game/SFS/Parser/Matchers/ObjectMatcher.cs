@@ -60,19 +60,22 @@ namespace SFS
 
 		public static MatchPreference PreferNotHeld(MudObject Actor, MudObject Object)
 		{
-			if (Actor.Contains(Object, RelativeLocations.Held)) return MatchPreference.Unlikely;
+            if (Actor is Actor)
+			    if ((Actor as Actor).Contains(Object, RelativeLocations.Held)) return MatchPreference.Unlikely;
 			return MatchPreference.Plausible;
 		}
 
 		public static MatchPreference PreferHeld(MudObject Actor, MudObject Object)
 		{
-			if (Actor.Contains(Object, RelativeLocations.Held)) return MatchPreference.Likely;
+            if (Actor is Actor)
+			    if ((Actor as Actor).Contains(Object, RelativeLocations.Held)) return MatchPreference.Likely;
 			return MatchPreference.Plausible;
 		}
 
         public static MatchPreference PreferWOrn(MudObject Actor, MudObject Object)
         {
-            if (Actor.Contains(Object, RelativeLocations.Worn)) return MatchPreference.Likely;
+            if (Actor is Actor)
+                if ((Actor as Actor).Contains(Object, RelativeLocations.Worn)) return MatchPreference.Likely;
             return MatchPreference.Plausible;
         }
 
@@ -120,7 +123,7 @@ namespace SFS
 			{
                 PossibleMatch possibleMatch = State;
 				bool matched = false;
-				while (possibleMatch.Next != null && matchableMudObject.GetProperty<NounList>("nouns").Match(possibleMatch.Next.Value.ToUpper(), Context.ExecutingActor))
+				while (possibleMatch.Next != null && matchableMudObject.Nouns.Match(possibleMatch.Next.Value.ToUpper(), Context.ExecutingActor))
 				{
                     if (matched == false) possibleMatch = State.Clone();
 					matched = true;

@@ -98,13 +98,16 @@ namespace SFS
                 NamedObjects.Upsert(Path, newObject);
                 MudObject.InitializeObject(newObject);
 
-                // Any object marked with the 'preserve?' flag should be kept. Other objects should be discarded.
-                foreach (var item in existing.EnumerateObjectsAndRelloc())
-                    if (item.Item1.GetProperty<bool>("preserve?"))
-                    {
-                        newObject.Add(item.Item1, item.Item2);
-                        item.Item1.Location = newObject;
-                    }
+                if (existing is Container && newObject is Container)
+                {
+                    // Any object marked with the 'preserve?' flag should be kept. Other objects should be discarded.
+                    foreach (var item in (existing as Container).EnumerateObjectsAndRelloc())
+                        if (item.Item1.Preserve)
+                        {
+                            (newObject as Container).Add(item.Item1, item.Item2);
+                            item.Item1.Location = (newObject as Container);
+                        }
+                }
 
                 if (existing.Location != null)
                 {
@@ -112,8 +115,6 @@ namespace SFS
                     MudObject.Move(newObject, existing.Location, loc);
                     MudObject.Move(existing, null, RelativeLocations.None);
                 }
-
-                existing.Destroy(false);
 
                 return newObject;
             }

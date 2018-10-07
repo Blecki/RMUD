@@ -42,8 +42,7 @@ namespace SFS.Commands.StandardActions
 
             GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("opened", "[Actor, Item] : Handle the actor opening the item.", "actor", "item");
 
-            GlobalRules.Check<MudObject, MudObject>("can open?")
-                .When((actor, item) => !item.GetProperty<bool>("openable?"))
+            GlobalRules.Check<Actor, MudObject>("can open?")
                 .Do((a, b) =>
                 {
                     MudObject.SendMessage(a, "@not openable");
@@ -51,18 +50,14 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Can't open the unopenable rule.");
 
-            GlobalRules.Check<MudObject, MudObject>("can open?")
-                .Do((a, b) => SFS.Rules.CheckResult.Allow)
-                .Name("Default go ahead and open it rule.");
-
-            GlobalRules.Perform<MudObject, MudObject>("opened").Do((actor, target) =>
+            GlobalRules.Perform<Actor, MudObject>("opened").Do((actor, target) =>
             {
                 MudObject.SendMessage(actor, "@you open", target);
                 MudObject.SendExternalMessage(actor, "@they open", actor, target);
                 return SFS.Rules.PerformResult.Continue;
             }).Name("Default report opening rule.");
 
-            GlobalRules.Check<MudObject, MudObject>("can open?").First.Do((actor, item) => MudObject.CheckIsVisibleTo(actor, item)).Name("Item must be visible rule.");
+            GlobalRules.Check<Actor, MudObject>("can open?").First.Do((actor, item) => MudObject.CheckIsVisibleTo(actor, item)).Name("Item must be visible rule.");
         }
     }
 

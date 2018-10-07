@@ -39,11 +39,12 @@ namespace SFS.Commands.Debug
                         MudObject.SendMessage(actor, "Location: <s0>", target.Location.GetFullName());
                     MudObject.SendMessage(actor, "*** DYNAMIC PROPERTIES ***");
 
-                    foreach (var property in target.Properties)
-                    {
-                        var info = PropertyManifest.GetPropertyInformation(property.Key);
-                        MudObject.SendMessage(actor, "<s0>: <s1>", property.Key, info.Converter.ConvertToString(property.Value));
-                    }
+                    //Todo: Reimplement using reflection.
+                    //foreach (var property in target.Properties)
+                    //{
+                    //    var info = PropertyManifest.GetPropertyInformation(property.Key);
+                    //    MudObject.SendMessage(actor, "<s0>: <s1>", property.Key, info.Converter.ConvertToString(property.Value));
+                    //}
 
                     MudObject.SendMessage(actor, "*** END OF LISTING ***");
 

@@ -3,7 +3,7 @@
 namespace Game
 {
 
-    public class Bar : SFS.MudObject
+    public class Bar : SFS.Room
     {
         public override void Initialize()
         {
@@ -13,18 +13,16 @@ The Bar is dark.  "The bar, much rougher than you'd have guessed
 after the opulence of the foyer to the north, is completely empty.
 There seems to be some sort of message scrawled in the sawdust on the floor."
              */
-            Room(RoomType.Interior);
-            
-            SetProperty("short", "Foyer Bar");
-            SetProperty("long", "The bar, much rougher than you'd have guessed after the opulence of the foyer to the north, is completely empty. There seems to be some sort of message scrawled in the sawdust on the floor.");
+
+            Short = "Foyer Bar";
+            Long = "The bar, much rougher than you'd have guessed after the opulence of the foyer to the north, is completely empty. There seems to be some sort of message scrawled in the sawdust on the floor.";
             
             OpenLink(Direction.NORTH, "Game.Foyer");
 
             // The scrawled message is scenery in the Bar. Understand "floor" or "sawdust" as the message.
 
-            var message = new MudObject();
-            message.SimpleName("message", "floor", "sawdust", "scrawled");
-            AddScenery(message);
+            var message = new Scenery("", "message", "floor", "sawdust", "scrawled");
+            Add(message, RelativeLocations.Contents);
 
             //Neatness is a kind of value. The neatnesses are neat, scuffed, and trampled. The message has a neatness. The message is neat.
 
@@ -41,7 +39,7 @@ Instead of examining the trampled message:
     You can just distinguish the words...";
     end the game saying "You have lost".
              */
-            message.Perform<MudObject, MudObject>("describe")
+            message.Perform<Actor, MudObject>("describe")
                 .Do((actor, item) =>
                 {
                     if (messageScuffed)
@@ -63,8 +61,8 @@ Instead of examining the trampled message:
     to the neatness after the neatness of the message;
     say "In the dark? You could easily disturb something."
              */
-            Perform<PossibleMatch, MudObject>("before acting")
-                .When((match, actor) => GetProperty<LightingLevel>("ambient light") == LightingLevel.Dark)
+            Perform<PossibleMatch, Actor>("before acting")
+                .When((match, actor) => Light == LightingLevel.Dark)
                 .Do((match, actor) =>
                 {
                     if (match.TypedValue<CommandEntry>("COMMAND").IsNamed("GO"))
@@ -79,8 +77,8 @@ Instead of examining the trampled message:
     now the message is trampled;
     say "Blundering around in the dark isn't a good idea!"
              */
-            Perform<PossibleMatch, MudObject>("before command")
-                .When((match, actor) => GetProperty<LightingLevel>("ambient light") == LightingLevel.Dark
+            Perform<PossibleMatch, Actor>("before command")
+                .When((match, actor) => Light == LightingLevel.Dark
                     && match.TypedValue<CommandEntry>("COMMAND").IsNamed("GO")
                     && (match.ValueOrDefault("DIRECTION") as Direction?).Value != Direction.NORTH)
                 .Do((match, actor) =>

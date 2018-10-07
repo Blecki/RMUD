@@ -36,7 +36,13 @@ namespace SFS.Commands.Debug
                     }, "Convert path to object rule.")
                 .ProceduralRule((match, actor) =>
                 {
-                    MudObject target = match["OBJECT"] as MudObject;
+                    var target = match["OBJECT"] as Actor;
+
+                    if (target == null)
+                    {
+                        MudObject.SendMessage(actor, "The target is not an actor.");
+                        return SFS.Rules.PerformResult.Stop;
+                    }
                     
                     var command = match["RAW-COMMAND"].ToString();
                     var matchedCommand = Core.DefaultParser.ParseCommand(new PendingCommand { RawCommand = command, Actor = target });

@@ -9,7 +9,7 @@ namespace SFS
 {
     public class PendingCommand
     {
-        public MudObject Actor;
+        public Actor Actor;
         public String RawCommand;
         internal Action ProcessingCompleteCallback;
         internal Dictionary<String, Object> PreSettings;
@@ -26,12 +26,12 @@ namespace SFS
         public static ParserCommandHandler ParserCommandHandler;
         public static CommandParser DefaultParser;
 
-        public static void EnqueuActorCommand(MudObject Actor, String RawCommand, Dictionary<String, Object> MatchPreSettings = null)
+        public static void EnqueuActorCommand(Actor Actor, String RawCommand, Dictionary<String, Object> MatchPreSettings = null)
         {
             PendingCommands.AddLast(new PendingCommand { Actor = Actor, RawCommand = RawCommand, PreSettings = MatchPreSettings });
         }
 
-        public static void EnqueuActorCommand(MudObject Actor, String RawCommand, Action ProcessingCompleteCallback)
+        public static void EnqueuActorCommand(Actor Actor, String RawCommand, Action ProcessingCompleteCallback)
         {
             PendingCommands.AddLast(new PendingCommand { Actor = Actor, RawCommand = RawCommand, ProcessingCompleteCallback = ProcessingCompleteCallback });
         }
@@ -92,9 +92,7 @@ namespace SFS
 
                     try
                     {
-                        var handler = NextCommand.Actor.GetProperty<ClientCommandHandler>("command handler");
-                        if (handler != null)
-                            handler.HandleCommand(NextCommand);
+                        NextCommand.Actor.CommandHandler?.HandleCommand(NextCommand);
                     }
                     catch (Exception e)
                     {
@@ -108,7 +106,7 @@ namespace SFS
             }
         }
 
-        private static void __ShowCommandException(MudObject Actor, Exception e)
+        private static void __ShowCommandException(Actor Actor, Exception e)
         {
 #if DEBUG
             MudObject.SendMessage(Actor, String.Format("{0:MM/dd/yy HH:mm:ss} -- Error while handling command.", DateTime.Now));

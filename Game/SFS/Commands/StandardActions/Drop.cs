@@ -30,10 +30,10 @@ namespace SFS.Commands.StandardActions
             Core.StandardMessage("you drop", "You drop <the0>.");
             Core.StandardMessage("they drop", "^<the0> drops <a1>.");
 
-            GlobalRules.DeclareCheckRuleBook<MudObject, MudObject>("can drop?", "[Actor, Item] : Determine if the item can be dropped.", "actor", "item");
-            GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("drop", "[Actor, Item] : Handle an item being dropped.", "actor", "item");
+            GlobalRules.DeclareCheckRuleBook<Actor, MudObject>("can drop?", "[Actor, Item] : Determine if the item can be dropped.", "actor", "item");
+            GlobalRules.DeclarePerformRuleBook<Actor, MudObject>("drop", "[Actor, Item] : Handle an item being dropped.", "actor", "item");
 
-            GlobalRules.Check<MudObject, MudObject>("can drop?")
+            GlobalRules.Check<Actor, MudObject>("can drop?")
                 .First
                 .When((actor, item) => !MudObject.ObjectContainsObject(actor, item))
                 .Do((actor, item) =>
@@ -43,7 +43,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Must be holding it to drop it rule.");
 
-            GlobalRules.Check<MudObject, MudObject>("can drop?")
+            GlobalRules.Check<Actor, MudObject>("can drop?")
                 .First
                 .When((actor, item) => actor.Contains(item, RelativeLocations.Worn))
                 .Do((actor, item) =>
@@ -57,9 +57,9 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Dropping worn items follows remove rules rule.");
 
-            GlobalRules.Check<MudObject, MudObject>("can drop?").Do((a, b) => CheckResult.Allow).Name("Default can drop anything rule.");
+            GlobalRules.Check<Actor, MudObject>("can drop?").Do((a, b) => CheckResult.Allow).Name("Default can drop anything rule.");
 
-            GlobalRules.Perform<MudObject, MudObject>("drop").Do((actor, target) =>
+            GlobalRules.Perform<Actor, MudObject>("drop").Do((actor, target) =>
             {
                 MudObject.SendMessage(actor, "@you drop", target);
                 MudObject.SendExternalMessage(actor, "@they drop", actor, target);

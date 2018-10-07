@@ -9,10 +9,10 @@ namespace SFS
 {
     internal struct PendingMessage
     {
-        public MudObject Destination;
+        public Actor Destination;
         public String Message;
 
-        public PendingMessage(MudObject Destination, String Message)
+        public PendingMessage(Actor Destination, String Message)
         {
             this.Destination = Destination;
             this.Message = Message;
@@ -30,8 +30,7 @@ namespace SFS
         {
             foreach (var message in PendingMessages)
             {
-                var handler = message.Destination.GetProperty<Action<String>>("output");
-                handler?.Invoke(message.Message + "\r\n");
+                message.Destination.Output?.Invoke(message.Message + "\r\n");
             }
             PendingMessages.Clear();
         }

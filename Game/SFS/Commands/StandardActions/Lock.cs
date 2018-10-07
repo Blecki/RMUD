@@ -37,18 +37,18 @@ namespace SFS.Commands.StandardActions
             Core.StandardMessage("you lock", "You lock <the0>.");
             Core.StandardMessage("they lock", "^<the0> locks <the1> with <the2>.");
 
-            GlobalRules.DeclareCheckRuleBook<MudObject, MudObject, MudObject>("can lock?", "[Actor, Item, Key] : Can the item be locked by the actor with the key?", "actor", "item", "key");
+            GlobalRules.DeclareCheckRuleBook<Actor, MudObject, MudObject>("can lock?", "[Actor, Item, Key] : Can the item be locked by the actor with the key?", "actor", "item", "key");
             
-            GlobalRules.Check<MudObject, MudObject, MudObject>("can lock?")
+            GlobalRules.Check<Actor, MudObject, MudObject>("can lock?")
                 .Do((actor, item, key) => MudObject.CheckIsVisibleTo(actor, item))
                 .Name("Item must be visible to lock it.");
 
-            GlobalRules.Check<MudObject, MudObject, MudObject>("can lock?")
+            GlobalRules.Check<Actor, MudObject, MudObject>("can lock?")
                 .Do((actor, item, key) => MudObject.CheckIsHolding(actor, key))
                 .Name("Key must be held rule.");
 
-            GlobalRules.Check<MudObject, MudObject, MudObject>("can lock?")
-                .When((actor, item, key) => !item.GetProperty<bool>("lockable?"))
+            // Todo: LockedDoor needs to implement this.
+            GlobalRules.Check<Actor, MudObject, MudObject>("can lock?")
                 .Do((a, b, c) =>
                 {
                     MudObject.SendMessage(a, "@not lockable");
@@ -56,13 +56,13 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Can't lock the unlockable rule.");
 
-            GlobalRules.Check<MudObject, MudObject, MudObject>("can lock?")
+            GlobalRules.Check<Actor, MudObject, MudObject>("can lock?")
                 .Do((a, b, c) => SFS.Rules.CheckResult.Allow)
                 .Name("Default allow locking rule.");
 
-            GlobalRules.DeclarePerformRuleBook<MudObject, MudObject, MudObject>("locked", "[Actor, Item, Key] : Handle the actor locking the item with the key.", "actor", "item", "key");
+            GlobalRules.DeclarePerformRuleBook<Actor, MudObject, MudObject>("locked", "[Actor, Item, Key] : Handle the actor locking the item with the key.", "actor", "item", "key");
 
-            GlobalRules.Perform<MudObject, MudObject, MudObject>("locked").Do((actor, target, key) =>
+            GlobalRules.Perform<Actor, MudObject, MudObject>("locked").Do((actor, target, key) =>
             {
                 MudObject.SendMessage(actor, "@you lock", target);
                 MudObject.SendExternalMessage(actor, "@they lock", actor, target, key);

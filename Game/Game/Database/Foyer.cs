@@ -3,8 +3,9 @@
 namespace Game
 {
 
-    public class Foyer : SFS.MudObject
+    public class Foyer : SFS.Room
     {
+
         public override void Initialize()
         {
             /*
@@ -16,19 +17,17 @@ Instead of going north in the Foyer, say "You've only just arrived, and besides,
 the weather outside seems to be getting worse."
 
              */
-            Room(RoomType.Interior);
-
-            SetProperty("short", "Foyer of the Opera House");
-            SetProperty("long", "You are standing in a spacious hall, splendidly decorated in red and gold, with glittering chandeliers overhead.");
-            SetProperty("ambient light", LightingLevel.Bright);
+            Short = "Foyer of the Opera House";
+            Long = "You are standing in a spacious hall, splendidly decorated in red and gold, with glittering chandeliers overhead.";
+            AmbientLight = LightingLevel.Bright;
 
             OpenLink(Direction.NORTH, "Game.Outside");
             OpenLink(Direction.SOUTH, "Game.Bar");
             OpenLink(Direction.WEST, "Game.Cloakroom");
 
-            Check<MudObject, MudObject>("can go?")
+            Check<Actor, Portal>("can go?")
                .First
-               .When((actor, link) => link != null && link.Location is Foyer && link.GetProperty<Direction>("link direction") == Direction.NORTH)
+               .When((actor, link) => link != null && link.Location is Foyer && link.Direction == Direction.NORTH)
                .Do((actor, link) =>
                {
                    MudObject.SendMessage(actor, "You've only just arrived, and besides, the weather outside seems to be getting worse.");

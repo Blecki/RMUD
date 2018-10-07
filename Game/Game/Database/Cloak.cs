@@ -2,7 +2,7 @@
 
 namespace Game
 {
-    public class Cloak : SFS.MudObject
+    public class Cloak : SFS.Clothing
     {
         public static void AtStartup(SFSRuleEngine GlobalRules)
         {
@@ -18,17 +18,21 @@ The description of the cloak is "A handsome cloak,
 of velvet trimmed with satin, and slightly splattered with raindrops.
 Its blackness is so deep that it almost seems to suck light from the room."
 */
-            SetProperty("clothing layer", SFS.Commands.StandardActions.Clothing.ClothingLayer.Outer);
-            SetProperty("clothing part", SFS.Commands.StandardActions.Clothing.ClothingBodyPart.Cloak);
-            SetProperty("wearable?", true);
-
-            SetProperty("short", "velvet cloak");
-            GetProperty<NounList>("nouns").Add("dark", "black", "satin", "velvet", "cloak");
-            SetProperty("long", "A handsome cloak, of velvet trimmed with satin, and slightly spattered with raindrops. Its blackness is so deep that it almost seems to suck light from the room.");
+            Layer = ClothingLayer.Outer;
+            BodyPart = ClothingBodyPart.Cloak;
+            Short = "velvet cloak";
+            Nouns = new NounList();
+            Nouns.Add("dark", "black", "satin", "velvet", "cloak");
+            Long = "A handsome cloak, of velvet trimmed with satin, and slightly spattered with raindrops. Its blackness is so deep that it almost seems to suck light from the room.";
 
             //Carry out taking the cloak:
             //    now the bar is dark.
-            Perform<MudObject, MudObject>("take").Do((actor, thing) => { GetObject("Game.Bar").SetProperty("ambient light", LightingLevel.Dark); return SFS.Rules.PerformResult.Continue; });
+            Perform<MudObject, MudObject>("take")
+                .Do((actor, thing) =>
+                {
+                    (GetObject("Game.Bar") as Room).AmbientLight = LightingLevel.Dark;
+                    return SFS.Rules.PerformResult.Continue;
+                });
 
             //Carry out putting the unhung cloak on something in the cloakroom:
             //    now the cloak is hung;
@@ -39,20 +43,28 @@ Its blackness is so deep that it almost seems to suck light from the room."
 
             //Carry out putting the cloak on something in the cloakroom:
             //    now the bar is lit.
-            Perform<MudObject, MudObject, MudObject, RelativeLocations>("put")
+            Perform<Actor, Cloak, MudObject, RelativeLocations>("put")
                 .When((actor, item, container, relloc) => actor.Location is Cloakroom)
-                .Do((actor, item, container, relloc) => { GetObject("Game.Bar").SetProperty("ambient light", LightingLevel.Bright); return SFS.Rules.PerformResult.Continue; });
+                .Do((actor, item, container, relloc) =>
+                {
+                    (GetObject("Game.Bar") as Room).AmbientLight = LightingLevel.Bright;
+                    return SFS.Rules.PerformResult.Continue;
+                });
 
             //Carry out dropping the cloak in the cloakroom:
             //    now the bar is lit.
-            Perform<MudObject, MudObject>("drop")
+            Perform<Actor, MudObject>("drop")
                 .When((actor, item) => actor.Location is Cloakroom)
-                .Do((actor, item) => { GetObject("Game.Bar").SetProperty("ambient light", LightingLevel.Bright); return SFS.Rules.PerformResult.Continue; });
+                .Do((actor, item) => 
+                {
+                    (GetObject("Game.Bar") as Room).AmbientLight = LightingLevel.Bright;
+                    return SFS.Rules.PerformResult.Continue;
+                });
 
             //Instead of dropping or putting the cloak on when the player is not in the cloakroom:
             //  say "This isn't the best place to leave a smart cloak lying around."
             // * Since putting checks dropping, we only need one rule.
-            Check<MudObject, MudObject>("can drop?")
+            Check<Actor, MudObject>("can drop?")
                 .When((actor, item) => !(actor.Location is Cloakroom))
                 .Do((actor, item) =>
                 {

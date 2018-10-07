@@ -8,10 +8,8 @@ namespace SFS.Commands.Meta
 {
 	internal class Alias : CommandFactory
 	{
-        public static void AtStartup(SFS.SFSRuleEngine GlobalRules)
-        {
-            PropertyManifest.RegisterProperty("aliases", typeof(Dictionary<String, String>), null, new DefaultSerializer());
-        }
+        //Todo: PERSIST
+        internal static Dictionary<String, String> Aliases = new Dictionary<string, string>();
 
         public override void Create(CommandParser Parser)
         {
@@ -23,10 +21,7 @@ namespace SFS.Commands.Meta
                 .Manual("Create an alias for another command, or a series of them.")
                 .ProceduralRule((match, actor) =>
                 {
-                    if (!actor.HasProperty("aliases"))
-                        actor.SetProperty("aliases", new Dictionary<String, String>());
-                    var aliases = actor.GetProperty<Dictionary<String, String>>("aliases");
-                    aliases.Add(match["NAME"].ToString().ToUpper(), match["RAW-COMMAND"].ToString());
+                    Aliases.Add(match["NAME"].ToString().ToUpper(), match["RAW-COMMAND"].ToString());
                     MudObject.SendMessage(actor, "Alias added.");
                     return SFS.Rules.PerformResult.Continue;
                 });
@@ -35,11 +30,8 @@ namespace SFS.Commands.Meta
                 Generic((match, context) =>
                 {   
                     var r = new List<PossibleMatch>();
-                    if (!context.ExecutingActor.HasProperty("aliases"))
-                        return r;
-                    var aliases = context.ExecutingActor.GetProperty<Dictionary<String, String>>("aliases");
-                    if (aliases.ContainsKey(match.Next.Value.ToUpper()))
-                        r.Add(match.AdvanceWith("ALIAS", aliases[match.Next.Value.ToUpper()]));
+                    if (Aliases.ContainsKey(match.Next.Value.ToUpper()))
+                        r.Add(match.AdvanceWith("ALIAS", Aliases[match.Next.Value.ToUpper()]));
                     return r;
                 }, "<ALIAS NAME>"))
                 .Manual("Execute an alias.")
@@ -47,7 +39,8 @@ namespace SFS.Commands.Meta
                 {
                     var commands = match["ALIAS"].ToString().Split(';');
                     foreach (var command in commands)
-                        Core.EnqueuActorCommand(actor, command);
+                        //Todo: Procedural rules should just take actors.
+                        Core.EnqueuActorCommand(actor as Actor, command);
                     return SFS.Rules.PerformResult.Continue;
                 });
         }

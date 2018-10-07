@@ -6,17 +6,13 @@ using System.Text;
 namespace SFS
 {
     /// <summary>
-    /// Contains helper functions for the implementation of portals. (For example, doors.)
+    /// A link between two rooms.
     /// </summary>
-    public static class Portal
+    public class Portal : MudObject
     {
-        public static void AtStartup(SFSRuleEngine GlobalRules)
-        {
-            PropertyManifest.RegisterProperty("portal?", typeof(bool), false, new BoolSerializer());
-            PropertyManifest.RegisterProperty("link destination", typeof(String), "", new StringSerializer());
-            PropertyManifest.RegisterProperty("link direction", typeof(Direction), Direction.NOWHERE, new EnumSerializer<Direction>());
-            PropertyManifest.RegisterProperty("link anonymous?", typeof(bool), false, new BoolSerializer());
-        }
+        public bool Anonymous = false;
+        public Direction Direction;
+        public String Destination;
 
         /// <summary>
         /// Given a portal, find the opposite side. Portals are used to connect two rooms. The opposite side of 
@@ -27,19 +23,13 @@ namespace SFS
         /// </summary>
         /// <param name="Portal"></param>
         /// <returns></returns>
-        public static MudObject FindOppositeSide(MudObject Portal)
+        public static MudObject FindOppositeSide(Portal Portal)
         {
-            // Every object added to a room as a portal will be given the 'portal?' property, with a value of true.
-            if (Portal.GetProperty<bool>("portal?") == false) return null; // Not a portal.
-
-            var destination = MudObject.GetObject(Portal.GetProperty<String>("link destination"));
+            var destination = MudObject.GetObject(Portal.Destination) as Room;
             if (destination == null) return null; // Link is malformed in some way.
             
-            var direction = Portal.GetProperty<Direction>("link direction");
-            var oppositeDirection = Link.Opposite(direction);
-            var mirrorLink = destination.EnumerateObjects().FirstOrDefault(p =>
-                p.GetProperty<bool>("portal?") && p.GetProperty<Direction>("link direction") == oppositeDirection);
-            return mirrorLink;
+            var oppositeDirection = Link.Opposite(Portal.Direction);
+            return destination.EnumerateObjects().FirstOrDefault(p =>  p is Portal && (p as Portal).Direction == oppositeDirection);
         }
     }
 }

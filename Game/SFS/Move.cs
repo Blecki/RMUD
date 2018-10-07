@@ -15,7 +15,7 @@ namespace SFS
         /// <param name="Object">Object to move.</param>
         /// <param name="Destination">Destination to move too.</param>
         /// <param name="Location">The relative location within destination to move too.</param>
-        public static void Move(MudObject Object, MudObject Destination, RelativeLocations Location = RelativeLocations.Default)
+        public static void Move(MudObject Object, Container Destination, RelativeLocations Location = RelativeLocations.Default)
         {
             if (Object == null) return;
 

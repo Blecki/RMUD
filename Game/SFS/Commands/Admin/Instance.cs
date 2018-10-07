@@ -24,7 +24,7 @@ namespace SFS.Commands.Debug
                     if (newObject == null) MudObject.SendMessage(actor, "Failed to instance " + path + ".");
                     else
                     {
-                        MudObject.Move(newObject, actor);
+                        MudObject.Move(newObject, actor as Actor); // Todo: Redundant is procedural rules change.
                         MudObject.SendMessage(actor, "Instanced " + path + ".");
                     }
                     return SFS.Rules.PerformResult.Continue;

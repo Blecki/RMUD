@@ -18,7 +18,7 @@ namespace SFS.Commands.Debug
                 .ProceduralRule((match, actor) =>
                 {
                     foreach (var thing in MudObject.EnumerateVisibleTree(MudObject.FindLocale(actor)))
-                        MudObject.SendMessage(actor, thing.GetProperty<String>("short") + " - " + thing.GetType().Name);
+                        MudObject.SendMessage(actor, thing.Short + " - " + thing.GetType().Name);
                     return SFS.Rules.PerformResult.Continue;
                 }, "List all the damn things in scope rule.");
         }

@@ -9,11 +9,11 @@ namespace SFS
     {
         public static void AtStartup(SFSRuleEngine GlobalRules)
         {
-            GlobalRules.DeclareValueRuleBook<MudObject, MudObject, String, String>("printed name", "[Viewer, Object, Article -> String] : Find the name that should be displayed for an object.", "actor", "item", "article");
+            GlobalRules.DeclareValueRuleBook<Actor, MudObject, String, String>("printed name", "[Viewer, Object, Article -> String] : Find the name that should be displayed for an object.", "actor", "item", "article");
 
-            GlobalRules.Value<MudObject, MudObject, String, String>("printed name")
+            GlobalRules.Value<Actor, MudObject, String, String>("printed name")
                .Last
-               .Do((viewer, thing, article) => (String.IsNullOrEmpty(article) ? (thing.GetProperty<String>("short")) : (article + " " + thing.GetProperty<String>("short"))))
+               .Do((viewer, thing, article) => (String.IsNullOrEmpty(article) ? (thing.Short) : (article + " " + thing.Short)))
                .Name("Default name of a thing.");
         }
     }

@@ -33,14 +33,14 @@ namespace SFS.Commands.StandardActions
         public static void AtStartup(SFSRuleEngine GlobalRules)
         {
 
-            GlobalRules.DeclareCheckRuleBook<MudObject, MudObject>("can pull?", "[Actor, Item] : Can the actor pull the item?", "actor", "item");
-            GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("pull", "[Actor, Item] : Handle the actor pulling the item.", "actor", "item");
+            GlobalRules.DeclareCheckRuleBook<Actor, MudObject>("can pull?", "[Actor, Item] : Can the actor pull the item?", "actor", "item");
+            GlobalRules.DeclarePerformRuleBook<Actor, MudObject>("pull", "[Actor, Item] : Handle the actor pulling the item.", "actor", "item");
 
-            GlobalRules.Check<MudObject, MudObject>("can pull?")
+            GlobalRules.Check<Actor, MudObject>("can pull?")
                 .Do((actor, item) => MudObject.CheckIsVisibleTo(actor, item))
                 .Name("Item must be visible to pull rule.");
 
-            GlobalRules.Check<MudObject, MudObject>("can pull?")
+            GlobalRules.Check<Actor, MudObject>("can pull?")
                 .Last
                 .Do((a, t) => 
                     {
@@ -49,7 +49,7 @@ namespace SFS.Commands.StandardActions
                     })
                 .Name("Default disallow pulling rule.");
 
-            GlobalRules.Perform<MudObject, MudObject>("pull")
+            GlobalRules.Perform<Actor, MudObject>("pull")
                 .Do((actor, target) =>
                 {
                     MudObject.SendMessage(actor, "@nothing happens");
@@ -57,9 +57,8 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Default handle pulling rule.");
 
-            GlobalRules.Check<MudObject, MudObject>("can pull?")
+            GlobalRules.Check<Actor, Actor>("can pull?")
                 .First
-                .When((actor, target) => target.GetProperty<bool>("actor?"))
                 .Do((actor, thing) =>
                 {
                     MudObject.SendMessage(actor, "@unappreciated", thing);

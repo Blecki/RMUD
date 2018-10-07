@@ -13,9 +13,10 @@ namespace SFS
             {
                 yield return C;
 
-                foreach (var item in C.EnumerateObjects())
-                    foreach (var sub in _enumerateObjectTree(item))
-                        yield return sub;
+                if (C is Container)
+                    foreach (var item in (C as Container).EnumerateObjects())
+                        foreach (var sub in _enumerateObjectTree(item))
+                            yield return sub;
             }
         }
 
@@ -31,11 +32,11 @@ namespace SFS
             {
                 yield return C;
 
-                if (C.Lists != null)
+                if (C is Container && (C as Container).Lists != null)
                 {
-                    foreach (var list in C.Lists)
+                    foreach (var list in (C as Container).Lists)
                     {
-                        if (list.Key == RelativeLocations.In && C.GetProperty<bool>("openable?") && !C.GetProperty<bool>("open?")) continue;
+                        if (list.Key == RelativeLocations.In && C is OpenableContainer && !(C as OpenableContainer).Open) continue;
                         foreach (var item in list.Value)
                             foreach (var sub in _enumerateVisibleTree(item))
                                 yield return sub;

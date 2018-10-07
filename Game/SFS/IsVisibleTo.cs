@@ -20,7 +20,7 @@ namespace SFS
         /// <param name="Actor">The reference point object</param>
         /// <param name="Object">The object to be tested</param>
         /// <returns>True if the reference point object can 'see' the tested object, false otherwise.</returns>
-        public static bool IsVisibleTo(MudObject Actor, MudObject Object)
+        public static bool IsVisibleTo(Actor Actor, MudObject Object)
         {
             var actorLocale = MudObject.FindLocale(Actor);
             if (actorLocale == null) return false;
@@ -37,7 +37,7 @@ namespace SFS
         /// <param name="Actor">Reference point object</param>
         /// <param name="Item">Object to be tested</param>
         /// <returns></returns>
-        public static CheckResult CheckIsVisibleTo(MudObject Actor, MudObject Item)
+        public static CheckResult CheckIsVisibleTo(Actor Actor, MudObject Item)
         {
             if (!MudObject.IsVisibleTo(Actor, Item))
             {
@@ -54,7 +54,7 @@ namespace SFS
         /// <param name="Actor">Reference point object</param>
         /// <param name="Item">Object to be tested</param>
         /// <returns></returns>
-        public static CheckResult CheckIsHolding(MudObject Actor, MudObject Item)
+        public static CheckResult CheckIsHolding(Actor Actor, MudObject Item)
         {
             if (!MudObject.ObjectContainsObject(Actor, Item))
             {

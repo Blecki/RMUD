@@ -10,9 +10,9 @@ namespace SFS
     {
         public static void AtStartup(SFSRuleEngine GlobalRules)
         {
-            GlobalRules.DeclarePerformRuleBook<PossibleMatch, MudObject>("before acting", "[Match, Actor] : Considered before performing in world actions.");
+            GlobalRules.DeclarePerformRuleBook<PossibleMatch, Actor>("before acting", "[Match, Actor] : Considered before performing in world actions.");
 
-            GlobalRules.DeclarePerformRuleBook<PossibleMatch, MudObject>("after acting", "[Match, Actor] : Considered after performing in world actions.");
+            GlobalRules.DeclarePerformRuleBook<PossibleMatch, Actor>("after acting", "[Match, Actor] : Considered after performing in world actions.");
         }
     }
 
@@ -93,7 +93,7 @@ namespace SFS
         /// <param name="Rule"></param>
         /// <param name="Name"></param>
         /// <returns>This command</returns>
-        public CommandEntry ProceduralRule(Func<PossibleMatch, MudObject, PerformResult> Rule, String Name = "an unamed procedural rule")
+        public CommandEntry ProceduralRule(Func<PossibleMatch, Actor, PerformResult> Rule, String Name = "an unamed procedural rule")
         {
             GeneratedManual.AppendLine("Consider " + Name);
 
@@ -240,7 +240,7 @@ namespace SFS
             get { return ManualName; }
         }
 
-        void ManPage.SendManPage(MudObject To)
+        void ManPage.SendManPage(Actor To)
         {
             var builder = new StringBuilder();
             builder.AppendLine(ManualName);

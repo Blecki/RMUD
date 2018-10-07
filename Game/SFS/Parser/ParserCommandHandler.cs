@@ -104,7 +104,7 @@ namespace SFS
                 {
                     // If there are multiple matches, replace this handler with a disambiguation handler.
                     if (matchedCommand.Matches.Count > 1)
-                        Command.Actor.SetProperty("command handler", new DisambigCommandHandler(Command.Actor, matchedCommand, this));
+                        Command.Actor.CommandHandler = new DisambigCommandHandler(Command.Actor, matchedCommand, this);
                     else
                         Core.ProcessPlayerCommand(matchedCommand.Command, matchedCommand.Matches[0], Command.Actor);
                 }

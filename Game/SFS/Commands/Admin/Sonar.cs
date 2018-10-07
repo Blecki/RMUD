@@ -69,11 +69,11 @@ namespace SFS.Commands.Debug
         {
             if (Location == null) return '?';
 
-            var spacer = Location.GetProperty<String>("short").LastIndexOf('-');
-            if (spacer > 0 && spacer < Location.GetProperty<String>("short").Length - 2)
-                return Location.GetProperty<String>("short").ToUpper()[spacer + 2];
+            var spacer = Location.Short.LastIndexOf('-');
+            if (spacer > 0 && spacer < Location.Short.Length - 2)
+                return Location.Short.ToUpper()[spacer + 2];
             else
-                return Location.GetProperty<String>("short").ToUpper()[0];
+                return Location.Short.ToUpper()[0];
         }
 
         private static void MapLocation(int[,] MapGrid, Dictionary<int, String> RoomLegend, int X, int Y, SFS.MudObject Location, int Symbol)
@@ -84,7 +84,7 @@ namespace SFS.Commands.Debug
 
             if (Symbol == ' ') Symbol = FindSymbol(Location);
 
-            if (Location != null) RoomLegend.Upsert(Symbol, Location.GetProperty<String>("short"));
+            if (Location != null) RoomLegend.Upsert(Symbol, Location.Short);
             
             PlaceSymbol(MapGrid, X, Y, Symbol);
             PlaceSymbol(MapGrid, X - 2, Y - 1, '+');
@@ -102,28 +102,26 @@ namespace SFS.Commands.Debug
             PlaceSymbol(MapGrid, X + 1, Y + 1, '-');
             PlaceSymbol(MapGrid, X + 2, Y + 1, '+');
 
-            if (Location != null)
+            if (Location != null && Location is Container) // Is it possible to not be a container?
             {
-                foreach (var link in Location.EnumerateObjects().Where(t => t.HasProperty("link direction")))
+                foreach (Portal link in (Location as Container).EnumerateObjects().Where(t => t is Portal))
                 {
-                    var destinationName = link.GetProperty<string>("link destination");
-                    var destination = MudObject.GetObject(destinationName);
-                    var direction = link.GetProperty<SFS.Direction>("link direction");
+                    var destination = MudObject.GetObject(link.Destination);
 
-                    if (direction == Direction.UP)
+                    if (link.Direction == Direction.UP)
                     {
                         PlaceSymbol(MapGrid, X + 1, Y - 2, ':');
                         PlaceSymbol(MapGrid, X + 1, Y - 3, FindSymbol(destination));
                     }
-                    else if (direction == Direction.DOWN)
+                    else if (link.Direction == Direction.DOWN)
                     {
                         PlaceSymbol(MapGrid, X - 1, Y + 2, ':');
                         PlaceSymbol(MapGrid, X - 1, Y + 3, FindSymbol(destination));
                     }
                     else
                     {
-                        var directionVector = SFS.Link.GetAsVector(direction);
-                        PlaceEdge(MapGrid, X + directionVector.X * 3, Y + directionVector.Y * 2, direction);
+                        var directionVector = SFS.Link.GetAsVector(link.Direction);
+                        PlaceEdge(MapGrid, X + directionVector.X * 3, Y + directionVector.Y * 2, link.Direction);
 
                         //if (destination.RoomType == Location.RoomType)
                         MapLocation(MapGrid, RoomLegend, X + (directionVector.X * 7), Y + (directionVector.Y * 5), destination, ' ');

@@ -34,8 +34,8 @@ namespace SFS.Commands.Debug
                     }
 
                     var realValue = propertyInfo.Converter.ConvertFromString(stringValue);
-
-                    _object.SetProperty(property_name, realValue);
+                    // Todo: Implement using reflection.
+                    //_object.SetProperty(property_name, realValue);
                     
                     MudObject.SendMessage(actor, "Property set.");
                     return SFS.Rules.PerformResult.Continue;

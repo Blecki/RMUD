@@ -2,13 +2,12 @@
 
 namespace Game
 {
-    public class Outside : SFS.MudObject
+    public class Outside : SFS.Room
     {
         public override void Initialize()
         {
-            Room(RoomType.Exterior);
-
-            SetProperty("short", "Outside the Opera House");
+            RoomType = RoomType.Exterior;
+            Short = "Outside the Opera House";
         }
     }
 }

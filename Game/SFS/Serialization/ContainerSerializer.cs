@@ -59,7 +59,7 @@ namespace SFS
                 {
                     var mudObject = MudObject.GetObject(Reader.Value.ToString());
                     if (mudObject != null) l.Add(mudObject);
-                    mudObject.Location = Owner;
+                    mudObject.Location = Owner as Container; // Todo: Is this safe?
                     Reader.Read();
                 }
                 Reader.Read();

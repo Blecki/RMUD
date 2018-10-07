@@ -221,9 +221,8 @@
     <Compile Include="SFS\CompiledDatabase.cs" />
     <Compile Include="SFS\Driver.cs" />
     <Compile Include="SFS\Commands\StandardActions\Close.cs" />
-    <Compile Include="SFS\Commands\StandardActions\Clothing\Clothing.cs" />
+    <Compile Include="SFS\WorldModel\Clothing.cs" />
     <Compile Include="SFS\Commands\StandardActions\Clothing\Messages.cs" />
-    <Compile Include="SFS\Commands\StandardActions\Clothing\NPCExtension.cs" />
     <Compile Include="SFS\Commands\StandardActions\Clothing\Remove.cs" />
     <Compile Include="SFS\Commands\StandardActions\Clothing\Rules.cs" />
     <Compile Include="SFS\Commands\StandardActions\Clothing\Wear.cs" />
@@ -235,7 +234,6 @@
     <Compile Include="SFS\Commands\StandardActions\Lock.cs" />
     <Compile Include="SFS\Commands\StandardActions\Look.cs" />
     <Compile Include="SFS\Commands\StandardActions\LookUnderOrBehind.cs" />
-    <Compile Include="SFS\Commands\StandardActions\MiscRules.cs" />
     <Compile Include="SFS\Commands\StandardActions\Open.cs" />
     <Compile Include="SFS\Commands\StandardActions\Pull.cs" />
     <Compile Include="SFS\Commands\StandardActions\PushBetweenRooms.cs" />
@@ -243,7 +241,8 @@
     <Compile Include="SFS\Commands\StandardActions\Say.cs" />
     <Compile Include="SFS\Commands\StandardActions\Take.cs" />
     <Compile Include="SFS\Commands\StandardActions\Unlock.cs" />
-    <Compile Include="SFS\WorldModel\BasicDoor.cs" />
+    <Compile Include="SFS\WorldModel\Door.cs" />
+    <Compile Include="SFS\WorldModel\OpenableContainer.cs" />
     <Compile Include="SFS\WorldModel\Directions.cs" />
     <Compile Include="SFS\WorldModel\EnumerateObjectTree.cs" />
     <Compile Include="SFS\WorldModel\Gender.cs" />
@@ -251,10 +250,10 @@
     <Compile Include="SFS\WorldModel\MudObject.cs" />
     <Compile Include="SFS\WorldModel\MudObjectRules.cs" />
     <Compile Include="SFS\WorldModel\NounList.cs" />
-    <Compile Include="SFS\WorldModel\ObjectDecorators\Actor.cs" />
-    <Compile Include="SFS\WorldModel\ObjectDecorators\Container.cs" />
-    <Compile Include="SFS\WorldModel\ObjectDecorators\Room.cs" />
-    <Compile Include="SFS\WorldModel\ObjectDecorators\Scenery.cs" />
+    <Compile Include="SFS\WorldModel\Actor.cs" />
+    <Compile Include="SFS\WorldModel\Container.cs" />
+    <Compile Include="SFS\WorldModel\Room.cs" />
+    <Compile Include="SFS\WorldModel\Scenery.cs" />
     <Compile Include="SFS\WorldModel\ObjectProperties\BoolSerializer.cs" />
     <Compile Include="SFS\WorldModel\ObjectProperties\DefaultSerializer.cs" />
     <Compile Include="SFS\WorldModel\ObjectProperties\EnumSerializer.cs" />

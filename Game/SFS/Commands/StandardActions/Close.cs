@@ -38,8 +38,7 @@ namespace SFS.Commands.StandardActions
 
             GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("close", "[Actor, Item] : Handle the item being closed.", "actor", "item");
 
-            GlobalRules.Check<MudObject, MudObject>("can close?")
-                .When((actor, item) => !item.GetProperty<bool>("openable?"))
+            GlobalRules.Check<Actor, MudObject>("can close?")
                 .Do((a, b) =>
                 {
                     MudObject.SendMessage(a, "@not openable");
@@ -47,18 +46,16 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Default can't close unopenable things rule.");
 
-            GlobalRules.Check<MudObject, MudObject>("can close?")
-                .Do((actor, item) => CheckResult.Allow)
-                .Name("Default close things rule.");
+            // Todo: Doors and containers need to implement these rules.
 
-            GlobalRules.Perform<MudObject, MudObject>("close").Do((actor, target) =>
+            GlobalRules.Perform<Actor, MudObject>("close").Do((actor, target) =>
             {
                 MudObject.SendMessage(actor, "@you close", target);
                 MudObject.SendExternalMessage(actor, "@they close", actor, target);
                 return PerformResult.Continue;
             }).Name("Default close reporting rule.");
 
-            GlobalRules.Check<MudObject, MudObject>("can close?").First.Do((actor, item) => MudObject.CheckIsVisibleTo(actor, item)).Name("Item must be visible rule.");
+            GlobalRules.Check<Actor, MudObject>("can close?").First.Do((actor, item) => MudObject.CheckIsVisibleTo(actor, item)).Name("Item must be visible rule.");
         }
     }
 

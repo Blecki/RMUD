@@ -33,21 +33,21 @@ namespace SFS.Commands.StandardActions
         {
             Core.StandardMessage("dont see that", "I don't see that here.");
 
-            GlobalRules.DeclareCheckRuleBook<MudObject, MudObject>("can examine?", "[Actor, Item] : Can the viewer examine the item?", "actor", "item");
+            GlobalRules.DeclareCheckRuleBook<Actor, MudObject>("can examine?", "[Actor, Item] : Can the viewer examine the item?", "actor", "item");
 
-            GlobalRules.Check<MudObject, MudObject>("can examine?")
+            GlobalRules.Check<Actor, MudObject>("can examine?")
                 .First
                 .Do((viewer, item) => MudObject.CheckIsVisibleTo(viewer, item))
                 .Name("Can't examine what isn't here rule.");
 
-            GlobalRules.Check<MudObject, MudObject>("can examine?")
+            GlobalRules.Check<Actor, MudObject>("can examine?")
                 .Last
                 .Do((viewer, item) => SFS.Rules.CheckResult.Allow)
                 .Name("Default can examine everything rule.");
 
-            GlobalRules.DeclarePerformRuleBook<MudObject>("examine", "[Actor] -> Take a close look at the actor's surroundings.");
+            GlobalRules.DeclarePerformRuleBook<Actor>("examine", "[Actor] -> Take a close look at the actor's surroundings.");
 
-            GlobalRules.Perform<MudObject>("examine")
+            GlobalRules.Perform<Actor>("examine")
                 .Do((actor) =>
                 {
                     MudObject.SendMessage(actor, "A detailed account of all objects present.");

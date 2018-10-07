@@ -20,28 +20,29 @@ namespace SFS.Commands.StandardActions
 
             GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("describe", "[Actor, Item] : Generates descriptions of the item.", "actor", "item");
                  
-            GlobalRules.Perform<MudObject, MudObject>("describe")
-                .When((viewer, item) => !String.IsNullOrEmpty(item.GetProperty<String>("long")))
+            GlobalRules.Perform<Actor, MudObject>("describe")
+                .When((viewer, item) => !String.IsNullOrEmpty(item.Long))
                 .Do((viewer, item) =>
                 {
-                    MudObject.SendMessage(viewer, item.GetProperty<String>("long"));
+                    MudObject.SendMessage(viewer, item.Long);
                     return PerformResult.Continue;
                 })
                 .Name("Basic description rule.");
 
-            GlobalRules.Perform<MudObject, MudObject>("describe")
-                .When((viewer, item) => item.GetProperty<bool>("openable?"))
-                .Do((viewer, item) =>
-                {
-                    if (item.GetProperty<bool>("open?"))
-                        MudObject.SendMessage(viewer, "@is open", item);
-                    else
-                        MudObject.SendMessage(viewer, "@is closed", item);
-                    return PerformResult.Continue;
-                })
-                .Name("Describe open or closed state rule.");
+            //Todo: Containers/Doors implement this rule.
+            //GlobalRules.Perform<MudObject, MudObject>("describe")
+            //    .When((viewer, item) => item.GetProperty<bool>("openable?"))
+            //    .Do((viewer, item) =>
+            //    {
+            //        if (item.GetProperty<bool>("open?"))
+            //            MudObject.SendMessage(viewer, "@is open", item);
+            //        else
+            //            MudObject.SendMessage(viewer, "@is closed", item);
+            //        return PerformResult.Continue;
+            //    })
+            //    .Name("Describe open or closed state rule.");
 
-            GlobalRules.Perform<MudObject, MudObject>("describe")
+            GlobalRules.Perform<Actor, Container>("describe")
                 .When((viewer, item) => (item.LocationsSupported & RelativeLocations.On) == RelativeLocations.On)
                 .Do((viewer, item) =>
                 {
@@ -52,11 +53,10 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("List things on container in description rule.");
 
-            GlobalRules.Perform<MudObject, MudObject>("describe")
+            GlobalRules.Perform<Actor, OpenableContainer>("describe")
                 .When((viewer, item) =>
                     {
-                        if (item.GetProperty<bool>("container?")) return false;
-                        if (!item.GetProperty<bool>("open?")) return false;
+                        if (!item.Open) return false;
                         if (item.EnumerateObjects(RelativeLocations.In).Count() == 0) return false;
                         return true;
                     })
@@ -70,9 +70,8 @@ namespace SFS.Commands.StandardActions
                 .Name("List things in open container in description rule.");
 
 
-            GlobalRules.Perform<MudObject, MudObject>("describe")
+            GlobalRules.Perform<Actor, Actor>("describe")
                 .First
-                .When((viewer, actor) => actor.GetProperty<bool>("actor?"))
                 .Do((viewer, actor) =>
                 {
                     var heldItems = new List<MudObject>(actor.EnumerateObjects(RelativeLocations.Held));
@@ -96,9 +95,9 @@ namespace SFS.Commands.StandardActions
         /// </summary>
         /// <param name="Object"></param>
         /// <returns></returns>
-        public static RuleBuilder<MudObject, MudObject, PerformResult> PerformDescribe(this MudObject Object)
+        public static RuleBuilder<Actor, MudObject, PerformResult> PerformDescribe(this MudObject Object)
         {
-            return Object.Perform<MudObject, MudObject>("describe").ThisOnly(1);
+            return Object.Perform<Actor, MudObject>("describe").ThisOnly(1);
         }
 
         /// <summary>
@@ -107,7 +106,7 @@ namespace SFS.Commands.StandardActions
         /// <param name="RuleBuilder"></param>
         /// <param name="Str"></param>
         /// <returns></returns>
-        public static RuleBuilder<MudObject, MudObject, PerformResult> DoSimpleDescription(this RuleBuilder<MudObject, MudObject, PerformResult> RuleBuilder, String Str)
+        public static RuleBuilder<Actor, MudObject, PerformResult> DoSimpleDescription(this RuleBuilder<Actor, MudObject, PerformResult> RuleBuilder, String Str)
         {
             return RuleBuilder.Do((viewer, thing) =>
             {

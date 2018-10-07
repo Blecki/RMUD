@@ -2,13 +2,11 @@
 
 namespace Game
 {
-    public class Player : SFS.MudObject
+    public class Player : SFS.Actor
     {
         public override void Initialize()
         {
-            Actor();
-
-            SetProperty("short", "you");
+            Short = "you";
             Move(GetObject("Game.Cloak"), this, RelativeLocations.Worn);
         }
     }

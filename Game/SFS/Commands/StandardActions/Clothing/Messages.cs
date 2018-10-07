@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SFS;
 
-namespace SFS.Commands.StandardActions.Clothing
+namespace SFS.Commands.StandardActions
 {
     public class ClothingMessages 
     {

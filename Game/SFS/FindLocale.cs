@@ -24,15 +24,13 @@ namespace SFS
             //If the object is in a container, check to see if that container is open.
             if (Of.Location.RelativeLocationOf(Of) == RelativeLocations.In)
             {
-                // Should this check to see if Of.Location is... openable? If not, consider it open or closed?
-                if (Of.Location.GetProperty<bool>("open?"))
+                if (Of.Location is OpenableContainer && (Of.Location as OpenableContainer).Open)
                     return FindLocale(Of.Location);
                 else
                     return Of.Location;
             }
-            
-            // The relative location is something other than 'in', so open? does not apply.
-            return FindLocale(Of.Location);
+            else            
+                return FindLocale(Of.Location);
         }
     }
 }

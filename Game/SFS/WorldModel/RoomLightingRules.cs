@@ -18,12 +18,11 @@ namespace SFS
                 .Do(item => LightingLevel.Dark)
                 .Name("Items emit no light by default rule.");
 
-            GlobalRules.Perform<MudObject>("update")
-                .When(room => room.GetProperty<RoomType>("room type") != RoomType.NotARoom)
+            GlobalRules.Perform<Room>("update")
                 .Do(room =>
                 {
                     var light = LightingLevel.Dark;
-                    var roomType = room.GetProperty<RoomType>("room type");
+                    var roomType = room.RoomType;
 
                     if (roomType == SFS.RoomType.Exterior)
                         light = AmbientExteriorLightingLevel;
@@ -34,10 +33,10 @@ namespace SFS
                         if (lightingLevel > light) light = lightingLevel;
                     }
 
-                    var ambient = room.GetProperty<LightingLevel>("ambient light");
+                    var ambient = room.AmbientLight;
                     if (ambient > light) light = ambient;
 
-                    room.SetProperty("light", light);
+                    room.Light = light;
 
                     return PerformResult.Continue;
                 })

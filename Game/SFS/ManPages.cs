@@ -11,7 +11,7 @@ namespace SFS
     public interface ManPage
     {
         String Name { get; }
-        void SendManPage(MudObject To);
+        void SendManPage(Actor To);
     }
 
     public class StaticManPage : ManPage
@@ -25,7 +25,7 @@ namespace SFS
             this.Text = Text;
         }
 
-        public void SendManPage(MudObject To)
+        public void SendManPage(Actor To)
         {
             MudObject.SendMessage(To, Text);
         }

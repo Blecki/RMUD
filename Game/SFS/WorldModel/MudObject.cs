@@ -5,22 +5,10 @@ using System.Text;
 
 namespace SFS
 {
-    public static class RegisterBaseProperties
-    {
-        public static void AtStartup(SFSRuleEngine GlobalRules)
-        {
-            PropertyManifest.RegisterProperty("short", typeof(String), "object", new StringSerializer());
-            PropertyManifest.RegisterProperty("long", typeof(String), "", new StringSerializer());
-            PropertyManifest.RegisterProperty("article", typeof(String), "a", new StringSerializer());
-            PropertyManifest.RegisterProperty("nouns", typeof(NounList), null, new DefaultSerializer());
-        }
-    }
-
-	public partial class MudObject : SFS.Rules.RuleObject
+   	public partial class MudObject : SFS.Rules.RuleObject
     {
         public override SFS.Rules.RuleEngine GlobalRules { get { return Core.GlobalRules; } }
 
-        /// Fundamental properties of every mud object: Don't mess with them.
         public ObjectState State = ObjectState.Unitialized; 
 		public String Path { get; set; }
 		public String Instance { get; set; }
@@ -29,8 +17,14 @@ namespace SFS
         public bool IsInstance { get { return IsNamedObject && Instance != null; } }
         public String GetFullName() { return Path + "@" + Instance; }
         public bool IsPersistent { get; set; }
-        public MudObject Location { get; set; }
+        public Container Location { get; set; }
         public override SFS.Rules.RuleObject LinkedRuleSource { get { return Location; } }
+
+        public String Short = "object";
+        public String Long = "";
+        public String Article = "a";
+        public NounList Nouns = null;
+        public bool Preserve = false;
 
         public virtual void Initialize() { }
 
@@ -40,85 +34,26 @@ namespace SFS
             else return Path;
         }
 
-        #region Properties
-
-        // Every MudObject has a set of generic properties. Modules use these properties to store values on MudObjects.
-                
-        public Dictionary<String, Object> Properties = new Dictionary<string, Object>();
-                
-
-        public void SetProperty(String Name, Object Value)
-        {
-            if (PropertyManifest.CheckPropertyType(Name, Value))
-                Properties.Upsert(Name, Value);
-            else
-                throw new InvalidOperationException("Setting property with object of wrong type.");
-        }
-        
-        public T GetProperty<T>(String Name)
-        {
-            if (Properties.ContainsKey(Name))
-                return (T)Properties[Name];
-            else
-            {
-                var info = PropertyManifest.GetPropertyInformation(Name);
-                if (info == null)
-                    throw new InvalidOperationException("Property " + Name + " does not exist.");
-                return (T)info.DefaultValue;
-            }
-        }
-        
-        public bool HasProperty(String Name)
-        {
-            return Properties.ContainsKey(Name);
-        }
-
-        #endregion
-
 		public MudObject()
 		{
 		    State = ObjectState.Alive;
-            SetProperty("nouns", new NounList());
+            Nouns = new NounList();
             IsPersistent = false;
 		}
 
         public MudObject(String Short, String Long)
         {
-            SetProperty("short", Short);
-            SetProperty("long", Long);
-            SetProperty("nouns", new NounList(Short.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)));
+            this.Short = Short;
+            this.Long = Long;
+            this.Nouns = new NounList(Short.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
 
             var firstChar = Short.ToLower()[0];
             if (firstChar == 'a' || firstChar == 'e' || firstChar == 'i' || firstChar == 'o' || firstChar == 'u')
-                SetProperty("article", "an");
+                Article = "an";
 
             State = ObjectState.Alive;
             IsPersistent = false;
 
-        }
-
-        public void SimpleName(String Short, params String[] Synonyms)
-        {
-            SetProperty("short", Short);
-            GetProperty<NounList>("nouns").Add(Short.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
-            GetProperty<NounList>("nouns").Add(Synonyms);
-        }
-
-        /// <summary>
-        /// Destroy this object. Optionally, destroy it's children. If destroying children, destroy the
-        /// children's children, etc. The most important aspect of this function is that when destroyed,
-        /// persistent objects are forgotten. Destroying non-persistent objects is not necessary.
-        /// </summary>
-        /// <param name="DestroyChildren"></param>
-        public void Destroy(bool DestroyChildren)
-        {
-            State = ObjectState.Destroyed;
-            MudObject.ForgetInstance(this); 
-
-            if (DestroyChildren)
-                foreach (var child in EnumerateObjects())
-                    if (child.State != ObjectState.Destroyed)
-                        child.Destroy(true);
         }
 
         public static MudObject GetObject(String Path)

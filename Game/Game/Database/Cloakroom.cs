@@ -2,7 +2,7 @@
 
 namespace Game
 {
-    public class Cloakroom : SFS.MudObject
+    public class Cloakroom : SFS.Room
     {
         public override void Initialize()
         {
@@ -25,32 +25,30 @@ hanging on it[otherwise]screwed to the wall[end if]."
 [This description is general enough that, if we were to add other hangable items
 to the game, they would automatically be described correctly as well.]
              */
-            Room(RoomType.Interior);
 
-            SetProperty("short", "Cloakroom");
-            SetProperty("long", "The walls of this small room were clearly once lined with hooks, though now only one remains.");
+            Short = "Cloakroom";
+            Long = "The walls of this small room were clearly once lined with hooks, though now only one remains.";
 
             OpenLink(Direction.EAST, "Game.Foyer");
 
             Move(MudObject.GetObject("Game.Hook"), this);
 
-            SetProperty("ambient light", LightingLevel.Bright);
+            AmbientLight = LightingLevel.Bright;
         }
     }
 
-    public class Hook : MudObject
+    public class Hook : Container
     {
-        public Hook()
-        {
-            Container(RelativeLocations.On, RelativeLocations.On);
-        }
+        public Hook() : base(RelativeLocations.On, RelativeLocations.On) { }
 
         public override void Initialize()
         {
-            SimpleName("small brass hook", "peg");
-            SetProperty("long", "It's just a small brass hook.");
+            Short = "small brass hook";
+            Nouns = new NounList();
+            Nouns.Add("small", "brass", "hook", "peg");
+            Long = "It's just a small brass hook.";
 
-            Check<MudObject, MudObject>("can take?")
+            Check<Actor, MudObject>("can take?")
                 .Do((actor, item) =>
                 {
                     SendMessage(actor, "It's screwed into the wall.");

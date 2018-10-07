@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using SFS;
 using SFS.Rules;
 
-namespace SFS.Commands.StandardActions.Clothing
+namespace SFS.Commands.StandardActions
 {
     public class ClothingRules 
     {
         public static void AtStartup(SFS.SFSRuleEngine GlobalRules)
         {
-            GlobalRules.Perform<MudObject>("inventory")
+            GlobalRules.Perform<Actor>("inventory")
                 .Do(a =>
                 {
                     var wornObjects = a.GetContents(RelativeLocations.Worn);
@@ -27,14 +27,11 @@ namespace SFS.Commands.StandardActions.Clothing
                 })
                 .Name("List worn items in inventory rule.");
 
-            GlobalRules.Check<MudObject, MudObject>("can wear?")
-                .When((actor, item) => actor.GetProperty<bool>("actor?"))
+            GlobalRules.Check<Actor, Clothing>("can wear?")
                 .Do((actor, item) =>
                 {
-                    var layer = item.GetProperty<ClothingLayer>("clothing layer");
-                    var part = item.GetProperty<ClothingBodyPart>("clothing part");
-                    foreach (var wornItem in actor.EnumerateObjects(RelativeLocations.Worn))
-                        if (wornItem.GetProperty<ClothingLayer>("clothing layer") == layer && wornItem.GetProperty<ClothingBodyPart>("clothing part") == part)
+                    foreach (Clothing wornItem in actor.EnumerateObjects(RelativeLocations.Worn).OfType<Clothing>())
+                        if (wornItem.Layer == item.Layer && wornItem.BodyPart == item.BodyPart)
                         {
                             MudObject.SendMessage(actor, "@clothing remove first", wornItem);
                             return CheckResult.Disallow;
@@ -43,13 +40,11 @@ namespace SFS.Commands.StandardActions.Clothing
                 })
                 .Name("Check clothing layering before wearing rule.");
 
-            GlobalRules.Check<MudObject, MudObject>("can remove?")
+            GlobalRules.Check<Actor, Clothing>("can remove?")
                 .Do((actor, item) =>
                 {
-                    var layer = item.GetProperty<ClothingLayer>("clothing layer");
-                    var part = item.GetProperty<ClothingBodyPart>("clothing part");
-                    foreach (var wornItem in actor.EnumerateObjects(RelativeLocations.Worn))
-                        if (wornItem.GetProperty<ClothingLayer>("clothing layer") < layer && wornItem.GetProperty<ClothingBodyPart>("clothing part") == part)
+                    foreach (var wornItem in actor.EnumerateObjects(RelativeLocations.Worn).OfType<Clothing>())
+                        if (wornItem.Layer < item.Layer && wornItem.BodyPart == item.BodyPart)
                         {
                             MudObject.SendMessage(actor, "@clothing remove first", wornItem);
                             return CheckResult.Disallow;
@@ -59,9 +54,8 @@ namespace SFS.Commands.StandardActions.Clothing
                 .Name("Can't remove items under other items rule.");
 
             
-            GlobalRules.Perform<MudObject, MudObject>("describe")
+            GlobalRules.Perform<Actor, Actor>("describe")
                 .First
-                .When((viewer, actor) => actor.GetProperty<bool>("actor?"))
                 .Do((viewer, actor) =>
                 {
                     var wornItems = actor.GetContents(RelativeLocations.Worn);

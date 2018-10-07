@@ -5,15 +5,7 @@ using System.Text;
 
 namespace SFS
 {
-    public static class RegisterContainerProperties
-    {
-        public static void AtStartup(SFSRuleEngine GlobalRules)
-        {
-            PropertyManifest.RegisterProperty("container?", typeof(bool), false, new BoolSerializer());
-        }
-    }
-
-    public partial class MudObject
+    public class Container : MudObject
     {
         [Persist(typeof(ContainerSerializer))]
         public Dictionary<RelativeLocations, List<MudObject>> Lists { get; set; }
@@ -21,13 +13,11 @@ namespace SFS
         public RelativeLocations Supported = RelativeLocations.None;
         public RelativeLocations Default = RelativeLocations.None;
 
-        public void Container(RelativeLocations Locations, RelativeLocations Default)
+        public Container(RelativeLocations Locations, RelativeLocations Default)
         {
             this.Supported = Locations;
             this.Default = Default;
             this.Lists = new Dictionary<RelativeLocations, List<MudObject>>();
-
-            SetProperty("container?", true);
         }
 
         public void Remove(MudObject Object)

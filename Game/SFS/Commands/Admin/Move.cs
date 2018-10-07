@@ -22,7 +22,7 @@ namespace SFS.Commands.Debug
                 .Manual("An administrative command to move objects from one place to another. This command entirely ignores all rules that might prevent moving an object.")
                 .ProceduralRule((match, actor) =>
                 {
-                    var destination = MudObject.GetObject(match["DESTINATION"].ToString());
+                    var destination = MudObject.GetObject(match["DESTINATION"].ToString()) as Container;
                     if (destination != null)
                     {
                         var target = match["OBJECT"] as MudObject;
