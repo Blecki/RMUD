@@ -7,8 +7,8 @@ using SFS.Rules;
 
 namespace SFS.Commands.StandardActions
 {
-	internal class Open : CommandFactory
-	{
+    internal class Open : CommandFactory
+    {
         public override void Create(CommandParser Parser)
         {
             Parser.AddCommand(
@@ -25,22 +25,19 @@ namespace SFS.Commands.StandardActions
                 .Manual("Opens an openable thing.")
                 .Check("can open?", "ACTOR", "SUBJECT")
                 .BeforeActing()
-                .Perform("opened", "ACTOR", "SUBJECT")
+                .Perform("open", "ACTOR", "SUBJECT")
                 .AfterActing();
         }
 
         public static void AtStartup(SFS.SFSRuleEngine GlobalRules)
         {
-            PropertyManifest.RegisterProperty("openable?", typeof(bool), false, new BoolSerializer());
-            PropertyManifest.RegisterProperty("open?", typeof(bool), false, new BoolSerializer());
-
             Core.StandardMessage("not openable", "I don't think the concept of 'open' applies to that.");
             Core.StandardMessage("you open", "You open <the0>.");
             Core.StandardMessage("they open", "^<the0> opens <the1>.");
 
             GlobalRules.DeclareCheckRuleBook<MudObject, MudObject>("can open?", "[Actor, Item] : Can the actor open the item?", "actor", "item");
 
-            GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("opened", "[Actor, Item] : Handle the actor opening the item.", "actor", "item");
+            GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("open", "[Actor, Item] : Handle the actor opening the item.", "actor", "item");
 
             GlobalRules.Check<Actor, MudObject>("can open?")
                 .Do((a, b) =>
@@ -50,7 +47,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Can't open the unopenable rule.");
 
-            GlobalRules.Perform<Actor, MudObject>("opened").Do((actor, target) =>
+            GlobalRules.Perform<Actor, MudObject>("open").Do((actor, target) =>
             {
                 MudObject.SendMessage(actor, "@you open", target);
                 MudObject.SendExternalMessage(actor, "@they open", actor, target);
@@ -58,19 +55,6 @@ namespace SFS.Commands.StandardActions
             }).Name("Default report opening rule.");
 
             GlobalRules.Check<Actor, MudObject>("can open?").First.Do((actor, item) => MudObject.CheckIsVisibleTo(actor, item)).Name("Item must be visible rule.");
-        }
-    }
-
-    public static class OpenExtensions
-    {
-        public static RuleBuilder<MudObject, MudObject, PerformResult> PerformOpened(this MudObject Object)
-        {
-            return Object.Perform<MudObject, MudObject>("opened").ThisOnly(1);
-        }
-
-        public static RuleBuilder<MudObject, MudObject, CheckResult> CheckCanOpen(this MudObject Object)
-        {
-            return Object.Check<MudObject, MudObject>("can open?").ThisOnly(1);
         }
     }
 }

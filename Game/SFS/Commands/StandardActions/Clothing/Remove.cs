@@ -20,14 +20,14 @@ namespace SFS.Commands.StandardActions
                 .Manual("Expose your amazingly supple flesh.")
                 .Check("can remove?", "ACTOR", "OBJECT")
                 .BeforeActing()
-                .Perform("removed", "ACTOR", "OBJECT")
+                .Perform("remove", "ACTOR", "OBJECT")
                 .AfterActing();
         }
 
         public static void AtStartup(SFS.SFSRuleEngine GlobalRules)
         {
             GlobalRules.DeclareCheckRuleBook<Actor, Clothing>("can remove?", "[Actor, Item] : Can the actor remove the item?", "actor", "item");
-            GlobalRules.DeclarePerformRuleBook<Actor, Clothing>("removed", "[Actor, Item] : Handle the actor removing the item.", "actor", "item");
+            GlobalRules.DeclarePerformRuleBook<Actor, Clothing>("remove", "[Actor, Item] : Handle the actor removing the item.", "actor", "item");
 
             GlobalRules.Check<Actor, Clothing>("can remove?")
                 .When((a, b) => !a.Contains(b, RelativeLocations.Worn))
@@ -39,7 +39,7 @@ namespace SFS.Commands.StandardActions
            
             GlobalRules.Check<Actor, Clothing>("can remove?").Do((a, b) => CheckResult.Allow);
 
-            GlobalRules.Perform<Actor, Clothing>("removed").Do((actor, target) =>
+            GlobalRules.Perform<Actor, Clothing>("remove").Do((actor, target) =>
                 {
                     MudObject.SendMessage(actor, "@clothing you remove", target);
                     MudObject.SendExternalMessage(actor, "@clothing they remove", actor, target);

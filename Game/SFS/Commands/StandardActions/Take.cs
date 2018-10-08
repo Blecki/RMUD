@@ -7,10 +7,10 @@ using SFS.Rules;
 
 namespace SFS.Commands.StandardActions
 {
-	internal class Take : CommandFactory
-	{
-		public override void Create(CommandParser Parser)
-		{
+    internal class Take : CommandFactory
+    {
+        public override void Create(CommandParser Parser)
+        {
             Parser.AddCommand(
                 Sequence(
                     Or(
@@ -31,7 +31,7 @@ namespace SFS.Commands.StandardActions
                 .Perform("take", "ACTOR", "SUBJECT")
                 .AfterActing()
                 .MarkLocaleForUpdate();
-		}
+        }
 
         public static void AtStartup(SFS.SFSRuleEngine GlobalRules)
         {
@@ -97,19 +97,6 @@ namespace SFS.Commands.StandardActions
                     return CheckResult.Disallow;
                 })
                 .Name("Can't take scenery rule.");
-        }
-    }
-
-    public static class TakeRuleFactoryExtensions
-    {
-        public static RuleBuilder<MudObject, MudObject, CheckResult> CheckCanTake(this MudObject ThisObject)
-        {
-            return ThisObject.Check<MudObject, MudObject>("can take?").ThisOnly(1);
-        }
-
-        public static RuleBuilder<MudObject, MudObject, PerformResult> PerformTake(this MudObject ThisObject)
-        {
-            return ThisObject.Perform<MudObject, MudObject>("take").ThisOnly(1);
         }
     }
 }

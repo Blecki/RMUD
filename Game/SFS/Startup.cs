@@ -77,7 +77,6 @@ namespace SFS
                 // Setup the rule engine and some basic rules.
                 GlobalRules = new SFSRuleEngine();
                 GlobalRules.DeclarePerformRuleBook("at startup", "[] : Considered when the engine is started.");
-                GlobalRules.DeclarePerformRuleBook<MudObject>("singleplayer game started", "Considered when a single player game is begun");
 
                 DefaultParser = new CommandParser();
 

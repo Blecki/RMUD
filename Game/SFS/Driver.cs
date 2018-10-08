@@ -36,8 +36,6 @@ namespace SFS.SinglePlayer
             if (SFS.Core.Start(new SFS.SinglePlayer.CompiledDatabase(DatabaseAssembly)))
             {
                 SwitchPlayerCharacter(SFS.MudObject.GetObject("Game.Player") as Actor);
-                Core.GlobalRules.ConsiderPerformRule("singleplayer game started", Player);
-
                 return true;
             }
 

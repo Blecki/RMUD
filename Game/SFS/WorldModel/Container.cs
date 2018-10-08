@@ -7,7 +7,6 @@ namespace SFS
 {
     public class Container : MudObject
     {
-        [Persist(typeof(ContainerSerializer))]
         public Dictionary<RelativeLocations, List<MudObject>> Lists { get; set; }
 
         public RelativeLocations Supported = RelativeLocations.None;

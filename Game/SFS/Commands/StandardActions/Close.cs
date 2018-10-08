@@ -58,17 +58,4 @@ namespace SFS.Commands.StandardActions
             GlobalRules.Check<Actor, MudObject>("can close?").First.Do((actor, item) => MudObject.CheckIsVisibleTo(actor, item)).Name("Item must be visible rule.");
         }
     }
-
-    public static class CloseRuleFactoryExtensions
-    {
-        public static RuleBuilder<MudObject, MudObject, CheckResult> CheckCanClose(this MudObject ThisObject)
-        {
-            return ThisObject.Check<MudObject, MudObject>("can close?").ThisOnly(1);
-        }
-
-        public static RuleBuilder<MudObject, MudObject, PerformResult> PerformClose(this MudObject ThisObject)
-        {
-            return ThisObject.Perform<MudObject, MudObject>("close").ThisOnly(1);
-        }
-    }
 }

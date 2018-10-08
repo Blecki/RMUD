@@ -204,22 +204,6 @@ namespace SFS.Commands.StandardActions
                 .Name("Players look after pushing between rooms rule.");
         }
     }
-
-    // The last thing we need to do is define some extension methods to help us write rules for this command.
-    // Without these, anyone writing rules meant to work with this command needs to know the types it takes.
-    // These just provide us with a little bit of type erasure to make usage a little less error prone.
-    public static class PushDirectionExtensions
-    {
-        public static RuleBuilder<MudObject, MudObject, MudObject, CheckResult> CheckCanPushDirection(this MudObject Object)
-        {
-            return Object.Check<MudObject, MudObject, MudObject>("can push direction?").When((actor, subject, link) => System.Object.ReferenceEquals(subject, Object));
-        }
-
-        public static RuleBuilder<MudObject, MudObject, MudObject, PerformResult> PerformPushDirection(this MudObject Object)
-        {
-            return Object.Perform<MudObject, MudObject, MudObject>("push direction").When((actor, subject, link) => System.Object.ReferenceEquals(subject, Object));
-        }
-    }
 }
 
 // That's it. I hope you enjoyed this wild ride through defining a command for SFS, and that it helped shed

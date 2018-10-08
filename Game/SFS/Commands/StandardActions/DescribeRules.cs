@@ -85,34 +85,5 @@ namespace SFS.Commands.StandardActions
                 .ID("list-actor-held-items-rule")
                 .Name("List held items when describing an actor rule.");
         }
-
-    }
-
-    public static class DescribeExtensions
-    {
-        /// <summary>
-        /// Factory that creates a Describe rule that applies only to the object it is called on.
-        /// </summary>
-        /// <param name="Object"></param>
-        /// <returns></returns>
-        public static RuleBuilder<Actor, MudObject, PerformResult> PerformDescribe(this MudObject Object)
-        {
-            return Object.Perform<Actor, MudObject>("describe").ThisOnly(1);
-        }
-
-        /// <summary>
-        /// Adds a do clause that sends the message to the first argument, and then stops the action.
-        /// </summary>
-        /// <param name="RuleBuilder"></param>
-        /// <param name="Str"></param>
-        /// <returns></returns>
-        public static RuleBuilder<Actor, MudObject, PerformResult> DoSimpleDescription(this RuleBuilder<Actor, MudObject, PerformResult> RuleBuilder, String Str)
-        {
-            return RuleBuilder.Do((viewer, thing) =>
-            {
-                MudObject.SendMessage(viewer, Str);
-                return PerformResult.Stop;
-            });
-        }
     }
 }

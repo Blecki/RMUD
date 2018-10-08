@@ -20,14 +20,14 @@ namespace SFS.Commands.StandardActions
                 .Manual("Cover your disgusting flesh.")
                 .Check("can wear?", "ACTOR", "OBJECT")
                 .BeforeActing()
-                .Perform("worn", "ACTOR", "OBJECT")
+                .Perform("wear", "ACTOR", "OBJECT")
                 .AfterActing();
         }
 
         public static void AtStartup(SFS.SFSRuleEngine GlobalRules)
         {
             GlobalRules.DeclareCheckRuleBook<Actor, MudObject>("can wear?", "[Actor, Item] : Can the actor wear the item?", "actor", "item");
-            GlobalRules.DeclarePerformRuleBook<Actor, Clothing>("worn", "[Actor, Item] : Handle the actor wearing the item.", "actor", "item");
+            GlobalRules.DeclarePerformRuleBook<Actor, Clothing>("wear", "[Actor, Item] : Handle the actor wearing the item.", "actor", "item");
 
             GlobalRules.Check<Actor, MudObject>("can wear?")
                 .When((a, b) => !MudObject.ObjectContainsObject(a, b))
@@ -57,7 +57,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Can't wear unwearable things rule.");
 
-            GlobalRules.Perform<Actor, Clothing>("worn").Do((actor, target) =>
+            GlobalRules.Perform<Actor, Clothing>("wear").Do((actor, target) =>
                 {
                     MudObject.SendMessage(actor, "@clothing you wear", target);
                     MudObject.SendExternalMessage(actor, "@clothing they wear", actor, target);

@@ -122,17 +122,4 @@ namespace SFS.Commands.StandardActions
                 .Name("Players look after going rule.");
         }
     }
-
-    public static class GoExtensions
-    {
-        public static RuleBuilder<MudObject, MudObject, CheckResult> CheckCanGo(this MudObject Object)
-        {
-            return Object.Check<MudObject, MudObject>("can go?").ThisOnly();
-        }
-
-        public static RuleBuilder<MudObject, MudObject, PerformResult> PerformGo(this MudObject Object)
-        {
-            return Object.Perform<MudObject, MudObject>("go");
-        }
-    }
 }

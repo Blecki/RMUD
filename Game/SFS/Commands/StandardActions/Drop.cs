@@ -7,10 +7,10 @@ using SFS.Rules;
 
 namespace SFS.Commands.StandardActions
 {
-	internal class Drop : CommandFactory
-	{
-		public override void Create(CommandParser Parser)
-		{
+    internal class Drop : CommandFactory
+    {
+        public override void Create(CommandParser Parser)
+        {
             Parser.AddCommand(
                 Sequence(
                     KeyWord("DROP"),
@@ -23,7 +23,7 @@ namespace SFS.Commands.StandardActions
                 .BeforeActing()
                 .Perform("drop", "ACTOR", "SUBJECT")
                 .AfterActing();
-		}
+        }
 
         public static void AtStartup(SFS.SFSRuleEngine GlobalRules)
         {
@@ -66,19 +66,6 @@ namespace SFS.Commands.StandardActions
                 MudObject.Move(target, actor.Location);
                 return PerformResult.Continue;
             }).Name("Default drop handler rule.");
-        }
-    }
-
-    public static class DropExtensions
-    {
-        public static RuleBuilder<MudObject, MudObject, PerformResult> PerformDrop(this MudObject Object)
-        {
-            return Object.Perform<MudObject, MudObject>("drop").ThisOnly(1);
-        }
-
-        public static RuleBuilder<MudObject, MudObject, CheckResult> CheckCanDrop(this MudObject Object)
-        {
-            return Object.Check<MudObject, MudObject>("can drop?").ThisOnly(1);
         }
     }
 }
