@@ -2,10 +2,11 @@
 
 using System;
 using static SFS.Core;
+using SFS.Rules;
 
-namespace SFS.Rules
+namespace SFS
 {
-	public partial class RuleObject
+	public partial class MudObject
 	{	
 		public RuleBuilder<PerformResult> Perform(String Name)
 		{

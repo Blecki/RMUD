@@ -6,18 +6,16 @@ using static SFS.Core;
 
 namespace SFS
 {
-   	public partial class MudObject : SFS.Rules.RuleObject
+   	public partial class MudObject
     {
-        public ObjectState State = ObjectState.Unitialized; 
-		public String Path { get; set; }
-        public Container Location { get; set; }
-        public override SFS.Rules.RuleObject LinkedRuleSource { get { return Location; } }
+        public ObjectState State = ObjectState.Unitialized;
+        public String Path;
+        public Container Location;
 
         public String Short = "object";
         public String Long = "";
         public String Article = "a";
         public NounList Nouns = null;
-        public bool Preserve = false;
 
         public virtual void Initialize() { }
 

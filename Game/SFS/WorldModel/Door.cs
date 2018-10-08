@@ -22,8 +22,6 @@ namespace SFS
             Nouns.Add("CLOSED", actor => !Open);
             Nouns.Add("OPEN", actor => Open);
 
-            // Todo: Port these rules to OpenableContainer.
-
             Check<Actor, Door>("can open?")
                 .Last
                 .Do((a, b) =>
@@ -50,14 +48,13 @@ namespace SFS
                 })
                 .Name("Can close doors rule.");
 
-            Perform<Actor, Door>("opened").Do((a, b) =>
+            Perform<Actor, Door>("open").Do((a, b) =>
             {
                 Open = true;
 
                 // Doors are usually two-sided. If there is an opposite side, we need to open it and emit appropriate
                 // messages.
-                var otherSide = Portal.FindOppositeSide(this) as Door;
-                if (otherSide != null)
+                if (Portal.FindOppositeSide(this) is Door otherSide)
                 {
                     otherSide.Open = true;
 

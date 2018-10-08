@@ -26,10 +26,12 @@ namespace SFS.Commands.StandardActions
                             Object("KEY", InScope, PreferHeld)))))
                 .ID("StandardActions:Unlock")
                 .Manual("Use the KEY to unlock the ITEM.")
-                .Check("can lock?", "ACTOR", "ITEM", "KEY")
+                .Check("can lock?", "ACTOR", "ITEM", "KEY") // We use the same rules as locking under the assumption that keys work for both actions.
                 .BeforeActing()
                 .Perform("unlock", "ACTOR", "ITEM", "KEY")
                 .AfterActing();
+
+            // Todo: Provide a key that matches if they leave it out of the command.
 
             Core.StandardMessage("you unlock", "You unlock <the0>.");
             Core.StandardMessage("they unlock", "^<the0> unlocks <the1> with <a2>.");

@@ -10,7 +10,7 @@ namespace SFS.Rules
 
 		//The associated object is set by the MudObject rule factory functions and used to
         // implement useful shortcuts on the rule builder types.
-        public RuleObject AssociatedObject = null;
+        public MudObject AssociatedObject = null;
 
         public RuleBuilder<TR> When(Func<bool> Clause)
         {
@@ -58,7 +58,7 @@ namespace SFS.Rules
 			return this;
 		}}
 
-		public RuleBuilder<TR> Associate(RuleObject Object)
+		public RuleBuilder<TR> Associate(MudObject Object)
 		{
 			this.AssociatedObject = Object;
 			return this;
@@ -84,7 +84,7 @@ namespace SFS.Rules
 
 		//The associated object is set by the MudObject rule factory functions and used to
         // implement useful shortcuts on the rule builder types.
-        public RuleObject AssociatedObject = null;
+        public MudObject AssociatedObject = null;
 
         public RuleBuilder<T0, TR> When(Func<T0, bool> Clause)
         {
@@ -132,7 +132,7 @@ namespace SFS.Rules
 			return this;
 		}}
 
-		public RuleBuilder<T0, TR> Associate(RuleObject Object)
+		public RuleBuilder<T0, TR> Associate(MudObject Object)
 		{
 			this.AssociatedObject = Object;
 			return this;
@@ -191,7 +191,7 @@ namespace SFS.Rules
 
 		//The associated object is set by the MudObject rule factory functions and used to
         // implement useful shortcuts on the rule builder types.
-        public RuleObject AssociatedObject = null;
+        public MudObject AssociatedObject = null;
 
         public RuleBuilder<T0, T1, TR> When(Func<T0, T1, bool> Clause)
         {
@@ -239,7 +239,7 @@ namespace SFS.Rules
 			return this;
 		}}
 
-		public RuleBuilder<T0, T1, TR> Associate(RuleObject Object)
+		public RuleBuilder<T0, T1, TR> Associate(MudObject Object)
 		{
 			this.AssociatedObject = Object;
 			return this;
@@ -299,7 +299,7 @@ namespace SFS.Rules
 
 		//The associated object is set by the MudObject rule factory functions and used to
         // implement useful shortcuts on the rule builder types.
-        public RuleObject AssociatedObject = null;
+        public MudObject AssociatedObject = null;
 
         public RuleBuilder<T0, T1, T2, TR> When(Func<T0, T1, T2, bool> Clause)
         {
@@ -347,7 +347,7 @@ namespace SFS.Rules
 			return this;
 		}}
 
-		public RuleBuilder<T0, T1, T2, TR> Associate(RuleObject Object)
+		public RuleBuilder<T0, T1, T2, TR> Associate(MudObject Object)
 		{
 			this.AssociatedObject = Object;
 			return this;
@@ -408,7 +408,7 @@ namespace SFS.Rules
 
 		//The associated object is set by the MudObject rule factory functions and used to
         // implement useful shortcuts on the rule builder types.
-        public RuleObject AssociatedObject = null;
+        public MudObject AssociatedObject = null;
 
         public RuleBuilder<T0, T1, T2, T3, TR> When(Func<T0, T1, T2, T3, bool> Clause)
         {
@@ -456,7 +456,7 @@ namespace SFS.Rules
 			return this;
 		}}
 
-		public RuleBuilder<T0, T1, T2, T3, TR> Associate(RuleObject Object)
+		public RuleBuilder<T0, T1, T2, T3, TR> Associate(MudObject Object)
 		{
 			this.AssociatedObject = Object;
 			return this;

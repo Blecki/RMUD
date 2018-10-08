@@ -46,8 +46,6 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Default can't close unopenable things rule.");
 
-            // Todo: Doors and containers need to implement these rules.
-
             GlobalRules.Perform<Actor, MudObject>("close").Do((actor, target) =>
             {
                 SendMessage(actor, "@you close", target);

@@ -45,7 +45,6 @@ namespace SFS.Commands.StandardActions
                 .Do((actor, item, key) => CheckIsHolding(actor, key))
                 .Name("Key must be held rule.");
 
-            // Todo: LockedDoor needs to implement this.
             GlobalRules.Check<Actor, MudObject, MudObject>("can lock?")
                 .Do((a, b, c) =>
                 {
@@ -53,10 +52,6 @@ namespace SFS.Commands.StandardActions
                     return SFS.Rules.CheckResult.Disallow;
                 })
                 .Name("Can't lock the unlockable rule.");
-
-            GlobalRules.Check<Actor, MudObject, MudObject>("can lock?")
-                .Do((a, b, c) => SFS.Rules.CheckResult.Allow)
-                .Name("Default allow locking rule.");
 
             GlobalRules.DeclarePerformRuleBook<Actor, MudObject, MudObject>("lock", "[Actor, Item, Key] : Handle the actor locking the item with the key.", "actor", "item", "key");
 

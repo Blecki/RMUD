@@ -11,12 +11,22 @@ namespace SFS
     /// This is a fancy door - it can be locked!
     /// 
     /// TODO: "IsMatchingKey" should be replaced with a rule.
-    /// TODO: "Locked" should be a property.
-    /// TODO: Sync locked state with opposite side of portal
     /// </summary>
 	public class LockedDoor : Door
 	{
-        public Func<MudObject, bool> IsMatchingKey;
+        [AtStartup]
+        public static void __()
+        {
+            GlobalRules.DeclareCheckRuleBook<Actor, MudObject, MudObject>("can lock with?", "[Actor, Item, Key] : Can this key be used to lock this thing?", "actor", "item", "key");
+
+            GlobalRules.Check<Actor, MudObject, MudObject>("can lock with?")
+                .Do((actor, item, key) =>
+                {
+                    SendMessage(actor, "@wrong key");
+                    return CheckResult.Disallow;
+                })
+                .Name("default that's not the right key rule.");
+        }
 
         public bool Locked = true;
 
@@ -26,29 +36,34 @@ namespace SFS
 
             Check<Actor, LockedDoor, MudObject>("can lock?").Do((actor, door, key) =>
                 {
-                    if (Open) {
+                    if (Open)
+                    {
                         SendMessage(actor, "@close it first");
                         return CheckResult.Disallow;
                     }
 
-                    if (!IsMatchingKey(key))
-                    {
-                        SendMessage(actor, "@wrong key");
-                        return CheckResult.Disallow;
-                    }
+                    return GlobalRules.ConsiderCheckRule("can lock with?", actor, door, key);
+                })
+                .Name("can lock? invokes can lock with? rule");
 
-                    return CheckResult.Allow;
-                });
-
-            Perform<Actor, LockedDoor, MudObject>("locked").Do((a,b,c) =>
+            Perform<Actor, LockedDoor, MudObject>("lock").Do((a, b, c) =>
                 {
                     Locked = true;
-                    return PerformResult.Continue;
-                });
 
-             Perform<Actor, LockedDoor, MudObject>("unlocked").Do((a,b,c) =>
+                    if (Portal.FindOppositeSide(this) is LockedDoor otherSide)
+                        otherSide.Locked = true;
+
+                    return PerformResult.Continue;
+                })
+                .Name("lock it and sync sides rule");
+
+             Perform<Actor, LockedDoor, MudObject>("unlock").Do((a,b,c) =>
                 {
                     Locked = false;
+
+                    if (Portal.FindOppositeSide(this) is LockedDoor otherSide)
+                        otherSide.Locked = false;
+
                     return PerformResult.Continue;
                 });
 

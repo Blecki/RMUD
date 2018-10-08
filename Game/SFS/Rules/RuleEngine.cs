@@ -83,26 +83,26 @@ namespace SFS.Rules
             if (Arguments != null)
             {
                 // Avoid enumerating rules from the same object twice.
-                var objectsExamined = new List<RuleObject>();
+                var objectsExamined = new List<MudObject>();
 
                 foreach (var arg in Arguments)
-                    if (arg is RuleObject
-                        && !objectsExamined.Contains(arg as RuleObject)
-                        && (arg as RuleObject).Rules != null)
+                    if (arg is MudObject
+                        && !objectsExamined.Contains(arg as MudObject)
+                        && (arg as MudObject).Rules != null)
                     {
-                        objectsExamined.Add(arg as RuleObject);
-                        yield return (arg as RuleObject).Rules;
+                        objectsExamined.Add(arg as MudObject);
+                        yield return (arg as MudObject).Rules;
                     }
 
                 // Loop again, so that all linked rules are enumerated after all parent rules.
                 foreach (var arg in Arguments)
-                    if (arg is RuleObject)
-                        if ((arg as RuleObject).LinkedRuleSource != null)
-                            if (!objectsExamined.Contains((arg as RuleObject).LinkedRuleSource))
-                                if ((arg as RuleObject).LinkedRuleSource.Rules != null)
+                    if (arg is MudObject)
+                        if ((arg as MudObject).Location != null)
+                            if (!objectsExamined.Contains((arg as MudObject).Location))
+                                if ((arg as MudObject).Location.Rules != null)
                                 {
-                                    objectsExamined.Add((arg as RuleObject).LinkedRuleSource);
-                                    yield return (arg as RuleObject).LinkedRuleSource.Rules;
+                                    objectsExamined.Add((arg as MudObject).Location);
+                                    yield return (arg as MudObject).Location.Rules;
                                 }
             }
         }

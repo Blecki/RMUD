@@ -33,19 +33,12 @@ namespace SFS.Commands.Debug
                     var target = match["OBJECT"] as MudObject;
 
                     SendMessage(actor, "*** INSPECT LISTING ***");
-                    SendMessage(actor, "Path: <s0>", target.Path);
-                    if (target.Location == null)
-                        SendMessage(actor, "Location: NOWHERE");
-                    else
-                        SendMessage(actor, "Location: <s0>", target.Location.Path);
-                    SendMessage(actor, "*** DYNAMIC PROPERTIES ***");
 
-                    //Todo: Reimplement using reflection.
-                    //foreach (var property in target.Properties)
-                    //{
-                    //    var info = PropertyManifest.GetPropertyInformation(property.Key);
-                    //    SendMessage(actor, "<s0>: <s1>", property.Key, info.Converter.ConvertToString(property.Value));
-                    //}
+                    foreach (var field in target.GetType().GetFields())
+                    {
+                        var value = field.GetValue(target);
+                        SendMessage(actor, "<s0> <s1>: <s2>", field.Name, field.FieldType, value == null ? "NULL" : value.ToString());
+                    }
 
                     SendMessage(actor, "*** END OF LISTING ***");
 
