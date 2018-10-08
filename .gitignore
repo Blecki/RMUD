@@ -6,6 +6,8 @@
 *.user
 *.sln.docstates
 *.userprefs
+.vs/
+
 
 # Build results
 [Dd]ebug/
@@ -19,6 +21,8 @@ bld/
 [Bb]in/
 [Oo]bj/
 Out/
+
+!Game/SFS/Commands/Debug
 
 # Roslyn cache directories
 *.ide/
