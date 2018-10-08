@@ -9,7 +9,7 @@ namespace SFS
 {
     public static partial class Core
     {
-        public static CompiledDatabase Database;
+        public static Database Database;
         public static Rules.RuleEngine GlobalRules;
     }
 }

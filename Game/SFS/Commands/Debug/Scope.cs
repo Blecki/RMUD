@@ -20,7 +20,7 @@ namespace SFS.Commands.Debug
                 .Manual("List all of the objects in scope")
                 .ProceduralRule((match, actor) =>
                 {
-                    foreach (var thing in MudObject.EnumerateVisibleTree(MudObject.FindLocale(actor)))
+                    foreach (var thing in MudObject.EnumerateVisibleTree(FindLocale(actor)))
                         SendMessage(actor, thing.Short + " - " + thing.GetType().Name);
                     return SFS.Rules.PerformResult.Continue;
                 }, "List all the damn things in scope rule.");

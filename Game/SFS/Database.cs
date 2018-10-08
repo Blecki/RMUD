@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SFS
 {
-    public class CompiledDatabase
+    public class Database
     {
         private Dictionary<String, MudObject> NamedObjects = new Dictionary<string, MudObject>();
 

@@ -15,10 +15,10 @@ namespace SFS
         /// <returns>True if the reference point object can 'see' the tested object, false otherwise.</returns>
         public static bool IsVisibleTo(Actor Actor, MudObject Object)
         {
-            var actorLocale = MudObject.FindLocale(Actor);
+            var actorLocale = FindLocale(Actor);
             if (actorLocale == null) return false;
             
-            var objectLocale = MudObject.FindLocale(Object);
+            var objectLocale = FindLocale(Object);
             return System.Object.ReferenceEquals(actorLocale, objectLocale)
                 || System.Object.ReferenceEquals(actorLocale, Object)
                 || System.Object.ReferenceEquals(objectLocale, Actor);

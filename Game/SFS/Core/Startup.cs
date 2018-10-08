@@ -29,6 +29,7 @@ namespace SFS
 
                 DefaultParser = new CommandParser();
 
+                // Find and run every method tagged with the AtStartup attribute.
                 foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
                     foreach (var method in type.GetMethods())
                     {
@@ -40,7 +41,7 @@ namespace SFS
                 InitializeCommandProcessor();
                 GlobalRules.FinalizeNewRules();
 
-                Database = new CompiledDatabase();
+                Database = new Database();
 
                 GlobalRules.ConsiderPerformRule("at startup");
             }

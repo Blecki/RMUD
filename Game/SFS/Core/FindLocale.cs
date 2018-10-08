@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace SFS
 {
-    public partial class MudObject
+    public static partial class Core
     {
         /// <summary>
         /// Find the locale of an object. The locale is the top level room that encloses the object. 

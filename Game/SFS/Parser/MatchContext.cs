@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static SFS.Core;
 
 namespace SFS
 {
@@ -28,7 +29,7 @@ namespace SFS
                 if (CachedObjectsInScope != null) return CachedObjectsInScope;
                 
                 // Exclude the actor whose scope we are calculating from that scope.
-                CachedObjectsInScope = new List<MudObject>(MudObject.EnumerateVisibleTree(MudObject.FindLocale(ExecutingActor)).Where(thing => !Object.ReferenceEquals(thing, ExecutingActor)));
+                CachedObjectsInScope = new List<MudObject>(MudObject.EnumerateVisibleTree(FindLocale(ExecutingActor)).Where(thing => !Object.ReferenceEquals(thing, ExecutingActor)));
 
                 return CachedObjectsInScope;
             }

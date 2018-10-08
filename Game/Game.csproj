@@ -106,19 +106,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SFS\CommandQueue.cs" />
-    <Compile Include="SFS\ExecuteCommand.cs" />
-    <Compile Include="SFS\FindLocale.cs" />
-    <Compile Include="SFS\FormatMessage.cs" />
+    <Compile Include="SFS\Core\CommandQueue.cs" />
+    <Compile Include="SFS\Core\ExecuteCommand.cs" />
+    <Compile Include="SFS\Core\FindLocale.cs" />
+    <Compile Include="SFS\Core\FormatMessage.cs" />
     <Compile Include="SFS\Core\IsVisibleTo.cs" />
     <Compile Include="SFS\ManPages.cs" />
     <Compile Include="SFS\Core\MarkForUpdate.cs" />
-    <Compile Include="SFS\MessageTable.cs" />
+    <Compile Include="SFS\Core\MessageTable.cs" />
     <Compile Include="SFS\Commands\Meta\Alias.cs" />
     <Compile Include="SFS\Commands\Meta\Man.cs" />
     <Compile Include="SFS\Commands\Meta\Version.cs" />
     <Compile Include="SFS\Core\Move.cs" />
-    <Compile Include="SFS\MudCore.cs" />
+    <Compile Include="SFS\Core\Core.cs" />
     <Compile Include="SFS\Core\ObjectContainsObject.cs" />
     <Compile Include="SFS\Parser\ClientCommandHandler.cs" />
     <Compile Include="SFS\Parser\CommandEntry.cs" />
@@ -147,13 +147,12 @@
     <Compile Include="SFS\Parser\Matchers\SingleWordMatcher.cs" />
     <Compile Include="SFS\Parser\ParserCommandHandler.cs" />
     <Compile Include="SFS\Parser\PossibleMatch.cs" />
-    <Compile Include="SFS\PendingMessages.cs" />
+    <Compile Include="SFS\Core\PendingMessages.cs" />
     <Compile Include="SFS\Core\Random.cs" />
     <Compile Include="SFS\Core\SendMessage.cs" />
-    <Compile Include="SFS\StandardMessages.cs" />
-    <Compile Include="SFS\Startup.cs" />
+    <Compile Include="SFS\Core\Startup.cs" />
     <Compile Include="SFS\StringIterator.cs" />
-    <Compile Include="SFS\Time.cs" />
+    <Compile Include="SFS\Core\Lighting.cs" />
     <Compile Include="Game\Database\Bar.cs">
       <LastGenOutput>Bar2.cs</LastGenOutput>
     </Compile>
@@ -164,7 +163,7 @@
     <Compile Include="Game\Database\Player.cs" />
     <Compile Include="Game\Game.cs" />
     <Compile Include="Game\GameInfo.cs" />
-    <Compile Include="HelperExtensions.cs" />
+    <Compile Include="SFS\HelperExtensions.cs" />
     <Compile Include="SFS\Rules\Rule.cs" />
     <Compile Include="SFS\Rules\RuleBook.cs" />
     <Compile Include="SFS\Rules\RuleBuilderGen1.cs">
@@ -196,7 +195,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="SFS\CompiledDatabase.cs" />
+    <Compile Include="SFS\Database.cs" />
     <Compile Include="SFS\Commands\StandardActions\Close.cs" />
     <Compile Include="SFS\WorldModel\Clothing.cs" />
     <Compile Include="SFS\Commands\StandardActions\Messages.cs" />

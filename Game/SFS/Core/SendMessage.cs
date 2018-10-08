@@ -45,7 +45,7 @@ namespace SFS
             if (Core.SilentFlag) return;
             Core.OutputQueryTriggered = true;
 
-            var locale = MudObject.FindLocale(Object) as Container;
+            var locale = FindLocale(Object) as Container;
             if (locale != null)
                 foreach (var actor in locale.EnumerateObjects().OfType<Actor>())
                     if (actor.Listens)
