@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SFS;
+using static SFS.CommandFactory;
 
 namespace SFS.Commands.StandardActions
 {
-    internal class Inventory : CommandFactory
+    internal class Inventory
     {
-        public override void Create(CommandParser Parser)
+        [AtStartup]
+        public static void __()
         {
-            Parser.AddCommand(
+            Core.DefaultParser.AddCommand(
                 Or(
                     KeyWord("INVENTORY"),
                     KeyWord("INV"),
@@ -18,15 +20,12 @@ namespace SFS.Commands.StandardActions
                 .ID("StandardActions:Inventory")
                 .Manual("Displays what you are wearing and carrying.")
                 .Perform("inventory", "ACTOR");
-        }
 
-        public static void AtStartup(SFSRuleEngine GlobalRules)
-        {
             Core.StandardMessage("carrying", "You are carrying..");
 
-            GlobalRules.DeclarePerformRuleBook<Actor>("inventory", "[Actor] : Describes a player's inventory to themselves.", "actor");
+            Core.GlobalRules.DeclarePerformRuleBook<Actor>("inventory", "[Actor] : Describes a player's inventory to themselves.", "actor");
 
-            GlobalRules.Perform<Actor>("inventory")
+            Core.GlobalRules.Perform<Actor>("inventory")
                 .Do(a =>
                 {
                     var heldObjects = a.GetContents(RelativeLocations.Held);

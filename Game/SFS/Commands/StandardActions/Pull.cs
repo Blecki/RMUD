@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SFS;
+using static SFS.CommandFactory;
 
 namespace SFS.Commands.StandardActions
 {
-	internal class Pull : CommandFactory
+	internal class Pull
 	{
-		public override void Create(CommandParser Parser)
-		{
-            Parser.AddCommand(
+        [AtStartup]
+        public static void __()
+        {
+            Core.DefaultParser.AddCommand(
                 Sequence(
                     KeyWord("PULL"),
                     BestScore("SUBJECT",
@@ -28,19 +30,15 @@ namespace SFS.Commands.StandardActions
                 .Perform("pull", "ACTOR", "SUBJECT")
                 .AfterActing()
                 .MarkLocaleForUpdate();
-		}
 
-        public static void AtStartup(SFSRuleEngine GlobalRules)
-        {
+            Core.GlobalRules.DeclareCheckRuleBook<Actor, MudObject>("can pull?", "[Actor, Item] : Can the actor pull the item?", "actor", "item");
+            Core.GlobalRules.DeclarePerformRuleBook<Actor, MudObject>("pull", "[Actor, Item] : Handle the actor pulling the item.", "actor", "item");
 
-            GlobalRules.DeclareCheckRuleBook<Actor, MudObject>("can pull?", "[Actor, Item] : Can the actor pull the item?", "actor", "item");
-            GlobalRules.DeclarePerformRuleBook<Actor, MudObject>("pull", "[Actor, Item] : Handle the actor pulling the item.", "actor", "item");
-
-            GlobalRules.Check<Actor, MudObject>("can pull?")
+            Core.GlobalRules.Check<Actor, MudObject>("can pull?")
                 .Do((actor, item) => MudObject.CheckIsVisibleTo(actor, item))
                 .Name("Item must be visible to pull rule.");
 
-            GlobalRules.Check<Actor, MudObject>("can pull?")
+            Core.GlobalRules.Check<Actor, MudObject>("can pull?")
                 .Last
                 .Do((a, t) => 
                     {
@@ -49,7 +47,7 @@ namespace SFS.Commands.StandardActions
                     })
                 .Name("Default disallow pulling rule.");
 
-            GlobalRules.Perform<Actor, MudObject>("pull")
+            Core.GlobalRules.Perform<Actor, MudObject>("pull")
                 .Do((actor, target) =>
                 {
                     MudObject.SendMessage(actor, "@nothing happens");
@@ -57,7 +55,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Default handle pulling rule.");
 
-            GlobalRules.Check<Actor, Actor>("can pull?")
+            Core.GlobalRules.Check<Actor, Actor>("can pull?")
                 .First
                 .Do((actor, thing) =>
                 {

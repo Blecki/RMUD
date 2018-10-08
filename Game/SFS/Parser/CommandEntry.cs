@@ -8,11 +8,12 @@ namespace SFS
 {
     public class StandardProceduralRules 
     {
-        public static void AtStartup(SFSRuleEngine GlobalRules)
+        [AtStartup]
+        public static void __()
         {
-            GlobalRules.DeclarePerformRuleBook<PossibleMatch, Actor>("before acting", "[Match, Actor] : Considered before performing in world actions.");
+            Core.GlobalRules.DeclarePerformRuleBook<PossibleMatch, Actor>("before acting", "[Match, Actor] : Considered before performing in world actions.");
 
-            GlobalRules.DeclarePerformRuleBook<PossibleMatch, Actor>("after acting", "[Match, Actor] : Considered after performing in world actions.");
+            Core.GlobalRules.DeclarePerformRuleBook<PossibleMatch, Actor>("after acting", "[Match, Actor] : Considered after performing in world actions.");
         }
     }
 
@@ -28,12 +29,10 @@ namespace SFS
         internal StringBuilder GeneratedManual = null;
         internal PerformRuleBook ProceduralRules;
         internal String _ID = "";
-        public String SourceModule { get; internal set; }
         
         public CommandEntry()
         {
             ManualName = "";
-            SourceModule = null;
 
             ManPages.Pages.Add(this);
             GeneratedManual = new StringBuilder();
@@ -246,7 +245,6 @@ namespace SFS
             builder.AppendLine(ManualName);
             builder.AppendLine(Matcher.Emit());
             builder.AppendLine();
-            if (!String.IsNullOrEmpty(SourceModule)) builder.AppendFormat("SOURCE MODULE: {0}\n", SourceModule);
             if (!String.IsNullOrEmpty(_ID)) builder.AppendFormat("ID specified: {0}\n", _ID);
             else builder.Append("NO ID SPECIFIED\n");
             builder.AppendLine();

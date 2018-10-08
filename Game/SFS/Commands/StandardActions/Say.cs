@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SFS;
+using static SFS.CommandFactory;
 
 namespace SFS.Commands.StandardActions
 {
-	internal class Say : CommandFactory
+	internal class Say
 	{
-		public override void Create(CommandParser Parser)
-		{
-			Parser.AddCommand(
+        [AtStartup]
+        public static void __()
+        {
+            Core.DefaultParser.AddCommand(
                 Or(
                     Sequence(
                         Or(
@@ -40,9 +42,8 @@ namespace SFS.Commands.StandardActions
                 .ID("StandardActions:Say")
                 .Manual("Speak within your locale.")
                 .Perform("speak", "ACTOR", "SPEECH");
-
-
-            Parser.AddCommand(
+            
+            Core.DefaultParser.AddCommand(
                 Sequence(
                     Or(
                         KeyWord("EMOTE"),
@@ -51,18 +52,15 @@ namespace SFS.Commands.StandardActions
                 .ID("StandardActions:Emote")
                 .Manual("Perform an action, visible within your locale.")
                 .Perform("emote", "ACTOR", "SPEECH");
-		}
 
-        public static void AtStartup(SFSRuleEngine GlobalRules)
-        {
             Core.StandardMessage("say what", "Say what?");
             Core.StandardMessage("emote what", "You exist. Actually this is an error message, but that's what you just told me to say.");
             Core.StandardMessage("speak", "^<the0> : \"<s1>\"");
             Core.StandardMessage("emote", "^<the0> <s1>");
 
-            GlobalRules.DeclarePerformRuleBook<Actor, String>("speak", "[Actor, Text] : Handle the actor speaking the text.", "actor", "text");
+            Core.GlobalRules.DeclarePerformRuleBook<Actor, String>("speak", "[Actor, Text] : Handle the actor speaking the text.", "actor", "text");
 
-            GlobalRules.Perform<Actor, String>("speak")
+            Core.GlobalRules.Perform<Actor, String>("speak")
                 .Do((actor, text) =>
                 {
                     MudObject.SendLocaleMessage(actor, "@speak", actor, text);
@@ -70,9 +68,9 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Default motormouth rule.");
 
-            GlobalRules.DeclarePerformRuleBook<Actor, String>("emote", "[Actor, Text] : Handle the actor emoting the text.", "actor", "text");
+            Core.GlobalRules.DeclarePerformRuleBook<Actor, String>("emote", "[Actor, Text] : Handle the actor emoting the text.", "actor", "text");
 
-            GlobalRules.Perform<Actor, String>("emote")
+            Core.GlobalRules.Perform<Actor, String>("emote")
                 .Do((actor, text) =>
                 {
                     MudObject.SendLocaleMessage(actor, "@emote", actor, text);

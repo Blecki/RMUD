@@ -4,14 +4,16 @@ using System.Linq;
 using System.Text;
 using SFS;
 using SFS.Rules;
+using static SFS.CommandFactory;
 
 namespace SFS.Commands.StandardActions
 {
-	internal class Wear : CommandFactory
+	internal class Wear
 	{
-        public override void Create(CommandParser Parser)
+        [AtStartup]
+        public static void __()
         {
-            Parser.AddCommand(
+            Core.DefaultParser.AddCommand(
                 Sequence(
                     KeyWord("WEAR"),
                     BestScore("OBJECT",
@@ -22,14 +24,11 @@ namespace SFS.Commands.StandardActions
                 .BeforeActing()
                 .Perform("wear", "ACTOR", "OBJECT")
                 .AfterActing();
-        }
 
-        public static void AtStartup(SFS.SFSRuleEngine GlobalRules)
-        {
-            GlobalRules.DeclareCheckRuleBook<Actor, MudObject>("can wear?", "[Actor, Item] : Can the actor wear the item?", "actor", "item");
-            GlobalRules.DeclarePerformRuleBook<Actor, Clothing>("wear", "[Actor, Item] : Handle the actor wearing the item.", "actor", "item");
+            Core.GlobalRules.DeclareCheckRuleBook<Actor, MudObject>("can wear?", "[Actor, Item] : Can the actor wear the item?", "actor", "item");
+            Core.GlobalRules.DeclarePerformRuleBook<Actor, Clothing>("wear", "[Actor, Item] : Handle the actor wearing the item.", "actor", "item");
 
-            GlobalRules.Check<Actor, MudObject>("can wear?")
+            Core.GlobalRules.Check<Actor, MudObject>("can wear?")
                 .When((a, b) => !MudObject.ObjectContainsObject(a, b))
                 .Do((actor, item) =>
                 {
@@ -37,7 +36,7 @@ namespace SFS.Commands.StandardActions
                     return CheckResult.Disallow;
                 });
 
-            GlobalRules.Check<Actor, Clothing>("can wear?")
+            Core.GlobalRules.Check<Actor, Clothing>("can wear?")
                 .When((a, b) => a.RelativeLocationOf(b) == RelativeLocations.Worn)
                 .Do((a, b) =>
                 {
@@ -45,11 +44,11 @@ namespace SFS.Commands.StandardActions
                     return CheckResult.Disallow;
                 });
 
-            GlobalRules.Check<Actor, Clothing>("can wear?")
+            Core.GlobalRules.Check<Actor, Clothing>("can wear?")
                 .Do((a, b) => CheckResult.Allow)
                 .Name("Default allow wear clothing rule");
 
-            GlobalRules.Check<Actor, MudObject>("can wear?")
+            Core.GlobalRules.Check<Actor, MudObject>("can wear?")
                 .Do((actor, item) =>
                 {
                     MudObject.SendMessage(actor, "@clothing cant wear");
@@ -57,7 +56,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Can't wear unwearable things rule.");
 
-            GlobalRules.Perform<Actor, Clothing>("wear").Do((actor, target) =>
+            Core.GlobalRules.Perform<Actor, Clothing>("wear").Do((actor, target) =>
                 {
                     MudObject.SendMessage(actor, "@clothing you wear", target);
                     MudObject.SendExternalMessage(actor, "@clothing they wear", actor, target);

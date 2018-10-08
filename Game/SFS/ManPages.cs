@@ -35,7 +35,8 @@ namespace SFS
     {
         internal static List<ManPage> Pages = new List<ManPage>();
 
-        internal static void AtStartup()
+        [AtStartup]
+        internal static void __()
         {
             foreach (var type in System.Reflection.Assembly.GetExecutingAssembly().GetTypes())
             {

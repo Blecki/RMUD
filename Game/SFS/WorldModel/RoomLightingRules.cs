@@ -6,19 +6,20 @@ using SFS.Rules;
 
 namespace SFS
 {
-    public static class RoomLightingRules 
+    public static class RoomLightingRules
     {
         public static LightingLevel AmbientExteriorLightingLevel = LightingLevel.Bright;
 
-        public static void AtStartup(SFSRuleEngine GlobalRules)
+        [AtStartup]
+        public static void __()
         {
-            GlobalRules.DeclareValueRuleBook<MudObject, LightingLevel>("light level", "[item] -> LightingLevel, How much light does the item emit?", "item");
+            Core.GlobalRules.DeclareValueRuleBook<MudObject, LightingLevel>("light level", "[item] -> LightingLevel, How much light does the item emit?", "item");
 
-            GlobalRules.Value<MudObject, LightingLevel>("light level")
+            Core.GlobalRules.Value<MudObject, LightingLevel>("light level")
                 .Do(item => LightingLevel.Dark)
                 .Name("Items emit no light by default rule.");
 
-            GlobalRules.Perform<Room>("update")
+            Core.GlobalRules.Perform<Room>("update")
                 .Do(room =>
                 {
                     var light = LightingLevel.Dark;
@@ -29,7 +30,7 @@ namespace SFS
 
                     foreach (var item in MudObject.EnumerateVisibleTree(room))
                     {
-                        var lightingLevel = GlobalRules.ConsiderValueRule<LightingLevel>("light level", item);
+                        var lightingLevel = Core.GlobalRules.ConsiderValueRule<LightingLevel>("light level", item);
                         if (lightingLevel > light) light = lightingLevel;
                     }
 
@@ -42,11 +43,5 @@ namespace SFS
                 })
                 .Name("Update room lighting rule.");
         }
-
-        public static RuleBuilder<MudObject, LightingLevel> ValueLightingLevel(this MudObject Object)
-        {
-            return Object.Value<MudObject, LightingLevel>("light level").ThisOnly();
-        }
-
     }
 }

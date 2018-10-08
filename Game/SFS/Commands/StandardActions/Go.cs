@@ -4,14 +4,16 @@ using System.Linq;
 using System.Text;
 using SFS;
 using SFS.Rules;
+using static SFS.CommandFactory;
 
 namespace SFS.Commands.StandardActions
 {
-	internal class Go : CommandFactory
+	internal class Go
 	{
-		public override void Create(CommandParser Parser)
-		{
-            Parser.AddCommand(
+		[AtStartup]
+        public static void __()
+        {
+            Core.DefaultParser.AddCommand(
                 FirstOf(
                     Sequence(
                         KeyWord("GO"),
@@ -36,10 +38,7 @@ namespace SFS.Commands.StandardActions
                     Core.MarkLocaleForUpdate(match["LINK"] as MudObject);
                     return PerformResult.Continue;
                 }, "Mark both sides of link for update rule");
-		}
 
-        public static void AtStartup(SFS.SFSRuleEngine GlobalRules)
-        {
             Core.StandardMessage("unmatched cardinal", "What way was that?");
             Core.StandardMessage("go to null link", "You can't go that way.");
             Core.StandardMessage("go to closed door", "The door is closed.");
@@ -49,9 +48,9 @@ namespace SFS.Commands.StandardActions
             Core.StandardMessage("they arrive", "^<the0> arrives <s1>.");
             Core.StandardMessage("first opening", "[first opening <the0>]");
 
-            GlobalRules.DeclareCheckRuleBook<Actor, Portal>("can go?", "[Actor, Link] : Can the actor go through that link?", "actor", "link");
+            Core.GlobalRules.DeclareCheckRuleBook<Actor, Portal>("can go?", "[Actor, Link] : Can the actor go through that link?", "actor", "link");
 
-            GlobalRules.Check<Actor, Portal>("can go?")
+            Core.GlobalRules.Check<Actor, Portal>("can go?")
                 .When((actor, link) => link == null)
                 .Do((actor, link) =>
                 {
@@ -60,7 +59,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("No link found rule.");
 
-            GlobalRules.Check<Actor, Door>("can go?")
+            Core.GlobalRules.Check<Actor, Door>("can go?")
                 .When((actor, link) => link != null && !link.Open)
                 .Do((actor, link) =>
                 {
@@ -72,13 +71,13 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Try opening a closed door first rule.");
 
-            GlobalRules.Check<Actor, Portal>("can go?")
+            Core.GlobalRules.Check<Actor, Portal>("can go?")
                 .Do((actor, link) => CheckResult.Allow)
                 .Name("Default can go rule.");
 
-            GlobalRules.DeclarePerformRuleBook<Actor, Portal>("go", "[Actor, Link] : Handle the actor going through the link.", "actor", "link");
+            Core.GlobalRules.DeclarePerformRuleBook<Actor, Portal>("go", "[Actor, Link] : Handle the actor going through the link.", "actor", "link");
 
-            GlobalRules.Perform<Actor, Portal>("go")
+            Core.GlobalRules.Perform<Actor, Portal>("go")
                 .Do((actor, link) =>
                 {
                     var direction = link.Direction;
@@ -88,7 +87,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Report leaving rule.");
 
-            GlobalRules.Perform<Actor, Portal>("go")
+            Core.GlobalRules.Perform<Actor, Portal>("go")
                 .Do((actor, link) =>
                 {
                     var destination = MudObject.GetObject(link.Destination) as Container;
@@ -102,7 +101,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Move through the link rule.");
 
-            GlobalRules.Perform<Actor, Portal>("go")
+            Core.GlobalRules.Perform<Actor, Portal>("go")
                 .Do((actor, link) =>
                 {
                     var direction = link.Direction;
@@ -112,7 +111,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Report arrival rule.");
 
-            GlobalRules.Perform<Actor, Portal>("go")
+            Core.GlobalRules.Perform<Actor, Portal>("go")
                 .When((actor, link) => actor.Listens)
                 .Do((actor, link) =>
                 {

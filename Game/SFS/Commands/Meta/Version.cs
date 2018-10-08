@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static SFS.CommandFactory;
 
 namespace SFS.Commands.Meta
 {
-	internal class Version : CommandFactory
+	internal class Version
 	{
-		public override void Create(CommandParser Parser)
+        [AtStartup]
+		public static void __()
 		{
             Core.StandardMessage("version", "Build: Sharp Fiction System pre-alpha <s0>");
             Core.StandardMessage("commit", "Commit: <s0>");
             Core.StandardMessage("no commit", "Commit version not found.");
 
-            Parser.AddCommand(
+            Core.DefaultParser.AddCommand(
                 Or(
                     KeyWord("VERSION"),
                     KeyWord("VER")))

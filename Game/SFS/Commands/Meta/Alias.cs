@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SFS;
+using static SFS.CommandFactory;
 
 namespace SFS.Commands.Meta
 {
-	internal class Alias : CommandFactory
+	internal class Alias
 	{
         //Todo: PERSIST
         internal static Dictionary<String, String> Aliases = new Dictionary<string, string>();
 
-        public override void Create(CommandParser Parser)
+        [AtStartup]
+        public static void __()
         {
-            Parser.AddCommand(
+            Core.DefaultParser.AddCommand(
                 Sequence(
                     KeyWord("ALIAS"),
                     SingleWord("NAME"),
@@ -26,7 +28,7 @@ namespace SFS.Commands.Meta
                     return SFS.Rules.PerformResult.Continue;
                 });
 
-            Parser.AddCommand(
+            Core.DefaultParser.AddCommand(
                 Generic((match, context) =>
                 {   
                     var r = new List<PossibleMatch>();

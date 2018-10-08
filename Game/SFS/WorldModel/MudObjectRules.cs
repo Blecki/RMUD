@@ -7,11 +7,12 @@ namespace SFS
 {
     public class MudObjectRules 
     {
-        public static void AtStartup(SFSRuleEngine GlobalRules)
+        [AtStartup]
+        public static void __()
         {
-            GlobalRules.DeclareValueRuleBook<Actor, MudObject, String, String>("printed name", "[Viewer, Object, Article -> String] : Find the name that should be displayed for an object.", "actor", "item", "article");
+            Core.GlobalRules.DeclareValueRuleBook<Actor, MudObject, String, String>("printed name", "[Viewer, Object, Article -> String] : Find the name that should be displayed for an object.", "actor", "item", "article");
 
-            GlobalRules.Value<Actor, MudObject, String, String>("printed name")
+            Core.GlobalRules.Value<Actor, MudObject, String, String>("printed name")
                .Last
                .Do((viewer, thing, article) => (String.IsNullOrEmpty(article) ? (thing.Short) : (article + " " + thing.Short)))
                .Name("Default name of a thing.");

@@ -4,34 +4,32 @@ using System.Linq;
 using System.Text;
 using SFS;
 using SFS.Rules;
+using static SFS.CommandFactory;
 
 namespace SFS.Commands.StandardActions
 {
-	internal class OpenClose : CommandFactory
+	internal class OpenClose
 	{
-		public override void Create(CommandParser Parser)
-		{
-            Parser.AddCommand(
+        [AtStartup]
+        public static void __()
+        {
+            Core.DefaultParser.AddCommand(
                 Sequence(
                     KeyWord("CLOSE"),
                     BestScore("SUBJECT",
                         MustMatch("@not here",
                             Object("SUBJECT", InScope, (actor, thing) =>
-                                {
-                                    if (Core.GlobalRules.ConsiderCheckRuleSilently("can close?", actor, thing) == CheckResult.Allow) return MatchPreference.Likely;
-                                    return MatchPreference.Unlikely;
-                                })))))
+                            {
+                                if (Core.GlobalRules.ConsiderCheckRuleSilently("can close?", actor, thing) == CheckResult.Allow) return MatchPreference.Likely;
+                                return MatchPreference.Unlikely;
+                            })))))
                 .ID("StandardActions:Close")
                 .Manual("Closes a thing.")
                 .Check("can close?", "ACTOR", "SUBJECT")
                 .BeforeActing()
                 .Perform("close", "ACTOR", "SUBJECT")
                 .AfterActing();
-		}
 
-        [AtStartup]
-        public static void AtStartup()
-        {
             Core.StandardMessage("you close", "You close <the0>.");
             Core.StandardMessage("they close", "^<the0> closes <the1>.");
 

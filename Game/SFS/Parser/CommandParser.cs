@@ -11,7 +11,6 @@ namespace SFS
     public partial class CommandParser
     {
 		internal List<CommandEntry> Commands = new List<CommandEntry>();
-        internal String ModuleBeingInitialized = null;
 
         public IEnumerable<CommandEntry> EnumerateCommands()
         {
@@ -22,7 +21,6 @@ namespace SFS
         public CommandEntry AddCommand(CommandTokenMatcher Matcher)
         {
             var Entry = new CommandEntry { Matcher = Matcher };
-            Entry.SourceModule = ModuleBeingInitialized;
             Entry.ManualName = Matcher.FindFirstKeyWord();
             Commands.Add(Entry);
             return Entry;

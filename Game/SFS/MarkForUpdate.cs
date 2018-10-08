@@ -9,11 +9,12 @@ namespace SFS
 {
     public class UpdateRules
     {
-        public static void AtStartup(SFSRuleEngine GlobalRules)
+        [AtStartup]
+        public static void __()
         {
-            GlobalRules.DeclarePerformRuleBook<MudObject>("update", "[Thing] : Considered for all things that have been marked for update.", "item");
+            Core.GlobalRules.DeclarePerformRuleBook<MudObject>("update", "[Thing] : Considered for all things that have been marked for update.", "item");
 
-            GlobalRules.Perform<MudObject>("after every command")
+            Core.GlobalRules.Perform<MudObject>("after every command")
                 .First
                 .Do((actor) =>
                     {
@@ -22,7 +23,7 @@ namespace SFS
                     })
                 .Name("Update marked objects at end of turn rule.");
 
-            GlobalRules.Perform<MudObject>("after every command")
+            Core.GlobalRules.Perform<MudObject>("after every command")
                 .Last
                 .Do((actor) =>
                     {

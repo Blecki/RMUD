@@ -94,16 +94,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="SFS\Commands\Admin\Cons.cs" />
-    <Compile Include="SFS\Commands\Admin\DumpMessages.cs" />
-    <Compile Include="SFS\Commands\Admin\Force.cs" />
-    <Compile Include="SFS\Commands\Admin\Inspect.cs" />
-    <Compile Include="SFS\Commands\Admin\Instance.cs" />
-    <Compile Include="SFS\Commands\Admin\Move.cs" />
-    <Compile Include="SFS\Commands\Admin\Rules.cs" />
-    <Compile Include="SFS\Commands\Admin\Scope.cs" />
-    <Compile Include="SFS\Commands\Admin\Set.cs" />
-    <Compile Include="SFS\Commands\Admin\Sonar.cs">
+    <Compile Include="SFS\Commands\Debug\Cons.cs" />
+    <Compile Include="SFS\Commands\Debug\DumpMessages.cs" />
+    <Compile Include="SFS\Commands\Debug\Force.cs" />
+    <Compile Include="SFS\Commands\Debug\Inspect.cs" />
+    <Compile Include="SFS\Commands\Debug\Move.cs" />
+    <Compile Include="SFS\Commands\Debug\Rules.cs" />
+    <Compile Include="SFS\Commands\Debug\Scope.cs" />
+    <Compile Include="SFS\Commands\Debug\Set.cs" />
+    <Compile Include="SFS\Commands\Debug\Sonar.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="App.xaml.cs">
@@ -114,7 +113,6 @@
     <Compile Include="SFS\ExecuteCommand.cs" />
     <Compile Include="SFS\FindLocale.cs" />
     <Compile Include="SFS\FormatMessage.cs" />
-    <Compile Include="SFS\Heartbeat.cs" />
     <Compile Include="SFS\IsVisibleTo.cs" />
     <Compile Include="SFS\ManPages.cs" />
     <Compile Include="SFS\MarkForUpdate.cs" />
@@ -161,7 +159,6 @@
     <Compile Include="SFS\Startup.cs" />
     <Compile Include="SFS\StringIterator.cs" />
     <Compile Include="SFS\Time.cs" />
-    <Compile Include="SFS\WorldDataService.cs" />
     <Compile Include="Game\Database\Bar.cs">
       <LastGenOutput>Bar2.cs</LastGenOutput>
     </Compile>
@@ -206,7 +203,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="SFS\CompiledDatabase.cs" />
-    <Compile Include="SFS\Driver.cs" />
     <Compile Include="SFS\Commands\StandardActions\Close.cs" />
     <Compile Include="SFS\WorldModel\Clothing.cs" />
     <Compile Include="SFS\Commands\StandardActions\Clothing\Messages.cs" />
@@ -246,7 +242,6 @@
     <Compile Include="SFS\WorldModel\RelativeLocations.cs" />
     <Compile Include="SFS\WorldModel\RoomLightingRules.cs" />
     <Compile Include="SFS\WorldModel\RoomType.cs" />
-    <Compile Include="SFS\WorldModel\Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindow.xaml.cs">

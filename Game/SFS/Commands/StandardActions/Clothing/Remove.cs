@@ -4,14 +4,16 @@ using System.Linq;
 using System.Text;
 using SFS;
 using SFS.Rules;
+using static SFS.CommandFactory;
 
 namespace SFS.Commands.StandardActions
 {
-	internal class Remove : CommandFactory
+	internal class Remove
 	{
-        public override void Create(CommandParser Parser)
+        [AtStartup]
+        public static void __()
         {
-            Parser.AddCommand(
+            Core.DefaultParser.AddCommand(
                 Sequence(
                     KeyWord("REMOVE"),
                     BestScore("OBJECT",
@@ -22,24 +24,21 @@ namespace SFS.Commands.StandardActions
                 .BeforeActing()
                 .Perform("remove", "ACTOR", "OBJECT")
                 .AfterActing();
-        }
 
-        public static void AtStartup(SFS.SFSRuleEngine GlobalRules)
-        {
-            GlobalRules.DeclareCheckRuleBook<Actor, Clothing>("can remove?", "[Actor, Item] : Can the actor remove the item?", "actor", "item");
-            GlobalRules.DeclarePerformRuleBook<Actor, Clothing>("remove", "[Actor, Item] : Handle the actor removing the item.", "actor", "item");
+            Core.GlobalRules.DeclareCheckRuleBook<Actor, Clothing>("can remove?", "[Actor, Item] : Can the actor remove the item?", "actor", "item");
+            Core.GlobalRules.DeclarePerformRuleBook<Actor, Clothing>("remove", "[Actor, Item] : Handle the actor removing the item.", "actor", "item");
 
-            GlobalRules.Check<Actor, Clothing>("can remove?")
+            Core.GlobalRules.Check<Actor, Clothing>("can remove?")
                 .When((a, b) => !a.Contains(b, RelativeLocations.Worn))
                 .Do((actor, item) =>
                 {
                     MudObject.SendMessage(actor, "@clothing not wearing");
                     return CheckResult.Disallow;
                 });
-           
-            GlobalRules.Check<Actor, Clothing>("can remove?").Do((a, b) => CheckResult.Allow);
 
-            GlobalRules.Perform<Actor, Clothing>("remove").Do((actor, target) =>
+            Core.GlobalRules.Check<Actor, Clothing>("can remove?").Do((a, b) => CheckResult.Allow);
+
+            Core.GlobalRules.Perform<Actor, Clothing>("remove").Do((actor, target) =>
                 {
                     MudObject.SendMessage(actor, "@clothing you remove", target);
                     MudObject.SendExternalMessage(actor, "@clothing they remove", actor, target);

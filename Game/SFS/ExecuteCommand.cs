@@ -77,13 +77,14 @@ namespace SFS
 
     public class BeforeAndAfterCommandRules 
     {
-        public static void AtStartup(SFSRuleEngine GlobalRules)
+        [AtStartup]
+        public static void __()
         {
-            GlobalRules.DeclarePerformRuleBook<PossibleMatch, MudObject>("before command", "[Match, Actor] : Considered before every command's procedural rules are run.", "match", "actor");
+            Core.GlobalRules.DeclarePerformRuleBook<PossibleMatch, MudObject>("before command", "[Match, Actor] : Considered before every command's procedural rules are run.", "match", "actor");
 
-            GlobalRules.DeclarePerformRuleBook<PossibleMatch, MudObject>("after command", "[Match, Actor] : Considered after every command's procedural rules are run, unless the before command rules stopped the command.", "match", "actor");
+            Core.GlobalRules.DeclarePerformRuleBook<PossibleMatch, MudObject>("after command", "[Match, Actor] : Considered after every command's procedural rules are run, unless the before command rules stopped the command.", "match", "actor");
 
-            GlobalRules.DeclarePerformRuleBook<MudObject>("after every command", "[Actor] : Considered after every command, even if earlier rules stopped the command.", "actor");
+            Core.GlobalRules.DeclarePerformRuleBook<MudObject>("after every command", "[Actor] : Considered after every command, even if earlier rules stopped the command.", "actor");
         }
     }
 }

@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static SFS.CommandFactory;
 
 namespace SFS.Commands.Meta
 {
-	internal class Man : CommandFactory
+	internal class Man
 	{
-		public override void Create(CommandParser Parser)
+        [AtStartup]
+        public static void __()
 		{
             Core.StandardMessage("help topics", "Available help topics");
             Core.StandardMessage("no help topic", "There is no help available for that topic.");
 
-            Parser.AddCommand(
+            Core.DefaultParser.AddCommand(
                 Sequence(
                     Or(
                         KeyWord("HELP"),

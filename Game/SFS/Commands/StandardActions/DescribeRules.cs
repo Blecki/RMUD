@@ -9,7 +9,8 @@ namespace SFS.Commands.StandardActions
 {
     internal static class DescribeRules
     {
-        public static void AtStartup(SFS.SFSRuleEngine GlobalRules)
+        [AtStartup]
+        public static void __()
         {
             Core.StandardMessage("is open", "^<the0> is open.");
             Core.StandardMessage("is closed", "^<the0> is closed.");
@@ -18,9 +19,9 @@ namespace SFS.Commands.StandardActions
             Core.StandardMessage("empty handed", "^<the0> is empty handed.");
             Core.StandardMessage("holding", "^<the0> is holding <l1>.");
 
-            GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("describe", "[Actor, Item] : Generates descriptions of the item.", "actor", "item");
-                 
-            GlobalRules.Perform<Actor, MudObject>("describe")
+            Core.GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("describe", "[Actor, Item] : Generates descriptions of the item.", "actor", "item");
+
+            Core.GlobalRules.Perform<Actor, MudObject>("describe")
                 .When((viewer, item) => !String.IsNullOrEmpty(item.Long))
                 .Do((viewer, item) =>
                 {
@@ -42,7 +43,7 @@ namespace SFS.Commands.StandardActions
             //    })
             //    .Name("Describe open or closed state rule.");
 
-            GlobalRules.Perform<Actor, Container>("describe")
+            Core.GlobalRules.Perform<Actor, Container>("describe")
                 .When((viewer, item) => (item.LocationsSupported & RelativeLocations.On) == RelativeLocations.On)
                 .Do((viewer, item) =>
                 {
@@ -53,7 +54,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("List things on container in description rule.");
 
-            GlobalRules.Perform<Actor, OpenableContainer>("describe")
+            Core.GlobalRules.Perform<Actor, OpenableContainer>("describe")
                 .When((viewer, item) =>
                     {
                         if (!item.Open) return false;
@@ -70,7 +71,7 @@ namespace SFS.Commands.StandardActions
                 .Name("List things in open container in description rule.");
 
 
-            GlobalRules.Perform<Actor, Actor>("describe")
+            Core.GlobalRules.Perform<Actor, Actor>("describe")
                 .First
                 .Do((viewer, actor) =>
                 {

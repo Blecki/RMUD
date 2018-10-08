@@ -9,7 +9,8 @@ namespace SFS.Commands.StandardActions
 {
     public class ClothingMessages 
     {
-        public static void AtStartup(SFSRuleEngine GlobalRules)
+        [AtStartup]
+        public static void __()
         {
             Core.StandardMessage("clothing nude", "You are naked.");
             Core.StandardMessage("clothing wearing", "You are wearing..");

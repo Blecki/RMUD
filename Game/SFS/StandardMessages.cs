@@ -10,7 +10,8 @@ namespace SFS
 {
     internal static class StandardMessages
     {
-        public static void AtStartup(SFSRuleEngine GlobalRules)
+        [AtStartup]
+        public static void __()
         {
             Core.StandardMessage("not here", "I don't see that here.");
             Core.StandardMessage("gone", "The doesn't seem to be here any more.");

@@ -17,35 +17,40 @@ using System.Linq;
 using System.Text;
 using SFS;
 using SFS.Rules;
+using static SFS.CommandFactory;
 
 namespace SFS.Commands.StandardActions
 {
     // The engine will automatically discover every CommandFactory when it loads the module, and call
     // Create on them.
-    internal class PushBetweenRooms : CommandFactory
+    internal class PushBetweenRooms
 	{
-		public override void Create(CommandParser Parser)
-		{
-            // The engine has passed us the default parser. We want to add the command to it.
+
+        // Any function with this attribute will be called when the module is loaded. This is our chance to
+        // do anything we want, but usually all we'll do is define some rules.
+        [AtStartup]
+        public static void __()
+        {
+            // The engine has a default parser already. We want to add the command to it.
             // The command should follow the form 'push [object] [direction]'. CommandFactory defines
             // a bunch of functions to generate matchers. Calling 'KeyWord(...)' is equivilent to 
             // 'new SFS.Matchers.KeyWord(...)'. It's minor, but makes things far more readable.
             // The actual parser operates on a list of words, with each piece matching or failing.
             // Each matcher returns a set of possible matches.
-            Parser.AddCommand(
+            Core.DefaultParser.AddCommand(
                 Sequence(      // Attemps to match a set of matchers in sequence.
                     KeyWord("PUSH"), // Is the word 'push'? Yes -> match. No -> Fail.
                     BestScore("SUBJECT", // Match the child, and choose the subset of possible matches that are best.
                         MustMatch("@not here", // If the child doesn't match, go ahead and report an error.
                             Object("SUBJECT", InScope))), // Match a mud object. "SUBJECT" is the argument we store it in, InScope is the source of the objects.
                     MustMatch("@unmatched cardinal", Cardinal("DIRECTION")))) // Finally, match a cardinal direction.
-                // With the matcher itself built, the call to AddCommand is over. AddCommand return a 
-                // command building object with a fluent interface.
+                                                                              // With the matcher itself built, the call to AddCommand is over. AddCommand return a 
+                                                                              // command building object with a fluent interface.
 
                 // Commands need an ID string so that they can be invoked by rules. For an example, take a look at
                 // the go command, which attempts to open closed doors before going.
                 .ID("StandardActions:Push")
-                
+
                 // Lets attach some help documentation to the command.
                 .Manual("Push objects from room to room.")
 
@@ -68,7 +73,7 @@ namespace SFS.Commands.StandardActions
                     // Procedural rules return PerformResults. If they return stop, the command stops right there.
                     return PerformResult.Continue;
                 }, "lookup link rule") // We can also name procedural rules. This is always a good idea, as the
-                // name will help with debugging the rules later.
+                                       // name will help with debugging the rules later.
 
                 // Pushing between rooms is also going, so we want to make sure the player can go that direction.
                 // The command builder type provides the 'Check' function which adds a procedural rule to invoke
@@ -108,13 +113,8 @@ namespace SFS.Commands.StandardActions
                     Core.MarkLocaleForUpdate(match["LINK"] as MudObject);
                     return PerformResult.Continue;
                 }, "Mark both sides of link for update rule"); // Hey the command is finally done.
-		}
 
-        // Any function with this signature will be called when the module is loaded. This is our chance to
-        // do anything we want, but usually all we'll do is define some rules. We used some rulebooks above,
-        // now we have to actually define them.
-        public static void AtStartup(SFS.SFSRuleEngine GlobalRules)
-        {
+ 
             // Lets start by defining some messages we'll use later. This commentary isn't about the message
             // formatting system, but lets still do this 'right'.
             Core.StandardMessage("can't push direction", "That isn't going to work.");
@@ -127,12 +127,12 @@ namespace SFS.Commands.StandardActions
             // expects as generic arguments, then the name of the rulebook. The documentation is helpful but
             // not required. This rulebook takes three mud objects. Their usage is documented in the rulebook
             // description.
-            GlobalRules.DeclareCheckRuleBook<Actor, MudObject, Portal>("can push direction?", "[Actor, Subject, Link] : Can the actor push the subject through that link?", "actor", "subject", "link");
+            Core.GlobalRules.DeclareCheckRuleBook<Actor, MudObject, Portal>("can push direction?", "[Actor, Subject, Link] : Can the actor push the subject through that link?", "actor", "subject", "link");
 
             // Now we want to define a global rule in the 'can push direction?' rulebook. Rulebooks do not have
             // to be declared before rules are defined, but it's good style. The Check function returns a 
             // rulebuilder, which provides a fluent interface for declaring rules.
-            GlobalRules.Check<Actor, MudObject, Portal>("can push direction?")
+            Core.GlobalRules.Check<Actor, MudObject, Portal>("can push direction?")
                 // Do expects a lambda, and lets us specify what the rule should actually do.
                 .Do((actor, subject, link) =>
                 {
@@ -146,10 +146,10 @@ namespace SFS.Commands.StandardActions
             // now - I think you've got the idea of how this works. These rules will be invoked by the command
             // in the order they are declared. We could smush them all into one rule, but that would be
             // poor style maybe.
-            GlobalRules.DeclarePerformRuleBook<Actor, MudObject, Portal>("push direction", "[Actor, Subject, Link] : Handle the actor pushing the subject through the link.", "actor", "subject", "link");
+            Core.GlobalRules.DeclarePerformRuleBook<Actor, MudObject, Portal>("push direction", "[Actor, Subject, Link] : Handle the actor pushing the subject through the link.", "actor", "subject", "link");
 
             // First we want to report the action to the player and any other players that happen to be around.
-            GlobalRules.Perform<Actor, MudObject, Portal>("push direction")
+            Core.GlobalRules.Perform<Actor, MudObject, Portal>("push direction")
                 .Do((actor, subject, link) =>
                 {
                     var direction = link.Direction;
@@ -163,7 +163,7 @@ namespace SFS.Commands.StandardActions
                 .Name("Report pushing between rooms rule.");
 
             // Now we want to actually move the player, and the object they are pushing.
-            GlobalRules.Perform<Actor, MudObject, Portal>("push direction")
+            Core.GlobalRules.Perform<Actor, MudObject, Portal>("push direction")
                 .Do((actor, subject, link) =>
                 {
                     var destination = MudObject.GetObject(link.Destination) as Container;
@@ -181,7 +181,7 @@ namespace SFS.Commands.StandardActions
 
             // For most actions that's enough. But in this case, we want to let players in the room the
             // actor went to know they have arrived.
-            GlobalRules.Perform<Actor, MudObject, Portal>("push direction")
+            Core.GlobalRules.Perform<Actor, MudObject, Portal>("push direction")
                 .Do((actor, subject, link) =>
                 {
                     var direction = link.Direction;
@@ -192,7 +192,7 @@ namespace SFS.Commands.StandardActions
                 .Name("Report arrival while pushing rule.");
 
             // And finally, lets make sure the player gets a description of the room they have arrived in.
-            GlobalRules.Perform<Actor, MudObject, Portal>("push direction")
+            Core.GlobalRules.Perform<Actor, MudObject, Portal>("push direction")
                 .Do((actor, subject, link) =>
                 {
                     // We set the 'auto' flag to let the look command know it's been generated, and not

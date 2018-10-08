@@ -4,14 +4,16 @@ using System.Linq;
 using System.Text;
 using SFS;
 using SFS.Rules;
+using static SFS.CommandFactory;
 
 namespace SFS.Commands.StandardActions
 {
-    internal class Drop : CommandFactory
+    internal class Drop
     {
-        public override void Create(CommandParser Parser)
+        [AtStartup]
+        public static void __()
         {
-            Parser.AddCommand(
+            Core.DefaultParser.AddCommand(
                 Sequence(
                     KeyWord("DROP"),
                     BestScore("SUBJECT",
@@ -23,17 +25,14 @@ namespace SFS.Commands.StandardActions
                 .BeforeActing()
                 .Perform("drop", "ACTOR", "SUBJECT")
                 .AfterActing();
-        }
 
-        public static void AtStartup(SFS.SFSRuleEngine GlobalRules)
-        {
             Core.StandardMessage("you drop", "You drop <the0>.");
             Core.StandardMessage("they drop", "^<the0> drops <a1>.");
 
-            GlobalRules.DeclareCheckRuleBook<Actor, MudObject>("can drop?", "[Actor, Item] : Determine if the item can be dropped.", "actor", "item");
-            GlobalRules.DeclarePerformRuleBook<Actor, MudObject>("drop", "[Actor, Item] : Handle an item being dropped.", "actor", "item");
+            Core.GlobalRules.DeclareCheckRuleBook<Actor, MudObject>("can drop?", "[Actor, Item] : Determine if the item can be dropped.", "actor", "item");
+            Core.GlobalRules.DeclarePerformRuleBook<Actor, MudObject>("drop", "[Actor, Item] : Handle an item being dropped.", "actor", "item");
 
-            GlobalRules.Check<Actor, MudObject>("can drop?")
+            Core.GlobalRules.Check<Actor, MudObject>("can drop?")
                 .First
                 .When((actor, item) => !MudObject.ObjectContainsObject(actor, item))
                 .Do((actor, item) =>
@@ -43,23 +42,23 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Must be holding it to drop it rule.");
 
-            GlobalRules.Check<Actor, MudObject>("can drop?")
+            Core.GlobalRules.Check<Actor, MudObject>("can drop?")
                 .First
                 .When((actor, item) => actor.Contains(item, RelativeLocations.Worn))
                 .Do((actor, item) =>
                 {
-                    if (GlobalRules.ConsiderCheckRule("can remove?", actor, item) == CheckResult.Allow)
+                    if (Core.GlobalRules.ConsiderCheckRule("can remove?", actor, item) == CheckResult.Allow)
                     {
-                        GlobalRules.ConsiderPerformRule("remove", actor, item);
+                        Core.GlobalRules.ConsiderPerformRule("remove", actor, item);
                         return CheckResult.Continue;
                     }
                     return CheckResult.Disallow;
                 })
                 .Name("Dropping worn items follows remove rules rule.");
 
-            GlobalRules.Check<Actor, MudObject>("can drop?").Do((a, b) => CheckResult.Allow).Name("Default can drop anything rule.");
+            Core.GlobalRules.Check<Actor, MudObject>("can drop?").Do((a, b) => CheckResult.Allow).Name("Default can drop anything rule.");
 
-            GlobalRules.Perform<Actor, MudObject>("drop").Do((actor, target) =>
+            Core.GlobalRules.Perform<Actor, MudObject>("drop").Do((actor, target) =>
             {
                 MudObject.SendMessage(actor, "@you drop", target);
                 MudObject.SendExternalMessage(actor, "@they drop", actor, target);

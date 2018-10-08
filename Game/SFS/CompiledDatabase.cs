@@ -4,18 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SFS.SinglePlayer
+namespace SFS
 {
-    public class CompiledDatabase : SFS.WorldDataService
+    public class CompiledDatabase
     {
-        System.Reflection.Assembly SourceAssembly;
+        private Dictionary<String, MudObject> NamedObjects = new Dictionary<string, MudObject>();
 
-        public CompiledDatabase(System.Reflection.Assembly SourceAssembly)
-        {
-            this.SourceAssembly = SourceAssembly;
-        }
-
-        override public SFS.MudObject GetObject(string Path)
+        public SFS.MudObject GetObject(string Path)
         {
             MudObject r = null;
 
@@ -23,7 +18,7 @@ namespace SFS.SinglePlayer
                 r = NamedObjects[Path];
             else
             {
-                var type = SourceAssembly.GetType(Path);
+                var type = System.Reflection.Assembly.GetExecutingAssembly().GetType(Path);
                 if (type == null) return null;
                 r = Activator.CreateInstance(type) as MudObject;
                 if (r != null)
@@ -38,15 +33,6 @@ namespace SFS.SinglePlayer
                 MudObject.InitializeObject(r);
 
             return r;
-        }
-
-        override public void Initialize()
-        {
-            Core.SettingsObject = new Settings();
-            var settings = GetObject("settings") as Settings;
-            if (settings == null) { }// Core.LogError("No settings object found in database. Using default settings.");
-            else Core.SettingsObject = settings;
-            NamedObjects.Clear();           
         }
     }
 }

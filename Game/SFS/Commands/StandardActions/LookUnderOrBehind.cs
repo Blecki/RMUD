@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SFS;
+using static SFS.CommandFactory;
 
 namespace SFS.Commands.StandardActions
 {
-    internal class LookUnderOrBehind : CommandFactory
+    internal class LookUnderOrBehind
     {
-        public override void Create(CommandParser Parser)
+        [AtStartup]
+        public static void __()
         {
-            Parser.AddCommand(
+            Core.DefaultParser.AddCommand(
                 Sequence(
                     Or(
                         KeyWord("LOOK"),
@@ -21,22 +23,19 @@ namespace SFS.Commands.StandardActions
                 .Manual("Lists object that are in, on, under, or behind the object specified.")
                 .Check("can look relloc?", "ACTOR", "OBJECT", "RELLOC")
                 .Perform("look relloc", "ACTOR", "OBJECT", "RELLOC");
-        }
 
-        public static void AtStartup(SFSRuleEngine GlobalRules)
-        {
             Core.StandardMessage("cant look relloc", "You can't look <s0> that.");
             Core.StandardMessage("is closed error", "^<the0> is closed.");
             Core.StandardMessage("relloc it is", "^<s0> <the1> is..");
             Core.StandardMessage("nothing relloc it", "There is nothing <s0> <the1>.");
 
-            GlobalRules.DeclareCheckRuleBook<Actor, Container, RelativeLocations>("can look relloc?", "[Actor, Item, Relative Location] : Can the actor look in/on/under/behind the item?", "actor", "item", "relloc");
+            Core.GlobalRules.DeclareCheckRuleBook<Actor, Container, RelativeLocations>("can look relloc?", "[Actor, Item, Relative Location] : Can the actor look in/on/under/behind the item?", "actor", "item", "relloc");
 
-            GlobalRules.Check<Actor, Container, RelativeLocations>("can look relloc?")
+            Core.GlobalRules.Check<Actor, Container, RelativeLocations>("can look relloc?")
                 .Do((actor, item, relloc) => MudObject.CheckIsVisibleTo(actor, item))
                 .Name("Container must be visible rule.");
 
-            GlobalRules.Check<Actor, Container, RelativeLocations>("can look relloc?")
+            Core.GlobalRules.Check<Actor, Container, RelativeLocations>("can look relloc?")
                 .When((actor, item, relloc) => (item.LocationsSupported & relloc) != relloc)
                 .Do((actor, item, relloc) =>
                 {
@@ -45,7 +44,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Container must support relloc rule.");
 
-            GlobalRules.Check<Actor, OpenableContainer, RelativeLocations>("can look relloc?")
+            Core.GlobalRules.Check<Actor, OpenableContainer, RelativeLocations>("can look relloc?")
                 .When((actor, item, relloc) => (relloc == RelativeLocations.In) && !item.Open)
                 .Do((actor, item, relloc) =>
                 {
@@ -54,13 +53,13 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Container must be open to look in rule.");
 
-            GlobalRules.Check<Actor, Container, RelativeLocations>("can look relloc?")
+            Core.GlobalRules.Check<Actor, Container, RelativeLocations>("can look relloc?")
                 .Do((actor, item, relloc) => SFS.Rules.CheckResult.Allow)
                 .Name("Default allow looking relloc rule.");
 
-            GlobalRules.DeclarePerformRuleBook<Actor, Container, RelativeLocations>("look relloc", "[Actor, Item, Relative Location] : Handle the actor looking on/under/in/behind the item.", "actor", "item", "relloc");
+            Core.GlobalRules.DeclarePerformRuleBook<Actor, Container, RelativeLocations>("look relloc", "[Actor, Item, Relative Location] : Handle the actor looking on/under/in/behind the item.", "actor", "item", "relloc");
 
-            GlobalRules.Perform<Actor, Container, RelativeLocations>("look relloc")
+            Core.GlobalRules.Perform<Actor, Container, RelativeLocations>("look relloc")
                 .Do((actor, item, relloc) =>
                 {
                     var contents = new List<MudObject>(item.EnumerateObjects(relloc));

@@ -41,19 +41,8 @@ namespace SFS
             PendingCommands.AddLast(Command);
         }
 
-        internal static void DiscoverCommandFactories(ModuleAssembly In, CommandParser AddTo)
-        {
-            foreach (var type in In.Assembly.GetTypes())
-            {
-                AddTo.ModuleBeingInitialized = In.FileName;
-                if (type.IsSubclassOf(typeof(CommandFactory)))
-                    CommandFactory.CreateCommandFactory(type).Create(AddTo);
-            }
-        }
-
         private static void InitializeCommandProcessor()
         {
-            DiscoverCommandFactories(new ModuleAssembly(Assembly.GetExecutingAssembly(), ""), DefaultParser);
             ParserCommandHandler = new ParserCommandHandler();
         }
         
@@ -65,8 +54,6 @@ namespace SFS
         {
             while (PendingCommands.Count > 0)
             {
-                GlobalRules.ConsiderPerformRule("heartbeat");
-               
                 PendingCommand PendingCommand = null;
 
                 try

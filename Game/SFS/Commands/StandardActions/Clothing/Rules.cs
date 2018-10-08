@@ -10,9 +10,10 @@ namespace SFS.Commands.StandardActions
 {
     public class ClothingRules 
     {
-        public static void AtStartup(SFS.SFSRuleEngine GlobalRules)
+        [AtStartup]
+        public static void __()
         {
-            GlobalRules.Perform<Actor>("inventory")
+            Core.GlobalRules.Perform<Actor>("inventory")
                 .Do(a =>
                 {
                     var wornObjects = a.GetContents(RelativeLocations.Worn);
@@ -27,7 +28,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("List worn items in inventory rule.");
 
-            GlobalRules.Check<Actor, Clothing>("can wear?")
+            Core.GlobalRules.Check<Actor, Clothing>("can wear?")
                 .Do((actor, item) =>
                 {
                     foreach (Clothing wornItem in actor.EnumerateObjects(RelativeLocations.Worn).OfType<Clothing>())
@@ -40,7 +41,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Check clothing layering before wearing rule.");
 
-            GlobalRules.Check<Actor, Clothing>("can remove?")
+            Core.GlobalRules.Check<Actor, Clothing>("can remove?")
                 .Do((actor, item) =>
                 {
                     foreach (var wornItem in actor.EnumerateObjects(RelativeLocations.Worn).OfType<Clothing>())
@@ -53,8 +54,8 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Can't remove items under other items rule.");
 
-            
-            GlobalRules.Perform<Actor, Actor>("describe")
+
+            Core.GlobalRules.Perform<Actor, Actor>("describe")
                 .First
                 .Do((viewer, actor) =>
                 {

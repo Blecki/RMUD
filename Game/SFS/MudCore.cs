@@ -9,8 +9,7 @@ namespace SFS
 {
     public static partial class Core
     {
-        public static Settings SettingsObject;
-        public static WorldDataService Database;
+        public static CompiledDatabase Database;
         public static SFSRuleEngine GlobalRules;
     }
 }

@@ -73,7 +73,7 @@ body
 {
     margin-right: 50px;
     margin-left: 50px;
-
+    font-family: monospace;
     background-color: #BAE4F7;
 }
 </style>

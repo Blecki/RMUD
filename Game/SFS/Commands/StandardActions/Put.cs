@@ -4,14 +4,16 @@ using System.Linq;
 using System.Text;
 using SFS;
 using SFS.Rules;
+using static SFS.CommandFactory;
 
 namespace SFS.Commands.StandardActions
 {
-	internal class Put : CommandFactory
+	internal class Put
 	{
-        public override void Create(CommandParser Parser)
+        [AtStartup]
+        public static void __()
         {
-            Parser.AddCommand(
+            Core.DefaultParser.AddCommand(
                 Sequence(
                     KeyWord("PUT"),
                     BestScore("SUBJECT",
@@ -21,12 +23,12 @@ namespace SFS.Commands.StandardActions
                     BestScore("OBJECT",
                         MustMatch("@not here",
                             Object("OBJECT", InScope, (actor, thing) =>
-                                {
-                                    //Prefer objects that are actually containers. No means curently to prefer
-                                    //objects that actually support the relloc we matched previously.
-                                    if (thing is Container) return MatchPreference.Likely;
-                                    return MatchPreference.Plausible;
-                                })))))
+                            {
+                                //Prefer objects that are actually containers. No means curently to prefer
+                                //objects that actually support the relloc we matched previously.
+                                if (thing is Container) return MatchPreference.Likely;
+                                return MatchPreference.Plausible;
+                            })))))
                 .ID("StandardActions:Put")
                 .Manual("This commands allows you to put things on other things. While dropping just deposits the object into your current location, putting is much more specific.")
                 .ProceduralRule((match, actor) =>
@@ -46,23 +48,19 @@ namespace SFS.Commands.StandardActions
                 .AfterActing()
                 .MarkLocaleForUpdate();
 
-        }
-
-        public static void AtStartup(SFS.SFSRuleEngine GlobalRules)
-        {
             Core.StandardMessage("cant put relloc", "You can't put things <s0> that.");
             Core.StandardMessage("you put", "You put <the0> <s1> <the2>.");
             Core.StandardMessage("they put", "^<the0> puts <the1> <s2> <the3>.");
                 
-            GlobalRules.DeclareCheckRuleBook<MudObject, MudObject, MudObject, RelativeLocations>("can put?", "[Actor, Item, Container, Location] : Determine if the actor can put the item in or on or under the container.", "actor", "item", "container", "relloc");
-            GlobalRules.DeclarePerformRuleBook<MudObject, MudObject, MudObject, RelativeLocations>("put", "[Actor, Item, Container, Location] : Handle an actor putting the item in or on or under the container.", "actor", "item", "container", "relloc");
+            Core.GlobalRules.DeclareCheckRuleBook<MudObject, MudObject, MudObject, RelativeLocations>("can put?", "[Actor, Item, Container, Location] : Determine if the actor can put the item in or on or under the container.", "actor", "item", "container", "relloc");
+            Core.GlobalRules.DeclarePerformRuleBook<MudObject, MudObject, MudObject, RelativeLocations>("put", "[Actor, Item, Container, Location] : Handle an actor putting the item in or on or under the container.", "actor", "item", "container", "relloc");
 
-            GlobalRules.Check<MudObject, MudObject, MudObject, RelativeLocations>("can put?")
+            Core.GlobalRules.Check<MudObject, MudObject, MudObject, RelativeLocations>("can put?")
                 .Last
                 .Do((a, b, c, d) => CheckResult.Allow)
                 .Name("Allow putting as default rule.");
 
-            GlobalRules.Check<Actor, MudObject, MudObject, RelativeLocations>("can put?")
+            Core.GlobalRules.Check<Actor, MudObject, MudObject, RelativeLocations>("can put?")
                 .Do((actor, item, container, relloc) =>
                 {
                     if (!(container is Container))
@@ -74,16 +72,16 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Can't put things in things that aren't containers rule.");
 
-            GlobalRules.Check<MudObject, MudObject, MudObject, RelativeLocations>("can put?")
+            Core.GlobalRules.Check<MudObject, MudObject, MudObject, RelativeLocations>("can put?")
                 .Do((actor, item, container, relloc) =>
                 {
-                    if (GlobalRules.ConsiderCheckRule("can drop?", actor, item) != CheckResult.Allow)
+                    if (Core.GlobalRules.ConsiderCheckRule("can drop?", actor, item) != CheckResult.Allow)
                         return CheckResult.Disallow;
                     return CheckResult.Continue;
                 })
                 .Name("Putting is dropping rule.");
 
-            GlobalRules.Perform<Actor, MudObject, Container, RelativeLocations>("put")
+            Core.GlobalRules.Perform<Actor, MudObject, Container, RelativeLocations>("put")
                 .Do((actor, item, container, relloc) =>
                 {
                     MudObject.SendMessage(actor, "@you put", item, Relloc.GetRelativeLocationName(relloc), container);
@@ -93,7 +91,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Default putting things in things handler.");
 
-            GlobalRules.Check<Actor, MudObject, Container, RelativeLocations>("can put?")
+            Core.GlobalRules.Check<Actor, MudObject, Container, RelativeLocations>("can put?")
                 .Do((actor, item, container, relloc) =>
                 {
                     if ((container.LocationsSupported & relloc) != relloc)
@@ -105,7 +103,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Check supported locations before putting rule.");
 
-            GlobalRules.Check<Actor, MudObject, OpenableContainer, RelativeLocations>("can put?")
+            Core.GlobalRules.Check<Actor, MudObject, OpenableContainer, RelativeLocations>("can put?")
                 .Do((actor, item, container, relloc) =>
                 {
                     if (relloc == RelativeLocations.In && !container.Open)
@@ -118,12 +116,12 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Can't put things in closed container rule.");
 
-            GlobalRules.Check<Actor, MudObject, MudObject, RelativeLocations>("can put?")
+            Core.GlobalRules.Check<Actor, MudObject, MudObject, RelativeLocations>("can put?")
                 .First
                 .Do((actor, item, container, relloc) => MudObject.CheckIsVisibleTo(actor, container))
                 .Name("Container must be visible rule.");
 
-            GlobalRules.Check<Actor, MudObject, MudObject, RelativeLocations>("can put?")
+            Core.GlobalRules.Check<Actor, MudObject, MudObject, RelativeLocations>("can put?")
                 .First
                 .Do((actor, item, container, relloc) => MudObject.CheckIsHolding(actor, item))
                 .Name("Must be holding item rule.");
