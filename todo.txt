@@ -1,5 +1,0 @@
-Fork first - to single player only project
-Dump everything into one project. It's just better that way.
-Including Sharp Rule Engine - ditch the newgent dependancy
-Remove everything associated with multiplayer
-Figure out why there are multiple instances of newtonsoft installed
