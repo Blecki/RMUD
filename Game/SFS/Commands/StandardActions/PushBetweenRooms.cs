@@ -128,12 +128,12 @@ namespace SFS.Commands.StandardActions
             // expects as generic arguments, then the name of the rulebook. The documentation is helpful but
             // not required. This rulebook takes three mud objects. Their usage is documented in the rulebook
             // description.
-            Core.GlobalRules.DeclareCheckRuleBook<Actor, MudObject, Portal>("can push direction?", "[Actor, Subject, Link] : Can the actor push the subject through that link?", "actor", "subject", "link");
+            GlobalRules.DeclareCheckRuleBook<Actor, MudObject, Portal>("can push direction?", "[Actor, Subject, Link] : Can the actor push the subject through that link?", "actor", "subject", "link");
 
             // Now we want to define a global rule in the 'can push direction?' rulebook. Rulebooks do not have
             // to be declared before rules are defined, but it's good style. The Check function returns a 
             // rulebuilder, which provides a fluent interface for declaring rules.
-            Core.GlobalRules.Check<Actor, MudObject, Portal>("can push direction?")
+            GlobalRules.Check<Actor, MudObject, Portal>("can push direction?")
                 // Do expects a lambda, and lets us specify what the rule should actually do.
                 .Do((actor, subject, link) =>
                 {
@@ -147,10 +147,10 @@ namespace SFS.Commands.StandardActions
             // now - I think you've got the idea of how this works. These rules will be invoked by the command
             // in the order they are declared. We could smush them all into one rule, but that would be
             // poor style maybe.
-            Core.GlobalRules.DeclarePerformRuleBook<Actor, MudObject, Portal>("push direction", "[Actor, Subject, Link] : Handle the actor pushing the subject through the link.", "actor", "subject", "link");
+            GlobalRules.DeclarePerformRuleBook<Actor, MudObject, Portal>("push direction", "[Actor, Subject, Link] : Handle the actor pushing the subject through the link.", "actor", "subject", "link");
 
             // First we want to report the action to the player and any other players that happen to be around.
-            Core.GlobalRules.Perform<Actor, MudObject, Portal>("push direction")
+            GlobalRules.Perform<Actor, MudObject, Portal>("push direction")
                 .Do((actor, subject, link) =>
                 {
                     var direction = link.Direction;
@@ -164,7 +164,7 @@ namespace SFS.Commands.StandardActions
                 .Name("Report pushing between rooms rule.");
 
             // Now we want to actually move the player, and the object they are pushing.
-            Core.GlobalRules.Perform<Actor, MudObject, Portal>("push direction")
+            GlobalRules.Perform<Actor, MudObject, Portal>("push direction")
                 .Do((actor, subject, link) =>
                 {
                     var destination = MudObject.GetObject(link.Destination) as Container;
@@ -182,7 +182,7 @@ namespace SFS.Commands.StandardActions
 
             // For most actions that's enough. But in this case, we want to let players in the room the
             // actor went to know they have arrived.
-            Core.GlobalRules.Perform<Actor, MudObject, Portal>("push direction")
+            GlobalRules.Perform<Actor, MudObject, Portal>("push direction")
                 .Do((actor, subject, link) =>
                 {
                     var direction = link.Direction;
@@ -193,7 +193,7 @@ namespace SFS.Commands.StandardActions
                 .Name("Report arrival while pushing rule.");
 
             // And finally, lets make sure the player gets a description of the room they have arrived in.
-            Core.GlobalRules.Perform<Actor, MudObject, Portal>("push direction")
+            GlobalRules.Perform<Actor, MudObject, Portal>("push direction")
                 .Do((actor, subject, link) =>
                 {
                     // We set the 'auto' flag to let the look command know it's been generated, and not

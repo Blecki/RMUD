@@ -59,9 +59,9 @@ namespace SFS.Commands.StandardActions
             Core.StandardMessage("speak", "^<the0> : \"<s1>\"");
             Core.StandardMessage("emote", "^<the0> <s1>");
 
-            Core.GlobalRules.DeclarePerformRuleBook<Actor, String>("speak", "[Actor, Text] : Handle the actor speaking the text.", "actor", "text");
+            GlobalRules.DeclarePerformRuleBook<Actor, String>("speak", "[Actor, Text] : Handle the actor speaking the text.", "actor", "text");
 
-            Core.GlobalRules.Perform<Actor, String>("speak")
+            GlobalRules.Perform<Actor, String>("speak")
                 .Do((actor, text) =>
                 {
                     SendLocaleMessage(actor, "@speak", actor, text);
@@ -69,9 +69,9 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Default motormouth rule.");
 
-            Core.GlobalRules.DeclarePerformRuleBook<Actor, String>("emote", "[Actor, Text] : Handle the actor emoting the text.", "actor", "text");
+            GlobalRules.DeclarePerformRuleBook<Actor, String>("emote", "[Actor, Text] : Handle the actor emoting the text.", "actor", "text");
 
-            Core.GlobalRules.Perform<Actor, String>("emote")
+            GlobalRules.Perform<Actor, String>("emote")
                 .Do((actor, text) =>
                 {
                     SendLocaleMessage(actor, "@emote", actor, text);

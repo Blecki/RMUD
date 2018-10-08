@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static SFS.Core;
 
 namespace SFS.Rules
 {
@@ -22,8 +23,6 @@ namespace SFS.Rules
         /// such that their location is their linked rule source.
         /// </summary>
         public virtual RuleObject LinkedRuleSource { get { return null; } }
-
-        public virtual RuleEngine GlobalRules { get { return SFS.Rules.GlobalRules.RuleEngine; } }
 
         public PerformResult ConsiderPerformRule(String Name, params Object[] Arguments)
         {

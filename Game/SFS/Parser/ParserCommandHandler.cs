@@ -53,7 +53,7 @@ namespace SFS
                 {
                     // Display all the rules invoked while executing this command.
                     Command.RawCommand = Command.RawCommand.Substring("@RULES ".Length);
-                    Core.GlobalRules.LogRules(s => SendMessage(Command.Actor, s));
+                    GlobalRules.LogRules(s => SendMessage(Command.Actor, s));
                 }
                 else
                 {
@@ -113,7 +113,7 @@ namespace SFS
                     SendMessage(Command.Actor, "huh?");
             }
 
-            Core.GlobalRules.LogRules(null);
+            GlobalRules.LogRules(null);
 
             if (displayTime)
             {

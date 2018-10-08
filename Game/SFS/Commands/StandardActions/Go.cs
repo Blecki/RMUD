@@ -49,9 +49,9 @@ namespace SFS.Commands.StandardActions
             Core.StandardMessage("they arrive", "^<the0> arrives <s1>.");
             Core.StandardMessage("first opening", "[first opening <the0>]");
 
-            Core.GlobalRules.DeclareCheckRuleBook<Actor, Portal>("can go?", "[Actor, Link] : Can the actor go through that link?", "actor", "link");
+            GlobalRules.DeclareCheckRuleBook<Actor, Portal>("can go?", "[Actor, Link] : Can the actor go through that link?", "actor", "link");
 
-            Core.GlobalRules.Check<Actor, Portal>("can go?")
+            GlobalRules.Check<Actor, Portal>("can go?")
                 .When((actor, link) => link == null)
                 .Do((actor, link) =>
                 {
@@ -60,7 +60,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("No link found rule.");
 
-            Core.GlobalRules.Check<Actor, Door>("can go?")
+            GlobalRules.Check<Actor, Door>("can go?")
                 .When((actor, link) => link != null && !link.Open)
                 .Do((actor, link) =>
                 {
@@ -72,13 +72,13 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Try opening a closed door first rule.");
 
-            Core.GlobalRules.Check<Actor, Portal>("can go?")
+            GlobalRules.Check<Actor, Portal>("can go?")
                 .Do((actor, link) => CheckResult.Allow)
                 .Name("Default can go rule.");
 
-            Core.GlobalRules.DeclarePerformRuleBook<Actor, Portal>("go", "[Actor, Link] : Handle the actor going through the link.", "actor", "link");
+            GlobalRules.DeclarePerformRuleBook<Actor, Portal>("go", "[Actor, Link] : Handle the actor going through the link.", "actor", "link");
 
-            Core.GlobalRules.Perform<Actor, Portal>("go")
+            GlobalRules.Perform<Actor, Portal>("go")
                 .Do((actor, link) =>
                 {
                     var direction = link.Direction;
@@ -88,7 +88,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Report leaving rule.");
 
-            Core.GlobalRules.Perform<Actor, Portal>("go")
+            GlobalRules.Perform<Actor, Portal>("go")
                 .Do((actor, link) =>
                 {
                     var destination = MudObject.GetObject(link.Destination) as Container;
@@ -102,7 +102,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Move through the link rule.");
 
-            Core.GlobalRules.Perform<Actor, Portal>("go")
+            GlobalRules.Perform<Actor, Portal>("go")
                 .Do((actor, link) =>
                 {
                     var direction = link.Direction;
@@ -112,7 +112,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Report arrival rule.");
 
-            Core.GlobalRules.Perform<Actor, Portal>("go")
+            GlobalRules.Perform<Actor, Portal>("go")
                 .When((actor, link) => actor.Listens)
                 .Do((actor, link) =>
                 {

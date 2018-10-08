@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.CodeDom.Compiler;
-using System.Diagnostics;
-using System.Reflection;
-using SFS.Rules;
-using static SFS.Core;
+﻿using SFS.Rules;
 
 namespace SFS
 {
-    public partial class MudObject
+    public static partial class Core
     {
         /// <summary>
         /// Determine is an object is visible to another object. This is essentially a comparison of the
@@ -40,7 +32,7 @@ namespace SFS
         /// <returns></returns>
         public static CheckResult CheckIsVisibleTo(Actor Actor, MudObject Item)
         {
-            if (!MudObject.IsVisibleTo(Actor, Item))
+            if (!IsVisibleTo(Actor, Item))
             {
                 SendMessage(Actor, "@gone");
                 return CheckResult.Disallow;
@@ -57,7 +49,7 @@ namespace SFS
         /// <returns></returns>
         public static CheckResult CheckIsHolding(Actor Actor, MudObject Item)
         {
-            if (!MudObject.ObjectContainsObject(Actor, Item))
+            if (!ObjectContainsObject(Actor, Item))
             {
                 SendMessage(Actor, "@dont have that");
                 return CheckResult.Disallow;

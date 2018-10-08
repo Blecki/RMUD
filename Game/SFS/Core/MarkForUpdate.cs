@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Reflection;
+using static SFS.Core;
 
 namespace SFS
 {
@@ -12,9 +13,9 @@ namespace SFS
         [AtStartup]
         public static void __()
         {
-            Core.GlobalRules.DeclarePerformRuleBook<MudObject>("update", "[Thing] : Considered for all things that have been marked for update.", "item");
+            GlobalRules.DeclarePerformRuleBook<MudObject>("update", "[Thing] : Considered for all things that have been marked for update.", "item");
 
-            Core.GlobalRules.Perform<MudObject>("after every command")
+            GlobalRules.Perform<MudObject>("after every command")
                 .First
                 .Do((actor) =>
                     {
@@ -23,7 +24,7 @@ namespace SFS
                     })
                 .Name("Update marked objects at end of turn rule.");
 
-            Core.GlobalRules.Perform<MudObject>("after every command")
+            GlobalRules.Perform<MudObject>("after every command")
                 .Last
                 .Do((actor) =>
                     {

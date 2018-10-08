@@ -31,9 +31,9 @@ namespace SFS.Commands.Debug
                             DisplayBookList(actor, (match["OBJECT"] as MudObject).Rules);
                     }
                     else if (match.ContainsKey("BOOK-NAME"))
-                        DisplaySingleBook(actor, Core.GlobalRules.Rules, match["BOOK-NAME"].ToString());
+                        DisplaySingleBook(actor, GlobalRules.Rules, match["BOOK-NAME"].ToString());
                     else
-                        DisplayBookList(actor, Core.GlobalRules.Rules);
+                        DisplayBookList(actor, GlobalRules.Rules);
                     return PerformResult.Continue;
                 });
         }

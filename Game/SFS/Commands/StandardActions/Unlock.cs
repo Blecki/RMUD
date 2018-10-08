@@ -34,9 +34,9 @@ namespace SFS.Commands.StandardActions
             Core.StandardMessage("you unlock", "You unlock <the0>.");
             Core.StandardMessage("they unlock", "^<the0> unlocks <the1> with <a2>.");
 
-            Core.GlobalRules.DeclarePerformRuleBook<Actor, MudObject, MudObject>("unlock", "[Actor, Item, Key] : Handle the actor unlocking the item with the key.", "actor", "item", "key");
+            GlobalRules.DeclarePerformRuleBook<Actor, MudObject, MudObject>("unlock", "[Actor, Item, Key] : Handle the actor unlocking the item with the key.", "actor", "item", "key");
 
-            Core.GlobalRules.Perform<Actor, MudObject, MudObject>("unlock").Do((actor, target, key) =>
+            GlobalRules.Perform<Actor, MudObject, MudObject>("unlock").Do((actor, target, key) =>
             {
                 SendMessage(actor, "@you unlock", target);
                 SendExternalMessage(actor, "@they unlock", actor, target, key);

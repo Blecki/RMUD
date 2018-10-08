@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static SFS.Core;
 
 namespace SFS
 {
    	public partial class MudObject : SFS.Rules.RuleObject
     {
-        public override SFS.Rules.RuleEngine GlobalRules { get { return Core.GlobalRules; } }
-
         public ObjectState State = ObjectState.Unitialized; 
 		public String Path { get; set; }
         public Container Location { get; set; }
@@ -50,7 +49,7 @@ namespace SFS
         {
             Object.Initialize();
             Object.State = ObjectState.Alive;
-            Core.GlobalRules.ConsiderPerformRule("update", Object);
+            GlobalRules.ConsiderPerformRule("update", Object);
             return Object;
         }
 

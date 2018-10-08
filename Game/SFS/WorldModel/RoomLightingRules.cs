@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SFS.Rules;
+using static SFS.Core;
 
 namespace SFS
 {
@@ -13,13 +14,13 @@ namespace SFS
         [AtStartup]
         public static void __()
         {
-            Core.GlobalRules.DeclareValueRuleBook<MudObject, LightingLevel>("light level", "[item] -> LightingLevel, How much light does the item emit?", "item");
+            GlobalRules.DeclareValueRuleBook<MudObject, LightingLevel>("light level", "[item] -> LightingLevel, How much light does the item emit?", "item");
 
-            Core.GlobalRules.Value<MudObject, LightingLevel>("light level")
+            GlobalRules.Value<MudObject, LightingLevel>("light level")
                 .Do(item => LightingLevel.Dark)
                 .Name("Items emit no light by default rule.");
 
-            Core.GlobalRules.Perform<Room>("update")
+            GlobalRules.Perform<Room>("update")
                 .Do(room =>
                 {
                     var light = LightingLevel.Dark;
@@ -30,7 +31,7 @@ namespace SFS
 
                     foreach (var item in MudObject.EnumerateVisibleTree(room))
                     {
-                        var lightingLevel = Core.GlobalRules.ConsiderValueRule<LightingLevel>("light level", item);
+                        var lightingLevel = GlobalRules.ConsiderValueRule<LightingLevel>("light level", item);
                         if (lightingLevel > light) light = lightingLevel;
                     }
 

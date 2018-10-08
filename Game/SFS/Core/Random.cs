@@ -16,12 +16,7 @@ namespace SFS
                 return _Random;
             }
         }
-    }
-
-    public partial class MudObject
-    {
-        public static Random Random { get { return Core.Random; } }
-
+  
         public static T ChooseAtRandom<T>(List<T> From)
         {
             return From[Core.Random.Next(From.Count)];

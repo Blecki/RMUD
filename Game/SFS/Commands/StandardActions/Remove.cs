@@ -26,10 +26,10 @@ namespace SFS.Commands.StandardActions
                 .Perform("remove", "ACTOR", "OBJECT")
                 .AfterActing();
 
-            Core.GlobalRules.DeclareCheckRuleBook<Actor, Clothing>("can remove?", "[Actor, Item] : Can the actor remove the item?", "actor", "item");
-            Core.GlobalRules.DeclarePerformRuleBook<Actor, Clothing>("remove", "[Actor, Item] : Handle the actor removing the item.", "actor", "item");
+            GlobalRules.DeclareCheckRuleBook<Actor, Clothing>("can remove?", "[Actor, Item] : Can the actor remove the item?", "actor", "item");
+            GlobalRules.DeclarePerformRuleBook<Actor, Clothing>("remove", "[Actor, Item] : Handle the actor removing the item.", "actor", "item");
 
-            Core.GlobalRules.Check<Actor, Clothing>("can remove?")
+            GlobalRules.Check<Actor, Clothing>("can remove?")
                 .When((a, b) => !a.Contains(b, RelativeLocations.Worn))
                 .Do((actor, item) =>
                 {
@@ -37,9 +37,9 @@ namespace SFS.Commands.StandardActions
                     return CheckResult.Disallow;
                 });
 
-            Core.GlobalRules.Check<Actor, Clothing>("can remove?").Do((a, b) => CheckResult.Allow);
+            GlobalRules.Check<Actor, Clothing>("can remove?").Do((a, b) => CheckResult.Allow);
 
-            Core.GlobalRules.Perform<Actor, Clothing>("remove").Do((actor, target) =>
+            GlobalRules.Perform<Actor, Clothing>("remove").Do((actor, target) =>
                 {
                     SendMessage(actor, "@clothing you remove", target);
                     SendExternalMessage(actor, "@clothing they remove", actor, target);

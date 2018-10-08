@@ -21,7 +21,7 @@ namespace SFS.Commands.StandardActions
                         MustMatch("@not here",
                             Object("SUBJECT", InScope, (actor, thing) =>
                             {
-                                if (Core.GlobalRules.ConsiderCheckRuleSilently("can close?", actor, thing) == CheckResult.Allow) return MatchPreference.Likely;
+                                if (GlobalRules.ConsiderCheckRuleSilently("can close?", actor, thing) == CheckResult.Allow) return MatchPreference.Likely;
                                 return MatchPreference.Unlikely;
                             })))))
                 .ID("StandardActions:Close")
@@ -34,11 +34,11 @@ namespace SFS.Commands.StandardActions
             Core.StandardMessage("you close", "You close <the0>.");
             Core.StandardMessage("they close", "^<the0> closes <the1>.");
 
-            Core.GlobalRules.DeclareCheckRuleBook<MudObject, MudObject>("can close?", "[Actor, Item] : Determine if the item can be closed.", "actor", "item");
+            GlobalRules.DeclareCheckRuleBook<MudObject, MudObject>("can close?", "[Actor, Item] : Determine if the item can be closed.", "actor", "item");
 
-            Core.GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("close", "[Actor, Item] : Handle the item being closed.", "actor", "item");
+            GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("close", "[Actor, Item] : Handle the item being closed.", "actor", "item");
 
-            Core.GlobalRules.Check<Actor, MudObject>("can close?")
+            GlobalRules.Check<Actor, MudObject>("can close?")
                 .Do((a, b) =>
                 {
                     SendMessage(a, "@not openable");
@@ -48,14 +48,14 @@ namespace SFS.Commands.StandardActions
 
             // Todo: Doors and containers need to implement these rules.
 
-            Core.GlobalRules.Perform<Actor, MudObject>("close").Do((actor, target) =>
+            GlobalRules.Perform<Actor, MudObject>("close").Do((actor, target) =>
             {
                 SendMessage(actor, "@you close", target);
                 SendExternalMessage(actor, "@they close", actor, target);
                 return PerformResult.Continue;
             }).Name("Default close reporting rule.");
 
-            Core.GlobalRules.Check<Actor, MudObject>("can close?").First.Do((actor, item) => MudObject.CheckIsVisibleTo(actor, item)).Name("Item must be visible rule.");
+            GlobalRules.Check<Actor, MudObject>("can close?").First.Do((actor, item) => CheckIsVisibleTo(actor, item)).Name("Item must be visible rule.");
         }
     }
 }

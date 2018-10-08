@@ -20,9 +20,9 @@ namespace SFS.Commands.StandardActions
             Core.StandardMessage("empty handed", "^<the0> is empty handed.");
             Core.StandardMessage("holding", "^<the0> is holding <l1>.");
 
-            Core.GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("describe", "[Actor, Item] : Generates descriptions of the item.", "actor", "item");
+            GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("describe", "[Actor, Item] : Generates descriptions of the item.", "actor", "item");
 
-            Core.GlobalRules.Perform<Actor, MudObject>("describe")
+            GlobalRules.Perform<Actor, MudObject>("describe")
                 .When((viewer, item) => !String.IsNullOrEmpty(item.Long))
                 .Do((viewer, item) =>
                 {
@@ -44,7 +44,7 @@ namespace SFS.Commands.StandardActions
             //    })
             //    .Name("Describe open or closed state rule.");
 
-            Core.GlobalRules.Perform<Actor, Container>("describe")
+            GlobalRules.Perform<Actor, Container>("describe")
                 .When((viewer, item) => (item.LocationsSupported & RelativeLocations.On) == RelativeLocations.On)
                 .Do((viewer, item) =>
                 {
@@ -55,7 +55,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("List things on container in description rule.");
 
-            Core.GlobalRules.Perform<Actor, OpenableContainer>("describe")
+            GlobalRules.Perform<Actor, OpenableContainer>("describe")
                 .When((viewer, item) =>
                     {
                         if (!item.Open) return false;
@@ -72,7 +72,7 @@ namespace SFS.Commands.StandardActions
                 .Name("List things in open container in description rule.");
 
 
-            Core.GlobalRules.Perform<Actor, Actor>("describe")
+            GlobalRules.Perform<Actor, Actor>("describe")
                 .First
                 .Do((viewer, actor) =>
                 {

@@ -30,13 +30,13 @@ namespace SFS.Commands.StandardActions
             Core.StandardMessage("relloc it is", "^<s0> <the1> is..");
             Core.StandardMessage("nothing relloc it", "There is nothing <s0> <the1>.");
 
-            Core.GlobalRules.DeclareCheckRuleBook<Actor, Container, RelativeLocations>("can look relloc?", "[Actor, Item, Relative Location] : Can the actor look in/on/under/behind the item?", "actor", "item", "relloc");
+            GlobalRules.DeclareCheckRuleBook<Actor, Container, RelativeLocations>("can look relloc?", "[Actor, Item, Relative Location] : Can the actor look in/on/under/behind the item?", "actor", "item", "relloc");
 
-            Core.GlobalRules.Check<Actor, Container, RelativeLocations>("can look relloc?")
-                .Do((actor, item, relloc) => MudObject.CheckIsVisibleTo(actor, item))
+            GlobalRules.Check<Actor, Container, RelativeLocations>("can look relloc?")
+                .Do((actor, item, relloc) => CheckIsVisibleTo(actor, item))
                 .Name("Container must be visible rule.");
 
-            Core.GlobalRules.Check<Actor, Container, RelativeLocations>("can look relloc?")
+            GlobalRules.Check<Actor, Container, RelativeLocations>("can look relloc?")
                 .When((actor, item, relloc) => (item.LocationsSupported & relloc) != relloc)
                 .Do((actor, item, relloc) =>
                 {
@@ -45,7 +45,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Container must support relloc rule.");
 
-            Core.GlobalRules.Check<Actor, OpenableContainer, RelativeLocations>("can look relloc?")
+            GlobalRules.Check<Actor, OpenableContainer, RelativeLocations>("can look relloc?")
                 .When((actor, item, relloc) => (relloc == RelativeLocations.In) && !item.Open)
                 .Do((actor, item, relloc) =>
                 {
@@ -54,13 +54,13 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Container must be open to look in rule.");
 
-            Core.GlobalRules.Check<Actor, Container, RelativeLocations>("can look relloc?")
+            GlobalRules.Check<Actor, Container, RelativeLocations>("can look relloc?")
                 .Do((actor, item, relloc) => SFS.Rules.CheckResult.Allow)
                 .Name("Default allow looking relloc rule.");
 
-            Core.GlobalRules.DeclarePerformRuleBook<Actor, Container, RelativeLocations>("look relloc", "[Actor, Item, Relative Location] : Handle the actor looking on/under/in/behind the item.", "actor", "item", "relloc");
+            GlobalRules.DeclarePerformRuleBook<Actor, Container, RelativeLocations>("look relloc", "[Actor, Item, Relative Location] : Handle the actor looking on/under/in/behind the item.", "actor", "item", "relloc");
 
-            Core.GlobalRules.Perform<Actor, Container, RelativeLocations>("look relloc")
+            GlobalRules.Perform<Actor, Container, RelativeLocations>("look relloc")
                 .Do((actor, item, relloc) =>
                 {
                     var contents = new List<MudObject>(item.EnumerateObjects(relloc));

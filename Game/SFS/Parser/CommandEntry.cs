@@ -12,9 +12,9 @@ namespace SFS
         [AtStartup]
         public static void __()
         {
-            Core.GlobalRules.DeclarePerformRuleBook<PossibleMatch, Actor>("before acting", "[Match, Actor] : Considered before performing in world actions.");
+            GlobalRules.DeclarePerformRuleBook<PossibleMatch, Actor>("before acting", "[Match, Actor] : Considered before performing in world actions.");
 
-            Core.GlobalRules.DeclarePerformRuleBook<PossibleMatch, Actor>("after acting", "[Match, Actor] : Considered after performing in world actions.");
+            GlobalRules.DeclarePerformRuleBook<PossibleMatch, Actor>("after acting", "[Match, Actor] : Considered after performing in world actions.");
         }
     }
 
@@ -37,7 +37,7 @@ namespace SFS
 
             ManPages.Pages.Add(this);
             GeneratedManual = new StringBuilder();
-            ProceduralRules = new PerformRuleBook(Core.GlobalRules.Rules)
+            ProceduralRules = new PerformRuleBook(GlobalRules.Rules)
             {
                 ArgumentCount = 2
                 /*ArgumentTypes = new List<Type>(new Type[] { typeof(PossibleMatch), typeof(Actor) }),*/
@@ -122,7 +122,7 @@ namespace SFS
                 BodyClause = RuleDelegateWrapper<PerformResult>.MakeWrapper<PossibleMatch, MudObject>(
                 (match, actor) =>
                 {
-                    if (Core.GlobalRules.ConsiderCheckRule(RuleName, RuleArguments.Select(a => match.ValueOrDefault(a)).ToArray()) == CheckResult.Allow)
+                    if (GlobalRules.ConsiderCheckRule(RuleName, RuleArguments.Select(a => match.ValueOrDefault(a)).ToArray()) == CheckResult.Allow)
                         return PerformResult.Continue;
                     return PerformResult.Stop;
                 }),
@@ -148,7 +148,7 @@ namespace SFS
                 BodyClause = RuleDelegateWrapper<PerformResult>.MakeWrapper<PossibleMatch, MudObject>(
                 (match, actor) =>
                 {
-                    Core.GlobalRules.ConsiderPerformRule(RuleName, RuleArguments.Select(a => match.ValueOrDefault(a)).ToArray());
+                    GlobalRules.ConsiderPerformRule(RuleName, RuleArguments.Select(a => match.ValueOrDefault(a)).ToArray());
                     return PerformResult.Continue;
                 }),
                 DescriptiveName = "Procedural rule to perform " + RuleName
@@ -172,7 +172,7 @@ namespace SFS
             {
                 BodyClause = RuleDelegateWrapper<PerformResult>.MakeWrapper<PossibleMatch, MudObject>(
                 (match, actor) =>
-                    Core.GlobalRules.ConsiderPerformRule(RuleName, RuleArguments.Select(a => match.ValueOrDefault(a)).ToArray())
+                    GlobalRules.ConsiderPerformRule(RuleName, RuleArguments.Select(a => match.ValueOrDefault(a)).ToArray())
                     ),
                 DescriptiveName = "Procedural rule to abide by " + RuleName
             };
@@ -188,7 +188,7 @@ namespace SFS
         {
             GeneratedManual.AppendLine("Consider the before acting rules.");
             ProceduralRules.AddRule(new Rule<PerformResult>{
-                BodyClause = RuleDelegateWrapper<PerformResult>.MakeWrapper<PossibleMatch, MudObject>((match, actor) => Core.GlobalRules.ConsiderMatchBasedPerformRule("before acting", match, actor)),
+                BodyClause = RuleDelegateWrapper<PerformResult>.MakeWrapper<PossibleMatch, MudObject>((match, actor) => GlobalRules.ConsiderMatchBasedPerformRule("before acting", match, actor)),
                 DescriptiveName = "Before acting procedural rule."});
             return this;
         }
@@ -204,7 +204,7 @@ namespace SFS
             {
                 BodyClause = RuleDelegateWrapper<PerformResult>.MakeWrapper<PossibleMatch, MudObject>((match, actor) => 
                 {
-                    Core.GlobalRules.ConsiderMatchBasedPerformRule("after acting", match, actor);
+                    GlobalRules.ConsiderMatchBasedPerformRule("after acting", match, actor);
                     return PerformResult.Continue;
                 }),
                 DescriptiveName = "After acting procedural rule."

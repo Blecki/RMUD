@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace SFS
 {
-    public partial class MudObject
+    public static partial class Core
     {
         /// <summary>
         /// Determine if an object is contained by another.

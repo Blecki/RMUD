@@ -75,7 +75,7 @@ namespace SFS
                 var response = new StringBuilder();
                 response.Append("Which did you mean?\r\n");
                 for (var i = 0; i < DisambigObjects.Count; ++i)
-                    response.Append(String.Format("{0}: {1}\r\n", i, Core.GlobalRules.ConsiderValueRule<String>("printed name", Actor, DisambigObjects[i], "the")));
+                    response.Append(String.Format("{0}: {1}\r\n", i, GlobalRules.ConsiderValueRule<String>("printed name", Actor, DisambigObjects[i], "the")));
                 SendMessage(Actor, response.ToString());
             }
             else

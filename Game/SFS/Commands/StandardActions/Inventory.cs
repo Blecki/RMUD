@@ -24,9 +24,9 @@ namespace SFS.Commands.StandardActions
 
             Core.StandardMessage("carrying", "You are carrying..");
 
-            Core.GlobalRules.DeclarePerformRuleBook<Actor>("inventory", "[Actor] : Describes a player's inventory to themselves.", "actor");
+            GlobalRules.DeclarePerformRuleBook<Actor>("inventory", "[Actor] : Describes a player's inventory to themselves.", "actor");
 
-            Core.GlobalRules.Perform<Actor>("inventory")
+            GlobalRules.Perform<Actor>("inventory")
                 .Do(a =>
                 {
                     var heldObjects = a.GetContents(RelativeLocations.Held);

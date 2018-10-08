@@ -23,7 +23,7 @@ namespace SFS.Commands.StandardActions
                         MustMatch("@not here",
                             Object("SUBJECT", InScope, (actor, item) =>
                             {
-                                if (Core.GlobalRules.ConsiderCheckRuleSilently("can take?", actor, item) != CheckResult.Allow)
+                                if (GlobalRules.ConsiderCheckRuleSilently("can take?", actor, item) != CheckResult.Allow)
                                     return MatchPreference.Unlikely;
                                 return MatchPreference.Plausible;
                             })))))
@@ -41,14 +41,14 @@ namespace SFS.Commands.StandardActions
             Core.StandardMessage("cant take portals", "You can't take portals.");
             Core.StandardMessage("cant take scenery", "That's a terrible idea.");
 
-            Core.GlobalRules.DeclareCheckRuleBook<Actor, MudObject>("can take?", "[Actor, Item] : Can the actor take the item?", "actor", "item");
-            Core.GlobalRules.DeclarePerformRuleBook<Actor, MudObject>("take", "[Actor, Item] : Handle the actor taking the item.", "actor", "item");
+            GlobalRules.DeclareCheckRuleBook<Actor, MudObject>("can take?", "[Actor, Item] : Can the actor take the item?", "actor", "item");
+            GlobalRules.DeclarePerformRuleBook<Actor, MudObject>("take", "[Actor, Item] : Handle the actor taking the item.", "actor", "item");
 
-            Core.GlobalRules.Check<Actor, MudObject>("can take?")
-                .Do((actor, item) => MudObject.CheckIsVisibleTo(actor, item))
+            GlobalRules.Check<Actor, MudObject>("can take?")
+                .Do((actor, item) => CheckIsVisibleTo(actor, item))
                 .Name("Item must be visible to take rule.");
 
-            Core.GlobalRules.Check<Actor, MudObject>("can take?")
+            GlobalRules.Check<Actor, MudObject>("can take?")
                 .When((actor, item) => actor.Contains(item, RelativeLocations.Held))
                 .Do((actor, item) =>
                 {
@@ -57,12 +57,12 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Can't take what you're already holding rule.");
 
-            Core.GlobalRules.Check<Actor, MudObject>("can take?")
+            GlobalRules.Check<Actor, MudObject>("can take?")
                 .Last
                 .Do((a, t) => CheckResult.Allow)
                 .Name("Default allow taking rule.");
 
-            Core.GlobalRules.Perform<Actor, MudObject>("take")
+            GlobalRules.Perform<Actor, MudObject>("take")
                 .Do((actor, target) =>
                 {
                     SendMessage(actor, "@you take", target);
@@ -72,7 +72,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Default handle taken rule.");
 
-            Core.GlobalRules.Check<Actor, Actor>("can take?")
+            GlobalRules.Check<Actor, Actor>("can take?")
                 .First
                 .Do((actor, thing) =>
                 {
@@ -81,7 +81,7 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Can't take people rule.");
 
-            Core.GlobalRules.Check<Actor, Portal>("can take?")
+            GlobalRules.Check<Actor, Portal>("can take?")
                 .First
                 .Do((actor, thing) =>
                 {
@@ -89,7 +89,7 @@ namespace SFS.Commands.StandardActions
                     return CheckResult.Disallow;
                 });
 
-            Core.GlobalRules.Check<Actor, Scenery>("can take?")
+            GlobalRules.Check<Actor, Scenery>("can take?")
                 .First
                 .Do((actor, thing) =>
                 {

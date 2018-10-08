@@ -17,12 +17,11 @@ namespace SFS.Rules
         public void LogRules(Action<String> Log) { this.Log = Log; }
 
         public RuleSet Rules;
-        internal NewRuleQueueingMode QueueingMode = NewRuleQueueingMode.ImmediatelyAddNewRules;
+        internal NewRuleQueueingMode QueueingMode = NewRuleQueueingMode.QueueNewRules;
         internal List<Action> NewRuleQueue = new List<Action>();
 
-        public RuleEngine(NewRuleQueueingMode QueueingMode)
+        public RuleEngine()
         {
-            this.QueueingMode = QueueingMode;
             Rules = new RuleSet(this);
         }
 
@@ -170,24 +169,25 @@ namespace SFS.Rules
             return Rules.ConsiderValueRule<RT>(Name, out valueReturned, Arguments);
         }
 
+        private IEnumerable<RuleSet> EnumerateMatchRules(PossibleMatch Match)
+        {
+            foreach (var arg in Match)
+                if (arg.Value is MudObject && (arg.Value as MudObject).Rules != null)
+                    yield return (arg.Value as MudObject).Rules;
+        }
+
         /// <summary>
         /// Consider a perform rule, but check the values of the possible match for applicable rules. This can apply
-        /// only to perform rules with the argument pattern <PossibleMatch, Actor>.
+        /// only to perform rules with the argument pattern [PossibleMatch, MudObject].
         /// </summary>
         /// <param name="Name"></param>
         /// <param name="Match"></param>
         /// <param name="Actor"></param>
         /// <returns></returns>
-        //public PerformResult ConsiderMatchBasedPerformRule(String Name, PossibleMatch Match, Actor Actor)
-        //{
-        //    foreach (var arg in Match)
-        //        if (arg.Value is MudObject && (arg.Value as MudObject).Rules != null)
-        //            if ((arg.Value as MudObject).Rules.ConsiderPerformRule(Name, Match, Actor) == PerformResult.Stop)
-        //                return PerformResult.Stop;
-
-        //    if (Rules == null) throw new InvalidOperationException();
-        //    return Rules.ConsiderPerformRule(Name, Match, Actor);
-        //}
+        public PerformResult ConsiderMatchBasedPerformRule(String Name, PossibleMatch Match, MudObject Actor)
+        {
+            return ConsiderPerformRule_Enum(Name, (args) => EnumerateMatchRules(Match), Match, Actor);
+        }
 
         /// <summary>
         /// A wrapper around ConsiderCheckRule that maintains flags to suppress output from the mud.
@@ -198,18 +198,18 @@ namespace SFS.Rules
         /// <param name="Name"></param>
         /// <param name="Arguments"></param>
         /// <returns></returns>
-        //public CheckResult ConsiderCheckRuleSilently(String Name, params Object[] Arguments)
-        //{
-        //    try
-        //    {
-        //        Core.SilentFlag = true;
-        //        var r = ConsiderCheckRule(Name, Arguments);
-        //        return r;
-        //    }
-        //    finally
-        //    {
-        //        Core.SilentFlag = false;
-        //    }
-        //}
+        public CheckResult ConsiderCheckRuleSilently(String Name, params Object[] Arguments)
+        {
+            try
+            {
+                Core.SilentFlag = true;
+                var r = ConsiderCheckRule(Name, Arguments);
+                return r;
+            }
+            finally
+            {
+                Core.SilentFlag = false;
+            }
+        }
     }
 }

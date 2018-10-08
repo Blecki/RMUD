@@ -24,7 +24,7 @@ namespace SFS
             try
             {
                 // Setup the rule engine and some basic rules.
-                GlobalRules = new SFSRuleEngine();
+                GlobalRules = new Rules.RuleEngine();
                 GlobalRules.DeclarePerformRuleBook("at startup", "[] : Considered when the engine is started.");
 
                 DefaultParser = new CommandParser();
