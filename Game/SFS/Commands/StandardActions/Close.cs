@@ -29,16 +29,17 @@ namespace SFS.Commands.StandardActions
                 .AfterActing();
 		}
 
-        public static void AtStartup(SFS.SFSRuleEngine GlobalRules)
+        [AtStartup]
+        public static void AtStartup()
         {
             Core.StandardMessage("you close", "You close <the0>.");
             Core.StandardMessage("they close", "^<the0> closes <the1>.");
 
-            GlobalRules.DeclareCheckRuleBook<MudObject, MudObject>("can close?", "[Actor, Item] : Determine if the item can be closed.", "actor", "item");
+            Core.GlobalRules.DeclareCheckRuleBook<MudObject, MudObject>("can close?", "[Actor, Item] : Determine if the item can be closed.", "actor", "item");
 
-            GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("close", "[Actor, Item] : Handle the item being closed.", "actor", "item");
+            Core.GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("close", "[Actor, Item] : Handle the item being closed.", "actor", "item");
 
-            GlobalRules.Check<Actor, MudObject>("can close?")
+            Core.GlobalRules.Check<Actor, MudObject>("can close?")
                 .Do((a, b) =>
                 {
                     MudObject.SendMessage(a, "@not openable");
@@ -48,14 +49,14 @@ namespace SFS.Commands.StandardActions
 
             // Todo: Doors and containers need to implement these rules.
 
-            GlobalRules.Perform<Actor, MudObject>("close").Do((actor, target) =>
+            Core.GlobalRules.Perform<Actor, MudObject>("close").Do((actor, target) =>
             {
                 MudObject.SendMessage(actor, "@you close", target);
                 MudObject.SendExternalMessage(actor, "@they close", actor, target);
                 return PerformResult.Continue;
             }).Name("Default close reporting rule.");
 
-            GlobalRules.Check<Actor, MudObject>("can close?").First.Do((actor, item) => MudObject.CheckIsVisibleTo(actor, item)).Name("Item must be visible rule.");
+            Core.GlobalRules.Check<Actor, MudObject>("can close?").First.Do((actor, item) => MudObject.CheckIsVisibleTo(actor, item)).Name("Item must be visible rule.");
         }
     }
 }

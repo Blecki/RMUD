@@ -14,6 +14,11 @@ namespace SFS
         NoLog = 8
     }
 
+    [System.AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
+    sealed class AtStartupAttribute : Attribute
+    {
+    }
+
     public static partial class Core
     {
         /// <summary>
@@ -29,38 +34,43 @@ namespace SFS
             DefaultParser.ModuleBeingInitialized = Module.FileName;
 
             foreach (var type in Module.Assembly.GetTypes())
-                    foreach (var method in type.GetMethods())
-                        if (method.IsStatic && method.Name == "AtStartup")
-                        {
-                            var methodParameters = method.GetParameters();
+                foreach (var method in type.GetMethods())
+                {
+                    var atStartup = method.GetCustomAttribute<AtStartupAttribute>();
+                    if (atStartup != null)
+                        method.Invoke(null, null);
+                    else if (method.IsStatic && method.Name == "AtStartup")
+                    {
+                        var methodParameters = method.GetParameters();
 
-                            if (methodParameters.Length == 0)
+                        if (methodParameters.Length == 0)
+                        {
+                            try
                             {
-                                try
-                                {
-                                    method.Invoke(null, null);
-                                }
-                                catch (Exception e)
-                                {
-                                    //LogWarning("Error while loading module " + Module.FileName + " : " + e.Message);
-                                }
+                                method.Invoke(null, null);
                             }
-                            else if (methodParameters.Length == 1 && methodParameters[0].ParameterType == typeof(SFSRuleEngine))
+                            catch (Exception e)
                             {
-                                try
-                                {
-                                    method.Invoke(null, new Object[] { GlobalRules });
-                                }
-                                catch (Exception e)
-                                {
-                                    //LogWarning("Error while loading module " + Module.FileName + " : " + e.Message);
-                                }
-                            }
-                            else
-                            {
-                                //LogWarning("Error while loading module " + Module.FileName + " : AtStartup method had incompatible signature.");
+                                //LogWarning("Error while loading module " + Module.FileName + " : " + e.Message);
                             }
                         }
+                        else if (methodParameters.Length == 1 && methodParameters[0].ParameterType == typeof(SFSRuleEngine))
+                        {
+                            try
+                            {
+                                method.Invoke(null, new Object[] { GlobalRules });
+                            }
+                            catch (Exception e)
+                            {
+                                //LogWarning("Error while loading module " + Module.FileName + " : " + e.Message);
+                            }
+                        }
+                        else
+                        {
+                            //LogWarning("Error while loading module " + Module.FileName + " : AtStartup method had incompatible signature.");
+                        }
+                    }
+                }
         }
 
         /// <summary>
@@ -79,11 +89,8 @@ namespace SFS
                 GlobalRules.DeclarePerformRuleBook("at startup", "[] : Considered when the engine is started.");
 
                 DefaultParser = new CommandParser();
-
                 IntegrateModule(new ModuleAssembly(Assembly.GetExecutingAssembly(), "Core.dll"));
-
                 InitializeCommandProcessor();
-
                 GlobalRules.FinalizeNewRules();
 
                 Core.Database = Database;

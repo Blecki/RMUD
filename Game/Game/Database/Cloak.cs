@@ -4,11 +4,6 @@ namespace Game
 {
     public class Cloak : SFS.Clothing
     {
-        public static void AtStartup(SFSRuleEngine GlobalRules)
-        {
-
-        }
-
         public override void Initialize()
         {
             /*
