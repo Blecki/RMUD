@@ -1,4 +1,5 @@
 ﻿using SFS;
+using static SFS.Core;
 
 namespace Game
 {
@@ -31,7 +32,7 @@ to the game, they would automatically be described correctly as well.]
 
             OpenLink(Direction.EAST, "Game.Foyer");
 
-            Move(MudObject.GetObject("Game.Hook"), this);
+            MoveObject(MudObject.GetObject("Game.Hook"), this);
 
             AmbientLight = LightingLevel.Bright;
         }

@@ -6,6 +6,7 @@ using System.CodeDom.Compiler;
 using System.Diagnostics;
 using System.Reflection;
 using SFS.Rules;
+using static SFS.Core;
 
 namespace SFS
 {
@@ -41,7 +42,7 @@ namespace SFS
         {
             if (!MudObject.IsVisibleTo(Actor, Item))
             {
-                MudObject.SendMessage(Actor, "@gone");
+                SendMessage(Actor, "@gone");
                 return CheckResult.Disallow;
             }
             return CheckResult.Continue;
@@ -58,7 +59,7 @@ namespace SFS
         {
             if (!MudObject.ObjectContainsObject(Actor, Item))
             {
-                MudObject.SendMessage(Actor, "@dont have that");
+                SendMessage(Actor, "@dont have that");
                 return CheckResult.Disallow;
             }
             return CheckResult.Continue;

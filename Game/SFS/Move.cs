@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace SFS
 {
-    public partial class MudObject
+    public static partial class Core
     {
         /// <summary>
         /// Move Object to Destination.
@@ -15,7 +15,7 @@ namespace SFS
         /// <param name="Object">Object to move.</param>
         /// <param name="Destination">Destination to move too.</param>
         /// <param name="Location">The relative location within destination to move too.</param>
-        public static void Move(MudObject Object, Container Destination, RelativeLocations Location = RelativeLocations.Default)
+        public static void MoveObject(MudObject Object, Container Destination, RelativeLocations Location = RelativeLocations.Default)
         {
             if (Object == null) return;
 

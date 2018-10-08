@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SFS;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.Debug
 {
@@ -30,7 +31,7 @@ namespace SFS.Commands.Debug
 
                     var resultsFound = 0;
 
-                    MudObject.SendMessage(actor, "@cons");
+                    SendMessage(actor, "@cons");
 
                     if (!localScan)
                         foreach (var command in Core.DefaultParser.EnumerateCommands())
@@ -38,12 +39,12 @@ namespace SFS.Commands.Debug
                             if (String.IsNullOrEmpty(command.GetID())) 
                             {
                                 resultsFound += 1;
-                                MudObject.SendMessage(actor, "Command has no ID set: " + command.ManualName);
+                                SendMessage(actor, "Command has no ID set: " + command.ManualName);
                             }
                         }
 
                     if (resultsFound == 0)
-                        MudObject.SendMessage(actor, "@cons no results");
+                        SendMessage(actor, "@cons no results");
 
 
                     return SFS.Rules.PerformResult.Continue;

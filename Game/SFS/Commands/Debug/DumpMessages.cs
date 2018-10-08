@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SFS;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.Debug
 {
@@ -20,7 +21,7 @@ namespace SFS.Commands.Debug
                     var builder = new StringBuilder();
                     Core.DumpMessagesForCustomization(builder);
                     System.IO.File.WriteAllText("messages.txt", builder.ToString());
-                    MudObject.SendMessage(actor, "Messages dumped to messages.txt.");
+                    SendMessage(actor, "Messages dumped to messages.txt.");
                     return SFS.Rules.PerformResult.Continue;
                 });
 		}

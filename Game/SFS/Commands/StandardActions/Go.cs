@@ -5,6 +5,7 @@ using System.Text;
 using SFS;
 using SFS.Rules;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
@@ -54,7 +55,7 @@ namespace SFS.Commands.StandardActions
                 .When((actor, link) => link == null)
                 .Do((actor, link) =>
                 {
-                    MudObject.SendMessage(actor, "@go to null link");
+                    SendMessage(actor, "@go to null link");
                     return CheckResult.Disallow;
                 })
                 .Name("No link found rule.");
@@ -63,7 +64,7 @@ namespace SFS.Commands.StandardActions
                 .When((actor, link) => link != null && !link.Open)
                 .Do((actor, link) =>
                 {
-                    MudObject.SendMessage(actor, "@first opening", link);
+                    SendMessage(actor, "@first opening", link);
                     var tryOpen = Core.Try("StandardActions:Open", Core.ExecutingCommand.With("SUBJECT", link), actor);
                     if (tryOpen == PerformResult.Stop)
                         return CheckResult.Disallow;
@@ -81,8 +82,8 @@ namespace SFS.Commands.StandardActions
                 .Do((actor, link) =>
                 {
                     var direction = link.Direction;
-                    MudObject.SendMessage(actor, "@you went", direction.ToString().ToLower());
-                    MudObject.SendExternalMessage(actor, "@they went", actor, direction.ToString().ToLower());
+                    SendMessage(actor, "@you went", direction.ToString().ToLower());
+                    SendExternalMessage(actor, "@they went", actor, direction.ToString().ToLower());
                     return PerformResult.Continue;
                 })
                 .Name("Report leaving rule.");
@@ -93,10 +94,10 @@ namespace SFS.Commands.StandardActions
                     var destination = MudObject.GetObject(link.Destination) as Container;
                     if (destination == null)
                     {
-                        MudObject.SendMessage(actor, "@bad link");
+                        SendMessage(actor, "@bad link");
                         return PerformResult.Stop;
                     }
-                    MudObject.Move(actor, destination);
+                    MoveObject(actor, destination);
                     return PerformResult.Continue;
                 })
                 .Name("Move through the link rule.");
@@ -106,7 +107,7 @@ namespace SFS.Commands.StandardActions
                 {
                     var direction = link.Direction;
                     var arriveMessage = Link.FromMessage(Link.Opposite(direction));
-                    MudObject.SendExternalMessage(actor, "@they arrive", actor, arriveMessage);
+                    SendExternalMessage(actor, "@they arrive", actor, arriveMessage);
                     return PerformResult.Continue;
                 })
                 .Name("Report arrival rule.");

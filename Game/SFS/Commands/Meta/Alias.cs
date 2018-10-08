@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SFS;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.Meta
 {
@@ -24,7 +25,7 @@ namespace SFS.Commands.Meta
                 .ProceduralRule((match, actor) =>
                 {
                     Aliases.Add(match["NAME"].ToString().ToUpper(), match["RAW-COMMAND"].ToString());
-                    MudObject.SendMessage(actor, "Alias added.");
+                    SendMessage(actor, "Alias added.");
                     return SFS.Rules.PerformResult.Continue;
                 });
 
@@ -41,8 +42,7 @@ namespace SFS.Commands.Meta
                 {
                     var commands = match["ALIAS"].ToString().Split(';');
                     foreach (var command in commands)
-                        //Todo: Procedural rules should just take actors.
-                        Core.EnqueuActorCommand(actor as Actor, command);
+                        EnqueuActorCommand(actor, command);
                     return SFS.Rules.PerformResult.Continue;
                 });
         }

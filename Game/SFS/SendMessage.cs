@@ -28,10 +28,7 @@ namespace SFS
         {
             return OutputQueryTriggered;
         }
-    }
-
-    public partial class MudObject
-    {
+    
         public static void SendMessage(Actor Actor, String Message, params Object[] MentionedObjects)
         {
             if (String.IsNullOrEmpty(Message)) return;

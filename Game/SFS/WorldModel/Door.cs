@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SFS.Rules;
+using static SFS.Core;
 
 namespace SFS
 {
@@ -29,7 +30,7 @@ namespace SFS
                 {
                     if (Open)
                     {
-                        MudObject.SendMessage(a, "@already open");
+                        SendMessage(a, "@already open");
                         return CheckResult.Disallow;
                     }
                     return CheckResult.Allow;
@@ -42,7 +43,7 @@ namespace SFS
                 {
                     if (!Open)
                     {
-                        MudObject.SendMessage(a, "@already closed");
+                        SendMessage(a, "@already closed");
                         return CheckResult.Disallow;
                     }
                     return CheckResult.Allow;
@@ -61,7 +62,7 @@ namespace SFS
                     otherSide.Open = true;
 
                     // This message is defined in the standard actions module. It is perhaps a bit coupled?
-                    MudObject.SendLocaleMessage(otherSide, "@they open", a, this);
+                    SendLocaleMessage(otherSide, "@they open", a, this);
                     Core.MarkLocaleForUpdate(otherSide);
                 }
 
@@ -79,7 +80,7 @@ namespace SFS
                 if (otherSide != null)
                 {
                     otherSide.Open = false;
-                    MudObject.SendLocaleMessage(otherSide, "@they close", a, this);
+                    SendLocaleMessage(otherSide, "@they close", a, this);
                     Core.MarkLocaleForUpdate(otherSide);
                 }
 

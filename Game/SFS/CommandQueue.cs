@@ -96,9 +96,9 @@ namespace SFS
         private static void __ShowCommandException(Actor Actor, Exception e)
         {
 #if DEBUG
-            MudObject.SendMessage(Actor, String.Format("{0:MM/dd/yy HH:mm:ss} -- Error while handling command.", DateTime.Now));
-            MudObject.SendMessage(Actor, e.Message);
-            MudObject.SendMessage(Actor, e.StackTrace);
+            SendMessage(Actor, String.Format("{0:MM/dd/yy HH:mm:ss} -- Error while handling command.", DateTime.Now));
+            SendMessage(Actor, e.Message);
+            SendMessage(Actor, e.StackTrace);
             if (e.InnerException != null)
                 __ShowCommandException(Actor, e.InnerException);
             SendPendingMessages();

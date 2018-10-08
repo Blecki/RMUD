@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using static SFS.Core;
 
 namespace SFS
 {
@@ -41,7 +42,7 @@ namespace SFS
                     Command.RawCommand = Command.RawCommand.Substring("@DEBUG ".Length);
                     //if (Command.Actor.GetProperty<int>("rank") < 500)
                     //{
-                    //    MudObject.SendMessage(Command.Actor, "You do not have sufficient rank to use the debug command.");
+                    //    SendMessage(Command.Actor, "You do not have sufficient rank to use the debug command.");
                     //    return;
                     //}
 
@@ -52,11 +53,11 @@ namespace SFS
                 {
                     // Display all the rules invoked while executing this command.
                     Command.RawCommand = Command.RawCommand.Substring("@RULES ".Length);
-                    Core.GlobalRules.LogRules(s => MudObject.SendMessage(Command.Actor, s));
+                    Core.GlobalRules.LogRules(s => SendMessage(Command.Actor, s));
                 }
                 else
                 {
-                    MudObject.SendMessage(Command.Actor, "I don't recognize that debugging command.");
+                    SendMessage(Command.Actor, "I don't recognize that debugging command.");
                     return;
                 }
             }
@@ -71,12 +72,12 @@ namespace SFS
 
                 if (matchedCommand == null)
                 {
-                    MudObject.SendMessage(Command.Actor, String.Format("Matched nothing in {0:n0} milliseconds.",
+                    SendMessage(Command.Actor, String.Format("Matched nothing in {0:n0} milliseconds.",
                         (matchEndTime - startTime).TotalMilliseconds));
                 }
                 else
                 {
-                    MudObject.SendMessage(Command.Actor, String.Format("Matched {0} in {1:n0} milliseconds. {2} unique matches.",
+                    SendMessage(Command.Actor, String.Format("Matched {0} in {1:n0} milliseconds. {2} unique matches.",
                         matchedCommand.Command.ManualName,
                         (matchEndTime - startTime).TotalMilliseconds,
                         matchedCommand.Matches.Count));
@@ -93,7 +94,7 @@ namespace SFS
                             builder.Append("] ");
                         }
 
-                        MudObject.SendMessage(Command.Actor, builder.ToString());
+                        SendMessage(Command.Actor, builder.ToString());
                     }
                 }
             }
@@ -109,7 +110,7 @@ namespace SFS
                         Core.ProcessPlayerCommand(matchedCommand.Command, matchedCommand.Matches[0], Command.Actor);
                 }
                 else
-                    MudObject.SendMessage(Command.Actor, "huh?");
+                    SendMessage(Command.Actor, "huh?");
             }
 
             Core.GlobalRules.LogRules(null);
@@ -118,7 +119,7 @@ namespace SFS
             {
                 var endTime = DateTime.Now;
 
-                MudObject.SendMessage(Command.Actor, String.Format("Command completed in {0} milliseconds.", (endTime - startTime).TotalMilliseconds));
+                SendMessage(Command.Actor, String.Format("Command completed in {0} milliseconds.", (endTime - startTime).TotalMilliseconds));
             }
         }
     }

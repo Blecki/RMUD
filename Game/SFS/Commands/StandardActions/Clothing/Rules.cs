@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SFS;
 using SFS.Rules;
+using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
@@ -17,12 +18,12 @@ namespace SFS.Commands.StandardActions
                 .Do(a =>
                 {
                     var wornObjects = a.GetContents(RelativeLocations.Worn);
-                    if (wornObjects.Count == 0) MudObject.SendMessage(a, "@nude");
+                    if (wornObjects.Count == 0) SendMessage(a, "@nude");
                     else
                     {
-                        MudObject.SendMessage(a, "@clothing wearing");
+                        SendMessage(a, "@clothing wearing");
                         foreach (var item in wornObjects)
-                            MudObject.SendMessage(a, "  <a0>", item);
+                            SendMessage(a, "  <a0>", item);
                     }
                     return PerformResult.Continue;
                 })
@@ -34,7 +35,7 @@ namespace SFS.Commands.StandardActions
                     foreach (Clothing wornItem in actor.EnumerateObjects(RelativeLocations.Worn).OfType<Clothing>())
                         if (wornItem.Layer == item.Layer && wornItem.BodyPart == item.BodyPart)
                         {
-                            MudObject.SendMessage(actor, "@clothing remove first", wornItem);
+                            SendMessage(actor, "@clothing remove first", wornItem);
                             return CheckResult.Disallow;
                         }
                     return CheckResult.Continue;
@@ -47,7 +48,7 @@ namespace SFS.Commands.StandardActions
                     foreach (var wornItem in actor.EnumerateObjects(RelativeLocations.Worn).OfType<Clothing>())
                         if (wornItem.Layer < item.Layer && wornItem.BodyPart == item.BodyPart)
                         {
-                            MudObject.SendMessage(actor, "@clothing remove first", wornItem);
+                            SendMessage(actor, "@clothing remove first", wornItem);
                             return CheckResult.Disallow;
                         }
                     return CheckResult.Allow;
@@ -61,9 +62,9 @@ namespace SFS.Commands.StandardActions
                 {
                     var wornItems = actor.GetContents(RelativeLocations.Worn);
                     if (wornItems.Count == 0)
-                        MudObject.SendMessage(viewer, "@clothing they are nude", actor);
+                        SendMessage(viewer, "@clothing they are nude", actor);
                     else
-                        MudObject.SendMessage(viewer, "@clothing they are wearing", actor, wornItems);
+                        SendMessage(viewer, "@clothing they are wearing", actor, wornItems);
                     return PerformResult.Continue;
                 })
                 .Name("List worn items when describing an actor rule.");

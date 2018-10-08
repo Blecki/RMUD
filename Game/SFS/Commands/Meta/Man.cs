@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.Meta
 {
@@ -26,7 +27,7 @@ namespace SFS.Commands.Meta
                 {
                     if (!match.ContainsKey("TOPIC"))
                     {
-                        MudObject.SendMessage(actor, "@help topics");
+                        SendMessage(actor, "@help topics");
                         var line = "";
                         foreach (var manPage in ManPages.Pages.Select(p => p.Name).Distinct().OrderBy(s => s))
                         {
@@ -35,7 +36,7 @@ namespace SFS.Commands.Meta
                             else if (line.Length < 40) line += new String(' ', 40 - line.Length);
                             else
                             {
-                                MudObject.SendMessage(actor, line);
+                                SendMessage(actor, line);
                                 line = "";
                             }
                         }
@@ -48,7 +49,7 @@ namespace SFS.Commands.Meta
                             foreach (var manPage in pages)
                                 manPage.SendManPage(actor);
                         else
-                            MudObject.SendMessage(actor, "@no help topic");
+                            SendMessage(actor, "@no help topic");
 
                     }
                     return SFS.Rules.PerformResult.Continue;

@@ -5,6 +5,7 @@ using System.Text;
 using SFS;
 using SFS.Rules;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
@@ -65,7 +66,7 @@ namespace SFS.Commands.StandardActions
                 {
                     if (!(container is Container))
                     {
-                        MudObject.SendMessage(actor, "@cant put relloc", Relloc.GetRelativeLocationName(relloc));
+                        SendMessage(actor, "@cant put relloc", Relloc.GetRelativeLocationName(relloc));
                         return CheckResult.Disallow;
                     }
                     return CheckResult.Continue;
@@ -84,9 +85,9 @@ namespace SFS.Commands.StandardActions
             Core.GlobalRules.Perform<Actor, MudObject, Container, RelativeLocations>("put")
                 .Do((actor, item, container, relloc) =>
                 {
-                    MudObject.SendMessage(actor, "@you put", item, Relloc.GetRelativeLocationName(relloc), container);
-                    MudObject.SendExternalMessage(actor, "@they put", actor, item, Relloc.GetRelativeLocationName(relloc), container);
-                    MudObject.Move(item, container, relloc);
+                    SendMessage(actor, "@you put", item, Relloc.GetRelativeLocationName(relloc), container);
+                    SendExternalMessage(actor, "@they put", actor, item, Relloc.GetRelativeLocationName(relloc), container);
+                    MoveObject(item, container, relloc);
                     return PerformResult.Continue;
                 })
                 .Name("Default putting things in things handler.");
@@ -96,7 +97,7 @@ namespace SFS.Commands.StandardActions
                 {
                     if ((container.LocationsSupported & relloc) != relloc)
                     {
-                        MudObject.SendMessage(actor, "@cant put relloc", Relloc.GetRelativeLocationName(relloc));
+                        SendMessage(actor, "@cant put relloc", Relloc.GetRelativeLocationName(relloc));
                         return CheckResult.Disallow;
                     }
                     return CheckResult.Continue;
@@ -108,7 +109,7 @@ namespace SFS.Commands.StandardActions
                 {
                     if (relloc == RelativeLocations.In && !container.Open)
                     {
-                        MudObject.SendMessage(actor, "@is closed error", container);
+                        SendMessage(actor, "@is closed error", container);
                         return CheckResult.Disallow;
                     }
 

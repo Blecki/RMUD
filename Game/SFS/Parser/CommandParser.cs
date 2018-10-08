@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static SFS.Core;
 
 namespace SFS
 {
@@ -89,7 +90,7 @@ namespace SFS
                     return new MatchedCommand( 
                         new CommandEntry().ProceduralRule((match, actor) => 
                         {
-                            MudObject.SendMessage(actor, ma.Message);
+                            SendMessage(actor, ma.Message);
                             return SFS.Rules.PerformResult.Continue;
                         }), 
                         // We need a fake match just so it can be passed to the procedural rule.

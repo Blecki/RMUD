@@ -5,6 +5,7 @@ using System.Text;
 using SFS;
 using SFS.Rules;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
@@ -37,7 +38,7 @@ namespace SFS.Commands.StandardActions
                 .When((actor, item) => !MudObject.ObjectContainsObject(actor, item))
                 .Do((actor, item) =>
                 {
-                    MudObject.SendMessage(actor, "@dont have that");
+                    SendMessage(actor, "@dont have that");
                     return CheckResult.Disallow;
                 })
                 .Name("Must be holding it to drop it rule.");
@@ -60,9 +61,9 @@ namespace SFS.Commands.StandardActions
 
             Core.GlobalRules.Perform<Actor, MudObject>("drop").Do((actor, target) =>
             {
-                MudObject.SendMessage(actor, "@you drop", target);
-                MudObject.SendExternalMessage(actor, "@they drop", actor, target);
-                MudObject.Move(target, actor.Location);
+                SendMessage(actor, "@you drop", target);
+                SendExternalMessage(actor, "@they drop", actor, target);
+                MoveObject(target, actor.Location);
                 return PerformResult.Continue;
             }).Name("Default drop handler rule.");
         }

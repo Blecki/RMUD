@@ -5,6 +5,7 @@ using System.Text;
 using SFS;
 using SFS.Rules;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.Debug
 {
@@ -40,25 +41,25 @@ namespace SFS.Commands.Debug
         private static void DisplaySingleBook(Actor Actor, RuleSet From, String BookName)
         {
             if (From == null || From.FindRuleBook(BookName) == null)
-                MudObject.SendMessage(Actor, "[no rules]");
+                SendMessage(Actor, "[no rules]");
             else
             {
                 var book = From.FindRuleBook(BookName);
                 DisplayBookHeader(Actor, book);
                 foreach (var rule in book.Rules)
-                    MudObject.SendMessage(Actor, rule.DescriptiveName == null ? "[Unnamed rule]" : rule.DescriptiveName);
+                    SendMessage(Actor, rule.DescriptiveName == null ? "[Unnamed rule]" : rule.DescriptiveName);
             }
         }
 
         private static void DisplayBookHeader(Actor Actor, RuleBook Book)
         {
-            MudObject.SendMessage(Actor, Book.Name + " -> " + Book.ResultType.Name + " : " + Book.Description);
+            SendMessage(Actor, Book.Name + " -> " + Book.ResultType.Name + " : " + Book.Description);
         }
 
         private static void DisplayBookList(Actor Actor, RuleSet Rules)
         {
             if (Rules == null || Rules.RuleBooks.Count == 0)
-                MudObject.SendMessage(Actor, "[no rules]");
+                SendMessage(Actor, "[no rules]");
             else
                 foreach (var book in Rules.RuleBooks)
                     DisplayBookHeader(Actor, book);

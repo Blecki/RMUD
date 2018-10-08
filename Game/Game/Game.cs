@@ -28,8 +28,8 @@ namespace Game
             SFS.Core.Start();
 
             SwitchPlayerCharacter(SFS.MudObject.GetObject("Game.Player") as SFS.Actor);
-            SFS.MudObject.Move(Player, SFS.MudObject.GetObject("Game.Foyer") as SFS.Room);
-            SFS.MudObject.SendMessage(Player, "Hurrying through the rainswept November night, you're glad to see the bright lights of the Opera House. It's surprising that there aren't more people about but, hey, what do you expect in a cheap demo game...?");
+            SFS.Core.MoveObject(Player, SFS.MudObject.GetObject("Game.Foyer") as SFS.Room);
+            SFS.Core.SendMessage(Player, "Hurrying through the rainswept November night, you're glad to see the bright lights of the Opera House. It's surprising that there aren't more people about but, hey, what do you expect in a cheap demo game...?");
 
             Input("look");
         }

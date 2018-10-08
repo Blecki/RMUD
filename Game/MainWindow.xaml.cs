@@ -75,6 +75,7 @@ body
     margin-left: 50px;
     font-family: monospace;
     background-color: #BAE4F7;
+    font-weight:bold;
 }
 </style>
 <script>

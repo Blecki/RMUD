@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SFS;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
@@ -42,7 +43,7 @@ namespace SFS.Commands.StandardActions
                 .Last
                 .Do((a, t) => 
                     {
-                        MudObject.SendMessage(a, "@does nothing");
+                        SendMessage(a, "@does nothing");
                         return SFS.Rules.CheckResult.Disallow;
                     })
                 .Name("Default disallow pulling rule.");
@@ -50,7 +51,7 @@ namespace SFS.Commands.StandardActions
             Core.GlobalRules.Perform<Actor, MudObject>("pull")
                 .Do((actor, target) =>
                 {
-                    MudObject.SendMessage(actor, "@nothing happens");
+                    SendMessage(actor, "@nothing happens");
                     return SFS.Rules.PerformResult.Continue;
                 })
                 .Name("Default handle pulling rule.");
@@ -59,7 +60,7 @@ namespace SFS.Commands.StandardActions
                 .First
                 .Do((actor, thing) =>
                 {
-                    MudObject.SendMessage(actor, "@unappreciated", thing);
+                    SendMessage(actor, "@unappreciated", thing);
                     return SFS.Rules.CheckResult.Disallow;
                 })
                 .Name("Can't pull people rule.");

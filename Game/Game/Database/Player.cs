@@ -1,4 +1,5 @@
 ﻿using SFS;
+using static SFS.Core;
 
 namespace Game
 {
@@ -7,7 +8,7 @@ namespace Game
         public override void Initialize()
         {
             Short = "you";
-            Move(GetObject("Game.Cloak"), this, RelativeLocations.Worn);
+            MoveObject(GetObject("Game.Cloak"), this, RelativeLocations.Worn);
         }
     }
 }

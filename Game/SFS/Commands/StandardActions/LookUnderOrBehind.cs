@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SFS;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
@@ -39,7 +40,7 @@ namespace SFS.Commands.StandardActions
                 .When((actor, item, relloc) => (item.LocationsSupported & relloc) != relloc)
                 .Do((actor, item, relloc) =>
                 {
-                    MudObject.SendMessage(actor, "@cant look relloc", Relloc.GetRelativeLocationName(relloc));
+                    SendMessage(actor, "@cant look relloc", Relloc.GetRelativeLocationName(relloc));
                     return SFS.Rules.CheckResult.Disallow;
                 })
                 .Name("Container must support relloc rule.");
@@ -48,7 +49,7 @@ namespace SFS.Commands.StandardActions
                 .When((actor, item, relloc) => (relloc == RelativeLocations.In) && !item.Open)
                 .Do((actor, item, relloc) =>
                 {
-                        MudObject.SendMessage(actor, "@is closed error", item);
+                        SendMessage(actor, "@is closed error", item);
                         return SFS.Rules.CheckResult.Disallow;
                 })
                 .Name("Container must be open to look in rule.");
@@ -66,12 +67,12 @@ namespace SFS.Commands.StandardActions
 
                     if (contents.Count > 0)
                     {
-                        MudObject.SendMessage(actor, "@relloc it is", Relloc.GetRelativeLocationName(relloc), item);
+                        SendMessage(actor, "@relloc it is", Relloc.GetRelativeLocationName(relloc), item);
                         foreach (var thing in contents)
-                            MudObject.SendMessage(actor, "  <a0>", thing);
+                            SendMessage(actor, "  <a0>", thing);
                     }
                     else
-                        MudObject.SendMessage(actor, "@nothing relloc it", Relloc.GetRelativeLocationName(relloc), item);
+                        SendMessage(actor, "@nothing relloc it", Relloc.GetRelativeLocationName(relloc), item);
 
                     return SFS.Rules.PerformResult.Continue;
                 })

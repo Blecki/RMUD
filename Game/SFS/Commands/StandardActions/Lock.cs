@@ -5,6 +5,7 @@ using System.Text;
 using SFS;
 using SFS.Rules;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
@@ -48,7 +49,7 @@ namespace SFS.Commands.StandardActions
             Core.GlobalRules.Check<Actor, MudObject, MudObject>("can lock?")
                 .Do((a, b, c) =>
                 {
-                    MudObject.SendMessage(a, "@not lockable");
+                    SendMessage(a, "@not lockable");
                     return SFS.Rules.CheckResult.Disallow;
                 })
                 .Name("Can't lock the unlockable rule.");
@@ -61,8 +62,8 @@ namespace SFS.Commands.StandardActions
 
             Core.GlobalRules.Perform<Actor, MudObject, MudObject>("lock").Do((actor, target, key) =>
             {
-                MudObject.SendMessage(actor, "@you lock", target);
-                MudObject.SendExternalMessage(actor, "@they lock", actor, target, key);
+                SendMessage(actor, "@you lock", target);
+                SendExternalMessage(actor, "@they lock", actor, target, key);
                 return SFS.Rules.PerformResult.Continue;
             });
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SFS;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.Debug
 {
@@ -31,24 +32,22 @@ namespace SFS.Commands.Debug
                 {
                     var target = match["OBJECT"] as MudObject;
 
-                    MudObject.SendMessage(actor, "*** INSPECT LISTING ***");
-                    MudObject.SendMessage(actor, "Path: <s0>", target.Path);
-                    MudObject.SendMessage(actor, "Instance: <s0>", target.Instance);
-                    MudObject.SendMessage(actor, "Persistent: <s0>", target.IsPersistent.ToString());
+                    SendMessage(actor, "*** INSPECT LISTING ***");
+                    SendMessage(actor, "Path: <s0>", target.Path);
                     if (target.Location == null)
-                        MudObject.SendMessage(actor, "Location: NOWHERE");
+                        SendMessage(actor, "Location: NOWHERE");
                     else
-                        MudObject.SendMessage(actor, "Location: <s0>", target.Location.GetFullName());
-                    MudObject.SendMessage(actor, "*** DYNAMIC PROPERTIES ***");
+                        SendMessage(actor, "Location: <s0>", target.Location.Path);
+                    SendMessage(actor, "*** DYNAMIC PROPERTIES ***");
 
                     //Todo: Reimplement using reflection.
                     //foreach (var property in target.Properties)
                     //{
                     //    var info = PropertyManifest.GetPropertyInformation(property.Key);
-                    //    MudObject.SendMessage(actor, "<s0>: <s1>", property.Key, info.Converter.ConvertToString(property.Value));
+                    //    SendMessage(actor, "<s0>: <s1>", property.Key, info.Converter.ConvertToString(property.Value));
                     //}
 
-                    MudObject.SendMessage(actor, "*** END OF LISTING ***");
+                    SendMessage(actor, "*** END OF LISTING ***");
 
                     return SFS.Rules.PerformResult.Continue;
                 }, "List all the damn things rule.");

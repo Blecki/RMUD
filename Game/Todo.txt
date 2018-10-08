@@ -1,7 +1,7 @@
 ﻿Make sure all standard rules have descriptive names
 Revisit output of !RULES so there's no new lines
-Use attributes to mark startup entry functions instead of magic signature
 Implement save games
+Move more stuff into Core so I can just using static SFS.Core; and get access to it.
 
 
 

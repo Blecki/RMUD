@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SFS;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
@@ -37,7 +38,7 @@ namespace SFS.Commands.StandardActions
                 .When((viewer, room) => room == null)
                 .Do((viewer, room) =>
                 {
-                    MudObject.SendMessage(viewer, "@nowhere");
+                    SendMessage(viewer, "@nowhere");
                     return SFS.Rules.PerformResult.Stop;
                 })
                 .Name("Can't describe the locale if there isn't one rule.");
@@ -56,7 +57,7 @@ namespace SFS.Commands.StandardActions
                 .Do((viewer, room) =>
                 {
                     if (!String.IsNullOrEmpty(room.Short))
-                        MudObject.SendMessage(viewer, room.Short);
+                        SendMessage(viewer, room.Short);
                     return SFS.Rules.PerformResult.Continue;
                 })
                 .Name("Display room name rule.");
@@ -66,7 +67,7 @@ namespace SFS.Commands.StandardActions
                 .When((viewer, room) => room.Light == LightingLevel.Dark)
                 .Do((viewer, room) =>
                 {
-                    MudObject.SendMessage(viewer, "@dark");
+                    SendMessage(viewer, "@dark");
                     return SFS.Rules.PerformResult.Stop;
                 })
                 .Name("Can't see in darkness rule.");
@@ -133,7 +134,7 @@ namespace SFS.Commands.StandardActions
                     if (normalContents.Count > 0)
                     {
                         describingLocale = true;
-                        MudObject.SendMessage(viewer, "@also here", normalContents);
+                        SendMessage(viewer, "@also here", normalContents);
                         describingLocale = false;
                     }
 
@@ -147,7 +148,7 @@ namespace SFS.Commands.StandardActions
                 {
                     if (room.EnumerateObjects().OfType<Portal>().Count() > 0)
                     {
-                        MudObject.SendMessage(viewer, "@obvious exits");
+                        SendMessage(viewer, "@obvious exits");
 
                         foreach (var link in room.EnumerateObjects<MudObject>().OfType<Portal>())
                         {
@@ -162,7 +163,7 @@ namespace SFS.Commands.StandardActions
                             if (destinationRoom != null)
                                 builder.Append(" " + Core.FormatMessage(viewer, Core.GetMessage("to"), destinationRoom));
 
-                            MudObject.SendMessage(viewer, builder.ToString());
+                            SendMessage(viewer, builder.ToString());
                         }
                     }
 

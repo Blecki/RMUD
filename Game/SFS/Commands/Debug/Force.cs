@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SFS;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.Debug
 {
@@ -29,7 +30,7 @@ namespace SFS.Commands.Debug
                             var target = MudObject.GetObject(match["PATH"].ToString());
                             if (target == null)
                             {
-                                MudObject.SendMessage(actor, "I can't find whomever it is you want to submit to your foolish whims.");
+                                SendMessage(actor, "I can't find whomever it is you want to submit to your foolish whims.");
                                 return SFS.Rules.PerformResult.Stop;
                             }
                             match.Upsert("OBJECT", target);
@@ -42,7 +43,7 @@ namespace SFS.Commands.Debug
 
                     if (target == null)
                     {
-                        MudObject.SendMessage(actor, "The target is not an actor.");
+                        SendMessage(actor, "The target is not an actor.");
                         return SFS.Rules.PerformResult.Stop;
                     }
                     
@@ -52,15 +53,15 @@ namespace SFS.Commands.Debug
                     if (matchedCommand != null)
                     {
                         if (matchedCommand.Matches.Count > 1)
-                            MudObject.SendMessage(actor, "The command was ambigious.");
+                            SendMessage(actor, "The command was ambigious.");
                         else
                         {
-                            MudObject.SendMessage(actor, "Enacting your will.");
+                            SendMessage(actor, "Enacting your will.");
                             Core.ProcessPlayerCommand(matchedCommand.Command, matchedCommand.Matches[0], target);
                         }
                     }
                     else
-                        MudObject.SendMessage(actor, "The command did not match.");
+                        SendMessage(actor, "The command did not match.");
 
                     return SFS.Rules.PerformResult.Continue;
                 });

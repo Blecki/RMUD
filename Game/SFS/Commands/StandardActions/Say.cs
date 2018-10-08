@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SFS;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
@@ -63,7 +64,7 @@ namespace SFS.Commands.StandardActions
             Core.GlobalRules.Perform<Actor, String>("speak")
                 .Do((actor, text) =>
                 {
-                    MudObject.SendLocaleMessage(actor, "@speak", actor, text);
+                    SendLocaleMessage(actor, "@speak", actor, text);
                     return SFS.Rules.PerformResult.Continue;
                 })
                 .Name("Default motormouth rule.");
@@ -73,7 +74,7 @@ namespace SFS.Commands.StandardActions
             Core.GlobalRules.Perform<Actor, String>("emote")
                 .Do((actor, text) =>
                 {
-                    MudObject.SendLocaleMessage(actor, "@emote", actor, text);
+                    SendLocaleMessage(actor, "@emote", actor, text);
                     return SFS.Rules.PerformResult.Continue;
                 })
                 .Name("Default exhibitionist rule.");

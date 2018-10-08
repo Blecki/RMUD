@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using static SFS.Core;
 
 namespace SFS
 {
@@ -75,11 +76,11 @@ namespace SFS
                 response.Append("Which did you mean?\r\n");
                 for (var i = 0; i < DisambigObjects.Count; ++i)
                     response.Append(String.Format("{0}: {1}\r\n", i, Core.GlobalRules.ConsiderValueRule<String>("printed name", Actor, DisambigObjects[i], "the")));
-                MudObject.SendMessage(Actor, response.ToString());
+                SendMessage(Actor, response.ToString());
             }
             else
             {
-                MudObject.SendMessage(Actor, "I couldn't figure out how to disambiguate that command.");
+                SendMessage(Actor, "I couldn't figure out how to disambiguate that command.");
             }
 		}
 
@@ -98,7 +99,7 @@ namespace SFS
             if (Int32.TryParse(Command.RawCommand, out ordinal))
             {
                 if (ordinal < 0 || ordinal >= DisambigObjects.Count)
-                    MudObject.SendMessage(Command.Actor, "That wasn't a valid option. I'm aborting disambiguation.");
+                    SendMessage(Command.Actor, "That wasn't a valid option. I'm aborting disambiguation.");
                 else
                 {
                     var choosenMatches = MatchedCommand.Matches.Where(m => Object.ReferenceEquals(m[DisambigArgument], DisambigObjects[ordinal]));
@@ -109,7 +110,7 @@ namespace SFS
                     else
                     {
                         // WHat? There are still multiple options?
-                        MudObject.SendMessage(Command.Actor, "That helped narrow it down, but I'm still not sure what you mean.");
+                        SendMessage(Command.Actor, "That helped narrow it down, but I'm still not sure what you mean.");
                         Command.Actor.CommandHandler = new DisambigCommandHandler(Command.Actor, MatchedCommand, ParentHandler);
                     }
                 }

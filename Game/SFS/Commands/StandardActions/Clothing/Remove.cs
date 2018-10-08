@@ -5,6 +5,7 @@ using System.Text;
 using SFS;
 using SFS.Rules;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
@@ -32,7 +33,7 @@ namespace SFS.Commands.StandardActions
                 .When((a, b) => !a.Contains(b, RelativeLocations.Worn))
                 .Do((actor, item) =>
                 {
-                    MudObject.SendMessage(actor, "@clothing not wearing");
+                    SendMessage(actor, "@clothing not wearing");
                     return CheckResult.Disallow;
                 });
 
@@ -40,9 +41,9 @@ namespace SFS.Commands.StandardActions
 
             Core.GlobalRules.Perform<Actor, Clothing>("remove").Do((actor, target) =>
                 {
-                    MudObject.SendMessage(actor, "@clothing you remove", target);
-                    MudObject.SendExternalMessage(actor, "@clothing they remove", actor, target);
-                    MudObject.Move(target, actor, RelativeLocations.Held);
+                    SendMessage(actor, "@clothing you remove", target);
+                    SendExternalMessage(actor, "@clothing they remove", actor, target);
+                    MoveObject(target, actor, RelativeLocations.Held);
                     return PerformResult.Continue;
                 });
         }

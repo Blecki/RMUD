@@ -5,6 +5,7 @@ using System.Text;
 using SFS;
 using SFS.Rules;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
@@ -41,15 +42,15 @@ namespace SFS.Commands.StandardActions
             Core.GlobalRules.Check<Actor, MudObject>("can open?")
                 .Do((a, b) =>
                 {
-                    MudObject.SendMessage(a, "@not openable");
+                    SendMessage(a, "@not openable");
                     return SFS.Rules.CheckResult.Disallow;
                 })
                 .Name("Can't open the unopenable rule.");
 
             Core.GlobalRules.Perform<Actor, MudObject>("open").Do((actor, target) =>
             {
-                MudObject.SendMessage(actor, "@you open", target);
-                MudObject.SendExternalMessage(actor, "@they open", actor, target);
+                SendMessage(actor, "@you open", target);
+                SendExternalMessage(actor, "@they open", actor, target);
                 return SFS.Rules.PerformResult.Continue;
             }).Name("Default report opening rule.");
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SFS;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.Debug
 {
@@ -29,13 +30,13 @@ namespace SFS.Commands.Debug
                     {
                         var target = match["OBJECT"] as MudObject;
                         Core.MarkLocaleForUpdate(target);
-                        MudObject.Move(target, destination);
+                        MoveObject(target, destination);
                         Core.MarkLocaleForUpdate(destination);
 
-                        MudObject.SendMessage(actor, "Success.");
+                        SendMessage(actor, "Success.");
                     }
                     else
-                        MudObject.SendMessage(actor, "I could not find the destination.");
+                        SendMessage(actor, "I could not find the destination.");
                     return SFS.Rules.PerformResult.Continue;
                 });
         }

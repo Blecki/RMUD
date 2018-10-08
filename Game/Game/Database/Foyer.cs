@@ -1,4 +1,5 @@
 ﻿using SFS;
+using static SFS.Core;
 
 namespace Game
 {
@@ -30,7 +31,7 @@ the weather outside seems to be getting worse."
                .When((actor, link) => link != null && link.Location is Foyer && link.Direction == Direction.NORTH)
                .Do((actor, link) =>
                {
-                   MudObject.SendMessage(actor, "You've only just arrived, and besides, the weather outside seems to be getting worse.");
+                   SendMessage(actor, "You've only just arrived, and besides, the weather outside seems to be getting worse.");
                    return SFS.Rules.CheckResult.Disallow;
                });
         }

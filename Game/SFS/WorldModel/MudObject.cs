@@ -11,12 +11,6 @@ namespace SFS
 
         public ObjectState State = ObjectState.Unitialized; 
 		public String Path { get; set; }
-		public String Instance { get; set; }
-        public bool IsNamedObject { get { return Path != null; } }
-        public bool IsAnonymousObject { get { return Path == null; } }
-        public bool IsInstance { get { return IsNamedObject && Instance != null; } }
-        public String GetFullName() { return Path + "@" + Instance; }
-        public bool IsPersistent { get; set; }
         public Container Location { get; set; }
         public override SFS.Rules.RuleObject LinkedRuleSource { get { return Location; } }
 
@@ -28,17 +22,10 @@ namespace SFS
 
         public virtual void Initialize() { }
 
-        public override string ToString()
-        {
-            if (String.IsNullOrEmpty(Path)) return this.GetType().Name;
-            else return Path;
-        }
-
 		public MudObject()
 		{
 		    State = ObjectState.Alive;
             Nouns = new NounList();
-            IsPersistent = false;
 		}
 
         public MudObject(String Short, String Long)
@@ -52,8 +39,6 @@ namespace SFS
                 Article = "an";
 
             State = ObjectState.Alive;
-            IsPersistent = false;
-
         }
 
         public static MudObject GetObject(String Path)

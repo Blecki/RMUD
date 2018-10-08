@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SFS.Rules;
+using static SFS.Core;
 
 namespace SFS
 {
@@ -26,13 +27,13 @@ namespace SFS
             Check<Actor, LockedDoor, MudObject>("can lock?").Do((actor, door, key) =>
                 {
                     if (Open) {
-                        MudObject.SendMessage(actor, "@close it first");
+                        SendMessage(actor, "@close it first");
                         return CheckResult.Disallow;
                     }
 
                     if (!IsMatchingKey(key))
                     {
-                        MudObject.SendMessage(actor, "@wrong key");
+                        SendMessage(actor, "@wrong key");
                         return CheckResult.Disallow;
                     }
 
@@ -56,7 +57,7 @@ namespace SFS
                  .When((a, b) => Locked)
                  .Do((a, b) =>
                  {
-                     MudObject.SendMessage(a, "@error locked");
+                     SendMessage(a, "@error locked");
                      return CheckResult.Disallow;
                  })
                  .Name("Can't open locked door rule.");

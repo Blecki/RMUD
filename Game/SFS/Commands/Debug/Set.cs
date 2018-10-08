@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SFS;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.Debug
 {
@@ -31,7 +32,7 @@ namespace SFS.Commands.Debug
 
                     //if (propertyInfo == null)
                     //{
-                    //    MudObject.SendMessage(actor, "That property does not exist.");
+                    //    SendMessage(actor, "That property does not exist.");
                     //    return SFS.Rules.PerformResult.Stop;
                     //}
 
@@ -39,7 +40,7 @@ namespace SFS.Commands.Debug
                     // Todo: Implement using reflection.
                     //_object.SetProperty(property_name, realValue);
                     
-                    MudObject.SendMessage(actor, "Property set.");
+                    SendMessage(actor, "Property set.");
                     return SFS.Rules.PerformResult.Continue;
                 });
         }

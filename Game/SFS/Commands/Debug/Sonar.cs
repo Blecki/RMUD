@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using SFS;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.Debug
 {
@@ -56,7 +57,7 @@ namespace SFS.Commands.Debug
                     foreach (var entry in roomLegend)
                         builder.Append((char)entry.Key + " - " + entry.Value + "\r\n");
 
-                    MudObject.SendMessage(actor, builder.ToString());
+                    SendMessage(actor, builder.ToString());
                     return SFS.Rules.PerformResult.Continue;
                 }, "Implement sonar device rule.");
         }

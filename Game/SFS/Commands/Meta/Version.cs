@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.Meta
 {
@@ -24,12 +25,12 @@ namespace SFS.Commands.Meta
                 {
                     var buildVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-                    MudObject.SendMessage(actor, "@version", buildVersion);
+                    SendMessage(actor, "@version", buildVersion);
 
                     if (System.IO.File.Exists("version.txt"))
-                        MudObject.SendMessage(actor, "@commit", System.IO.File.ReadAllText("version.txt"));
+                        SendMessage(actor, "@commit", System.IO.File.ReadAllText("version.txt"));
                     else
-                        MudObject.SendMessage(actor, "@no commit");
+                        SendMessage(actor, "@no commit");
 
                     return SFS.Rules.PerformResult.Continue;
                 });

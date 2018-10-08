@@ -5,6 +5,7 @@ using System.Text;
 using SFS;
 using SFS.Rules;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
@@ -37,8 +38,8 @@ namespace SFS.Commands.StandardActions
 
             Core.GlobalRules.Perform<Actor, MudObject, MudObject>("unlock").Do((actor, target, key) =>
             {
-                MudObject.SendMessage(actor, "@you unlock", target);
-                MudObject.SendExternalMessage(actor, "@they unlock", actor, target, key);
+                SendMessage(actor, "@you unlock", target);
+                SendExternalMessage(actor, "@they unlock", actor, target, key);
                 return SFS.Rules.PerformResult.Continue;
             });
         }

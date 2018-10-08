@@ -18,6 +18,7 @@ using System.Text;
 using SFS;
 using SFS.Rules;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
@@ -136,7 +137,7 @@ namespace SFS.Commands.StandardActions
                 // Do expects a lambda, and lets us specify what the rule should actually do.
                 .Do((actor, subject, link) =>
                 {
-                    MudObject.SendMessage(actor, "@can't push direction"); // We defined this message above.
+                    SendMessage(actor, "@can't push direction"); // We defined this message above.
                     return CheckResult.Disallow; // Disallow the action.
                 }).Name("Can't push between rooms by default rule.");
             // So by default, nothing can be pushed between rooms. What a useful command!
@@ -153,11 +154,11 @@ namespace SFS.Commands.StandardActions
                 .Do((actor, subject, link) =>
                 {
                     var direction = link.Direction;
-                    MudObject.SendMessage(actor, "@you push", subject, direction.ToString().ToLower());
+                    SendMessage(actor, "@you push", subject, direction.ToString().ToLower());
 
                     // SendExternalMessage sends the message to everyone in the same place as the actor, 
                     // except the actor themself.
-                    MudObject.SendExternalMessage(actor, "@they push", actor, subject, direction.ToString().ToLower());
+                    SendExternalMessage(actor, "@they push", actor, subject, direction.ToString().ToLower());
                     return PerformResult.Continue;
                 })
                 .Name("Report pushing between rooms rule.");
@@ -169,12 +170,12 @@ namespace SFS.Commands.StandardActions
                     var destination = MudObject.GetObject(link.Destination) as Container;
                     if (destination == null)
                     {
-                        MudObject.SendMessage(actor, "@bad link");
+                        SendMessage(actor, "@bad link");
                         return PerformResult.Stop;
                     }
 
-                    MudObject.Move(actor, destination);
-                    MudObject.Move(subject, destination);
+                    MoveObject(actor, destination);
+                    MoveObject(subject, destination);
                     return PerformResult.Continue;
                 })
                 .Name("Push through the link rule.");
@@ -186,7 +187,7 @@ namespace SFS.Commands.StandardActions
                 {
                     var direction = link.Direction;
                     var arriveMessage = Link.FromMessage(Link.Opposite(direction));
-                    MudObject.SendExternalMessage(actor, "@they arrive pushing", actor, subject, arriveMessage);
+                    SendExternalMessage(actor, "@they arrive pushing", actor, subject, arriveMessage);
                     return PerformResult.Continue;
                 })
                 .Name("Report arrival while pushing rule.");

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SFS;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
@@ -49,11 +50,11 @@ namespace SFS.Commands.StandardActions
             Core.GlobalRules.Perform<Actor>("examine")
                 .Do((actor) =>
                 {
-                    MudObject.SendMessage(actor, "A detailed account of all objects present.");
+                    SendMessage(actor, "A detailed account of all objects present.");
                     if (actor.Location != null)
                         foreach (var item in actor.Location.EnumerateObjects().Where(i => !System.Object.ReferenceEquals(i, actor)))
                         {
-                            MudObject.SendMessage(actor, "<a0>", item);
+                            SendMessage(actor, "<a0>", item);
                         }
                     return SFS.Rules.PerformResult.Continue;
                 });

@@ -33,9 +33,9 @@ public class BriefRoom : SFS.Room
                     var auto = SFS.Core.ExecutingCommand.ValueOrDefault("AUTO", false);
 
                     if (item.TimesViewed > 0 && auto)
-                        SFS.MudObject.SendMessage(viewer, item.BriefDescription);
+                        SFS.SendMessage(viewer, item.BriefDescription);
                     else
-                        SFS.MudObject.SendMessage(viewer, item.Long);
+                        SFS.SendMessage(viewer, item.Long);
 
                     item.TimesViewed += 1;
                     return SFS.PerformResult.Stop;

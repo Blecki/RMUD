@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Security.Cryptography;
+using static SFS.Core;
 
 namespace SFS
 {
@@ -26,7 +27,7 @@ namespace SFS
 
         public void SendManPage(Actor To)
         {
-            MudObject.SendMessage(To, Text);
+            SendMessage(To, Text);
         }
     }
     

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SFS;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
@@ -29,12 +30,12 @@ namespace SFS.Commands.StandardActions
                 .Do(a =>
                 {
                     var heldObjects = a.GetContents(RelativeLocations.Held);
-                    if (heldObjects.Count == 0) MudObject.SendMessage(a, "@empty handed", a);
+                    if (heldObjects.Count == 0) SendMessage(a, "@empty handed", a);
                     else
                     {
-                        MudObject.SendMessage(a, "@carrying");
+                        SendMessage(a, "@carrying");
                         foreach (var item in heldObjects)
-                            MudObject.SendMessage(a, "  <a0>", item);
+                            SendMessage(a, "  <a0>", item);
                     }
                     return SFS.Rules.PerformResult.Continue;
                 })

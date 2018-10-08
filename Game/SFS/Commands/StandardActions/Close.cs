@@ -5,6 +5,7 @@ using System.Text;
 using SFS;
 using SFS.Rules;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
@@ -40,7 +41,7 @@ namespace SFS.Commands.StandardActions
             Core.GlobalRules.Check<Actor, MudObject>("can close?")
                 .Do((a, b) =>
                 {
-                    MudObject.SendMessage(a, "@not openable");
+                    SendMessage(a, "@not openable");
                     return CheckResult.Disallow;
                 })
                 .Name("Default can't close unopenable things rule.");
@@ -49,8 +50,8 @@ namespace SFS.Commands.StandardActions
 
             Core.GlobalRules.Perform<Actor, MudObject>("close").Do((actor, target) =>
             {
-                MudObject.SendMessage(actor, "@you close", target);
-                MudObject.SendExternalMessage(actor, "@they close", actor, target);
+                SendMessage(actor, "@you close", target);
+                SendExternalMessage(actor, "@they close", actor, target);
                 return PerformResult.Continue;
             }).Name("Default close reporting rule.");
 

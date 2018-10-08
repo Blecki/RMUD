@@ -5,6 +5,7 @@ using System.Text;
 using SFS;
 using SFS.Rules;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
@@ -51,7 +52,7 @@ namespace SFS.Commands.StandardActions
                 .When((actor, item) => actor.Contains(item, RelativeLocations.Held))
                 .Do((actor, item) =>
                 {
-                    MudObject.SendMessage(actor, "@already have that");
+                    SendMessage(actor, "@already have that");
                     return CheckResult.Disallow;
                 })
                 .Name("Can't take what you're already holding rule.");
@@ -64,9 +65,9 @@ namespace SFS.Commands.StandardActions
             Core.GlobalRules.Perform<Actor, MudObject>("take")
                 .Do((actor, target) =>
                 {
-                    MudObject.SendMessage(actor, "@you take", target);
-                    MudObject.SendExternalMessage(actor, "@they take", actor, target);
-                    MudObject.Move(target, actor);
+                    SendMessage(actor, "@you take", target);
+                    SendExternalMessage(actor, "@they take", actor, target);
+                    MoveObject(target, actor);
                     return PerformResult.Continue;
                 })
                 .Name("Default handle taken rule.");
@@ -75,7 +76,7 @@ namespace SFS.Commands.StandardActions
                 .First
                 .Do((actor, thing) =>
                 {
-                    MudObject.SendMessage(actor, "@cant take people");
+                    SendMessage(actor, "@cant take people");
                     return CheckResult.Disallow;
                 })
                 .Name("Can't take people rule.");
@@ -84,7 +85,7 @@ namespace SFS.Commands.StandardActions
                 .First
                 .Do((actor, thing) =>
                 {
-                    MudObject.SendMessage(actor, "@cant take portals");
+                    SendMessage(actor, "@cant take portals");
                     return CheckResult.Disallow;
                 });
 
@@ -92,7 +93,7 @@ namespace SFS.Commands.StandardActions
                 .First
                 .Do((actor, thing) =>
                 {
-                    MudObject.SendMessage(actor, "@cant take scenery");
+                    SendMessage(actor, "@cant take scenery");
                     return CheckResult.Disallow;
                 })
                 .Name("Can't take scenery rule.");

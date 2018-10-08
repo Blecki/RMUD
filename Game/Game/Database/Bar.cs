@@ -1,4 +1,5 @@
 ﻿using SFS;
+using static SFS.Core;
 
 namespace Game
 {

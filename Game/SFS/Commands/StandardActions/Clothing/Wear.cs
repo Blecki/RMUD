@@ -5,6 +5,7 @@ using System.Text;
 using SFS;
 using SFS.Rules;
 using static SFS.CommandFactory;
+using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
@@ -32,7 +33,7 @@ namespace SFS.Commands.StandardActions
                 .When((a, b) => !MudObject.ObjectContainsObject(a, b))
                 .Do((actor, item) =>
                 {
-                    MudObject.SendMessage(actor, "@dont have that");
+                    SendMessage(actor, "@dont have that");
                     return CheckResult.Disallow;
                 });
 
@@ -40,7 +41,7 @@ namespace SFS.Commands.StandardActions
                 .When((a, b) => a.RelativeLocationOf(b) == RelativeLocations.Worn)
                 .Do((a, b) =>
                 {
-                    MudObject.SendMessage(a, "@clothing already wearing");
+                    SendMessage(a, "@clothing already wearing");
                     return CheckResult.Disallow;
                 });
 
@@ -51,16 +52,16 @@ namespace SFS.Commands.StandardActions
             Core.GlobalRules.Check<Actor, MudObject>("can wear?")
                 .Do((actor, item) =>
                 {
-                    MudObject.SendMessage(actor, "@clothing cant wear");
+                    SendMessage(actor, "@clothing cant wear");
                     return CheckResult.Disallow;
                 })
                 .Name("Can't wear unwearable things rule.");
 
             Core.GlobalRules.Perform<Actor, Clothing>("wear").Do((actor, target) =>
                 {
-                    MudObject.SendMessage(actor, "@clothing you wear", target);
-                    MudObject.SendExternalMessage(actor, "@clothing they wear", actor, target);
-                    MudObject.Move(target, actor, RelativeLocations.Worn);
+                    SendMessage(actor, "@clothing you wear", target);
+                    SendExternalMessage(actor, "@clothing they wear", actor, target);
+                    MoveObject(target, actor, RelativeLocations.Worn);
                     return PerformResult.Continue;
                 });
         }
