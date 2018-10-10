@@ -13,9 +13,6 @@ namespace SFS.Commands.Debug
         [AtStartup]
 		public static void __()
 		{
-            Core.StandardMessage("cons", "Results of consistency check:");
-            Core.StandardMessage("cons no results", "I found nothing wrong.");
-
             Core.DefaultParser.AddCommand(
                 Sequence(
                     DebugOnly(),
@@ -31,7 +28,7 @@ namespace SFS.Commands.Debug
 
                     var resultsFound = 0;
 
-                    SendMessage(actor, "@cons");
+                    SendMessage(actor, "Results of consistency check:");
 
                     if (!localScan)
                         foreach (var command in Core.DefaultParser.EnumerateCommands())
@@ -44,7 +41,7 @@ namespace SFS.Commands.Debug
                         }
 
                     if (resultsFound == 0)
-                        SendMessage(actor, "@cons no results");
+                        SendMessage(actor, "I found nothing wrong.");
 
 
                     return SFS.Rules.PerformResult.Continue;

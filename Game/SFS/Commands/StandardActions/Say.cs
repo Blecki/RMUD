@@ -19,7 +19,7 @@ namespace SFS.Commands.StandardActions
                         Or(
                             KeyWord("SAY"),
                             KeyWord("'")),
-                        MustMatch("@say what", Rest("SPEECH"))),
+                        MustMatch("Say what?", Rest("SPEECH"))),
                     Generic((pm, context) =>
                     {
                         var r = new List<PossibleMatch>();
@@ -49,22 +49,17 @@ namespace SFS.Commands.StandardActions
                     Or(
                         KeyWord("EMOTE"),
                         KeyWord("\"")),
-                    MustMatch("@emote what", Rest("SPEECH"))))
+                    MustMatch("Emote what?", Rest("SPEECH"))))
                 .ID("StandardActions:Emote")
                 .Manual("Perform an action, visible within your locale.")
                 .Perform("emote", "ACTOR", "SPEECH");
-
-            Core.StandardMessage("say what", "Say what?");
-            Core.StandardMessage("emote what", "You exist. Actually this is an error message, but that's what you just told me to say.");
-            Core.StandardMessage("speak", "^<the0> : \"<s1>\"");
-            Core.StandardMessage("emote", "^<the0> <s1>");
 
             GlobalRules.DeclarePerformRuleBook<Actor, String>("speak", "[Actor, Text] : Handle the actor speaking the text.", "actor", "text");
 
             GlobalRules.Perform<Actor, String>("speak")
                 .Do((actor, text) =>
                 {
-                    SendLocaleMessage(actor, "@speak", actor, text);
+                    SendLocaleMessage(actor, "^<the0> : \"<s1>\"", actor, text);
                     return SFS.Rules.PerformResult.Continue;
                 })
                 .Name("Default motormouth rule.");
@@ -74,7 +69,7 @@ namespace SFS.Commands.StandardActions
             GlobalRules.Perform<Actor, String>("emote")
                 .Do((actor, text) =>
                 {
-                    SendLocaleMessage(actor, "@emote", actor, text);
+                    SendLocaleMessage(actor, "^<the0> <s1>", actor, text);
                     return SFS.Rules.PerformResult.Continue;
                 })
                 .Name("Default exhibitionist rule.");

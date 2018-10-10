@@ -17,7 +17,7 @@ namespace SFS.Commands.StandardActions
                 Sequence(
                     KeyWord("PULL"),
                     BestScore("SUBJECT",
-                        MustMatch("@not here",
+                        MustMatch("I don't see that here.",
                             Object("SUBJECT", InScope, (actor, item) =>
                             {
                                 if (GlobalRules.ConsiderCheckRuleSilently("can pull?", actor, item) != SFS.Rules.CheckResult.Allow)
@@ -43,7 +43,7 @@ namespace SFS.Commands.StandardActions
                 .Last
                 .Do((a, t) => 
                     {
-                        SendMessage(a, "@does nothing");
+                        SendMessage(a, "That doesn't seem to do anything.");
                         return SFS.Rules.CheckResult.Disallow;
                     })
                 .Name("Default disallow pulling rule.");
@@ -51,7 +51,7 @@ namespace SFS.Commands.StandardActions
             GlobalRules.Perform<Actor, MudObject>("pull")
                 .Do((actor, target) =>
                 {
-                    SendMessage(actor, "@nothing happens");
+                    SendMessage(actor, "Nothing happens.");
                     return SFS.Rules.PerformResult.Continue;
                 })
                 .Name("Default handle pulling rule.");
@@ -60,7 +60,7 @@ namespace SFS.Commands.StandardActions
                 .First
                 .Do((actor, thing) =>
                 {
-                    SendMessage(actor, "@unappreciated", thing);
+                    SendMessage(actor, "I don't think <the0> would appreciate that.", thing);
                     return SFS.Rules.CheckResult.Disallow;
                 })
                 .Name("Can't pull people rule.");

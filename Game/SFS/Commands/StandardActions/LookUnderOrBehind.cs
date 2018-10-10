@@ -25,11 +25,6 @@ namespace SFS.Commands.StandardActions
                 .Check("can look relloc?", "ACTOR", "OBJECT", "RELLOC")
                 .Perform("look relloc", "ACTOR", "OBJECT", "RELLOC");
 
-            Core.StandardMessage("cant look relloc", "You can't look <s0> that.");
-            Core.StandardMessage("is closed error", "^<the0> is closed.");
-            Core.StandardMessage("relloc it is", "^<s0> <the1> is..");
-            Core.StandardMessage("nothing relloc it", "There is nothing <s0> <the1>.");
-
             GlobalRules.DeclareCheckRuleBook<Actor, Container, RelativeLocations>("can look relloc?", "[Actor, Item, Relative Location] : Can the actor look in/on/under/behind the item?", "actor", "item", "relloc");
 
             GlobalRules.Check<Actor, Container, RelativeLocations>("can look relloc?")
@@ -37,10 +32,10 @@ namespace SFS.Commands.StandardActions
                 .Name("Container must be visible rule.");
 
             GlobalRules.Check<Actor, Container, RelativeLocations>("can look relloc?")
-                .When((actor, item, relloc) => (item.LocationsSupported & relloc) != relloc)
+                .When((actor, item, relloc) => (item.SupportedLocations & relloc) != relloc)
                 .Do((actor, item, relloc) =>
                 {
-                    SendMessage(actor, "@cant look relloc", Relloc.GetRelativeLocationName(relloc));
+                    SendMessage(actor, "You can't look <s0> that.", Relloc.GetRelativeLocationName(relloc));
                     return SFS.Rules.CheckResult.Disallow;
                 })
                 .Name("Container must support relloc rule.");
@@ -49,7 +44,7 @@ namespace SFS.Commands.StandardActions
                 .When((actor, item, relloc) => (relloc == RelativeLocations.In) && !item.Open)
                 .Do((actor, item, relloc) =>
                 {
-                        SendMessage(actor, "@is closed error", item);
+                        SendMessage(actor, "^<the0> is closed.", item);
                         return SFS.Rules.CheckResult.Disallow;
                 })
                 .Name("Container must be open to look in rule.");
@@ -67,12 +62,12 @@ namespace SFS.Commands.StandardActions
 
                     if (contents.Count > 0)
                     {
-                        SendMessage(actor, "@relloc it is", Relloc.GetRelativeLocationName(relloc), item);
+                        SendMessage(actor, "^<s0) <the1> is..", Relloc.GetRelativeLocationName(relloc), item);
                         foreach (var thing in contents)
                             SendMessage(actor, "  <a0>", thing);
                     }
                     else
-                        SendMessage(actor, "@nothing relloc it", Relloc.GetRelativeLocationName(relloc), item);
+                        SendMessage(actor, "There is nothing <s0> <the1>.", Relloc.GetRelativeLocationName(relloc), item);
 
                     return SFS.Rules.PerformResult.Continue;
                 })

@@ -21,14 +21,6 @@ namespace SFS.Commands.StandardActions
                 .Manual("Displays a description of your location, and lists what else is present there.")
                 .ProceduralRule((match, actor) => GlobalRules.ConsiderPerformRule("describe locale", actor, actor.Location));
 
-            Core.StandardMessage("nowhere", "You aren't anywhere.");
-            Core.StandardMessage("dark", "It's too dark to see.");
-            Core.StandardMessage("also here", "Also here: <l0>.");
-            Core.StandardMessage("on which", "(on which is <l0>)");
-            Core.StandardMessage("obvious exits", "Obvious exits:");
-            Core.StandardMessage("through", "through <the0>");
-            Core.StandardMessage("to", "to <the0>");
-
             GlobalRules.DeclarePerformRuleBook<Actor, MudObject>("describe in locale", "[Actor, Item] : Generate a locale description for the item.", "actor", "item");
 
             GlobalRules.DeclarePerformRuleBook<Actor, Room>("describe locale", "[Actor, Room] : Generates a description of the locale.", "actor", "room");
@@ -38,7 +30,7 @@ namespace SFS.Commands.StandardActions
                 .When((viewer, room) => room == null)
                 .Do((viewer, room) =>
                 {
-                    SendMessage(viewer, "@nowhere");
+                    SendMessage(viewer, "You aren't anywhere.");
                     return SFS.Rules.PerformResult.Stop;
                 })
                 .Name("Can't describe the locale if there isn't one rule.");
@@ -67,7 +59,7 @@ namespace SFS.Commands.StandardActions
                 .When((viewer, room) => room.Light == LightingLevel.Dark)
                 .Do((viewer, room) =>
                 {
-                    SendMessage(viewer, "@dark");
+                    SendMessage(viewer, "It's too dark to see.");
                     return SFS.Rules.PerformResult.Stop;
                 })
                 .Name("Can't see in darkness rule.");
@@ -84,14 +76,14 @@ namespace SFS.Commands.StandardActions
             var describingLocale = false;
 
             GlobalRules.Value<Actor, Container, String, String>("printed name")
-                .When((viewer, container, article) => describingLocale && (container.LocationsSupported & RelativeLocations.On) == RelativeLocations.On)                    
+                .When((viewer, container, article) => describingLocale && (container.SupportedLocations & RelativeLocations.On) == RelativeLocations.On)                    
                 .Do((viewer, container, article) =>
                     {
                         var subObjects = new List<MudObject>(container.EnumerateObjects(RelativeLocations.On)
                         .Where(t => GlobalRules.ConsiderCheckRule("should be listed?", viewer, t) == SFS.Rules.CheckResult.Allow));
 
                         if (subObjects.Count > 0)
-                            return container.Short + " " + Core.FormatMessage(viewer, Core.GetMessage("on which"), subObjects);
+                            return container.Short + " " + Core.FormatMessage(viewer, "(on which is <l0>)", subObjects);
                         else
                             return container.Short;
                     })
@@ -134,7 +126,7 @@ namespace SFS.Commands.StandardActions
                     if (normalContents.Count > 0)
                     {
                         describingLocale = true;
-                        SendMessage(viewer, "@also here", normalContents);
+                        SendMessage(viewer, "Also here: <l0>.", normalContents);
                         describingLocale = false;
                     }
 
@@ -148,7 +140,7 @@ namespace SFS.Commands.StandardActions
                 {
                     if (room.EnumerateObjects().OfType<Portal>().Count() > 0)
                     {
-                        SendMessage(viewer, "@obvious exits");
+                        SendMessage(viewer, "Obvious exits:");
 
                         foreach (var link in room.EnumerateObjects<MudObject>().OfType<Portal>())
                         {
@@ -157,11 +149,11 @@ namespace SFS.Commands.StandardActions
                             builder.Append(link.Direction.ToString());
 
                             if (!link.Anonymous)
-                                builder.Append(" " + Core.FormatMessage(viewer, Core.GetMessage("through"), link));
+                                builder.Append(" " + Core.FormatMessage(viewer, "through <the0>", link));
 
                             var destinationRoom = MudObject.GetObject(link.Destination);
                             if (destinationRoom != null)
-                                builder.Append(" " + Core.FormatMessage(viewer, Core.GetMessage("to"), destinationRoom));
+                                builder.Append(" " + Core.FormatMessage(viewer, "to <the0>", destinationRoom));
 
                             SendMessage(viewer, builder.ToString());
                         }

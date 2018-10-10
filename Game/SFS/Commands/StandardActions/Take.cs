@@ -20,7 +20,7 @@ namespace SFS.Commands.StandardActions
                         KeyWord("GET"),
                         KeyWord("TAKE")),
                     BestScore("SUBJECT",
-                        MustMatch("@not here",
+                        MustMatch("I don't see that here.",
                             Object("SUBJECT", InScope, (actor, item) =>
                             {
                                 if (GlobalRules.ConsiderCheckRuleSilently("can take?", actor, item) != CheckResult.Allow)
@@ -35,12 +35,6 @@ namespace SFS.Commands.StandardActions
                 .AfterActing()
                 .MarkLocaleForUpdate();
 
-            Core.StandardMessage("you take", "You take <the0>.");
-            Core.StandardMessage("they take", "^<the0> takes <the1>.");
-            Core.StandardMessage("cant take people", "You can't take people.");
-            Core.StandardMessage("cant take portals", "You can't take portals.");
-            Core.StandardMessage("cant take scenery", "That's a terrible idea.");
-
             GlobalRules.DeclareCheckRuleBook<Actor, MudObject>("can take?", "[Actor, Item] : Can the actor take the item?", "actor", "item");
             GlobalRules.DeclarePerformRuleBook<Actor, MudObject>("take", "[Actor, Item] : Handle the actor taking the item.", "actor", "item");
 
@@ -52,7 +46,7 @@ namespace SFS.Commands.StandardActions
                 .When((actor, item) => actor.Contains(item, RelativeLocations.Held))
                 .Do((actor, item) =>
                 {
-                    SendMessage(actor, "@already have that");
+                    SendMessage(actor, "You already have that.");
                     return CheckResult.Disallow;
                 })
                 .Name("Can't take what you're already holding rule.");
@@ -65,8 +59,8 @@ namespace SFS.Commands.StandardActions
             GlobalRules.Perform<Actor, MudObject>("take")
                 .Do((actor, target) =>
                 {
-                    SendMessage(actor, "@you take", target);
-                    SendExternalMessage(actor, "@they take", actor, target);
+                    SendMessage(actor, "You take <the0>.", target);
+                    SendExternalMessage(actor, "^<the0> takes <the1>.", actor, target);
                     MoveObject(target, actor);
                     return PerformResult.Continue;
                 })
@@ -76,7 +70,7 @@ namespace SFS.Commands.StandardActions
                 .First
                 .Do((actor, thing) =>
                 {
-                    SendMessage(actor, "@cant take people");
+                    SendMessage(actor, "I don't think <the1> would appreciate that.");
                     return CheckResult.Disallow;
                 })
                 .Name("Can't take people rule.");
@@ -85,7 +79,7 @@ namespace SFS.Commands.StandardActions
                 .First
                 .Do((actor, thing) =>
                 {
-                    SendMessage(actor, "@cant take portals");
+                    SendMessage(actor, "You can't take that.");
                     return CheckResult.Disallow;
                 });
 
@@ -93,7 +87,7 @@ namespace SFS.Commands.StandardActions
                 .First
                 .Do((actor, thing) =>
                 {
-                    SendMessage(actor, "@cant take scenery");
+                    SendMessage(actor, "You can't take that.");
                     return CheckResult.Disallow;
                 })
                 .Name("Can't take scenery rule.");

@@ -12,10 +12,6 @@ namespace SFS.Commands.Meta
         [AtStartup]
 		public static void __()
 		{
-            Core.StandardMessage("version", "Build: Sharp Fiction System pre-alpha <s0>");
-            Core.StandardMessage("commit", "Commit: <s0>");
-            Core.StandardMessage("no commit", "Commit version not found.");
-
             Core.DefaultParser.AddCommand(
                 Or(
                     KeyWord("VERSION"),
@@ -25,12 +21,12 @@ namespace SFS.Commands.Meta
                 {
                     var buildVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-                    SendMessage(actor, "@version", buildVersion);
+                    SendMessage(actor, "Build: Sharp Fiction System pre-alpha <s0>", buildVersion);
 
                     if (System.IO.File.Exists("version.txt"))
-                        SendMessage(actor, "@commit", System.IO.File.ReadAllText("version.txt"));
+                        SendMessage(actor, "Commit: <s0>", System.IO.File.ReadAllText("version.txt"));
                     else
-                        SendMessage(actor, "@no commit");
+                        SendMessage(actor, "Commit version not found.");
 
                     return SFS.Rules.PerformResult.Continue;
                 });

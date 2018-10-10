@@ -42,7 +42,7 @@ namespace SFS.Commands.StandardActions
                 Sequence(      // Attemps to match a set of matchers in sequence.
                     KeyWord("PUSH"), // Is the word 'push'? Yes -> match. No -> Fail.
                     BestScore("SUBJECT", // Match the child, and choose the subset of possible matches that are best.
-                        MustMatch("@not here", // If the child doesn't match, go ahead and report an error.
+                        MustMatch("I don't see that here.", // If the child doesn't match, go ahead and report an error.
                             Object("SUBJECT", InScope))), // Match a mud object. "SUBJECT" is the argument we store it in, InScope is the source of the objects.
                     MustMatch("@unmatched cardinal", Cardinal("DIRECTION")))) // Finally, match a cardinal direction.
                                                                               // With the matcher itself built, the call to AddCommand is over. AddCommand return a 
@@ -116,13 +116,6 @@ namespace SFS.Commands.StandardActions
                 }, "Mark both sides of link for update rule"); // Hey the command is finally done.
 
  
-            // Lets start by defining some messages we'll use later. This commentary isn't about the message
-            // formatting system, but lets still do this 'right'.
-            Core.StandardMessage("can't push direction", "That isn't going to work.");
-            Core.StandardMessage("you push", "You push <the0> <s1>.");
-            Core.StandardMessage("they push", "^<the0> pushed <the1> <s2>.");
-            Core.StandardMessage("they arrive pushing", "^<the0> arrives <s2> pushing <the1>.");
-
             // We'll declare the 'can push direction?' rulebook first. Notice that we were passed the global rules,
             // and that is what we want to declare it on. DeclareCheckRuleBook takes the types the rulebook
             // expects as generic arguments, then the name of the rulebook. The documentation is helpful but
@@ -137,7 +130,7 @@ namespace SFS.Commands.StandardActions
                 // Do expects a lambda, and lets us specify what the rule should actually do.
                 .Do((actor, subject, link) =>
                 {
-                    SendMessage(actor, "@can't push direction"); // We defined this message above.
+                    SendMessage(actor, "This isn't going to work."); // We defined this message above.
                     return CheckResult.Disallow; // Disallow the action.
                 }).Name("Can't push between rooms by default rule.");
             // So by default, nothing can be pushed between rooms. What a useful command!
@@ -154,11 +147,11 @@ namespace SFS.Commands.StandardActions
                 .Do((actor, subject, link) =>
                 {
                     var direction = link.Direction;
-                    SendMessage(actor, "@you push", subject, direction.ToString().ToLower());
+                    SendMessage(actor, "You push <the0> <s1>.", subject, direction.ToString().ToLower());
 
                     // SendExternalMessage sends the message to everyone in the same place as the actor, 
                     // except the actor themself.
-                    SendExternalMessage(actor, "@they push", actor, subject, direction.ToString().ToLower());
+                    SendExternalMessage(actor, "^<the0> pushed <the1> <s2>.", actor, subject, direction.ToString().ToLower());
                     return PerformResult.Continue;
                 })
                 .Name("Report pushing between rooms rule.");
@@ -170,7 +163,7 @@ namespace SFS.Commands.StandardActions
                     var destination = MudObject.GetObject(link.Destination) as Container;
                     if (destination == null)
                     {
-                        SendMessage(actor, "@bad link");
+                        SendMessage(actor, "You can't go that way.");
                         return PerformResult.Stop;
                     }
 
@@ -187,7 +180,7 @@ namespace SFS.Commands.StandardActions
                 {
                     var direction = link.Direction;
                     var arriveMessage = Link.FromMessage(Link.Opposite(direction));
-                    SendExternalMessage(actor, "@they arrive pushing", actor, subject, arriveMessage);
+                    SendExternalMessage(actor, "^<the0> arrives <s2> pushing <a1>.", actor, subject, arriveMessage);
                     return PerformResult.Continue;
                 })
                 .Name("Report arrival while pushing rule.");

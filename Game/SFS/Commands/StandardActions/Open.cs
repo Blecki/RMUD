@@ -18,7 +18,7 @@ namespace SFS.Commands.StandardActions
                 Sequence(
                     KeyWord("OPEN"),
                     BestScore("SUBJECT",
-                        MustMatch("@not here",
+                        MustMatch("I don't see that here.",
                             Object("SUBJECT", InScope, (actor, thing) =>
                             {
                                 if (GlobalRules.ConsiderCheckRuleSilently("can open?", actor, thing) == SFS.Rules.CheckResult.Allow) return MatchPreference.Likely;
@@ -31,10 +31,6 @@ namespace SFS.Commands.StandardActions
                 .Perform("open", "ACTOR", "SUBJECT")
                 .AfterActing();
 
-            Core.StandardMessage("not openable", "I don't think the concept of 'open' applies to that.");
-            Core.StandardMessage("you open", "You open <the0>.");
-            Core.StandardMessage("they open", "^<the0> opens <the1>.");
-
             GlobalRules.DeclareCheckRuleBook<MudObject, MudObject>("can open?", "[Actor, Item] : Can the actor open the item?", "actor", "item");
 
             GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("open", "[Actor, Item] : Handle the actor opening the item.", "actor", "item");
@@ -42,14 +38,14 @@ namespace SFS.Commands.StandardActions
             GlobalRules.Check<Actor, MudObject>("can open?")
                 .Do((a, b) =>
                 {
-                    SendMessage(a, "@not openable");
+                    SendMessage(a, "I don't think the concept of 'open' applies to that.");
                     return SFS.Rules.CheckResult.Disallow;
                 })
                 .Name("Can't open the unopenable rule.");
 
             GlobalRules.Perform<Actor, MudObject>("open").Do((actor, target) =>
             {
-                SendMessage(actor, "@you open", target);
+                SendMessage(actor, "You open <the0>.", target);
                 SendExternalMessage(actor, "@they open", actor, target);
                 return SFS.Rules.PerformResult.Continue;
             }).Name("Default report opening rule.");

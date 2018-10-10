@@ -18,7 +18,7 @@ namespace SFS.Commands.StandardActions
                 Sequence(
                     KeyWord("WEAR"),
                     BestScore("OBJECT",
-                        MustMatch("@clothing wear what",
+                        MustMatch("I couldn't figure out what you're trying to wear.",
                             Object("OBJECT", InScope, PreferHeld)))))
                 .Manual("Cover your disgusting flesh.")
                 .Check("can wear?", "ACTOR", "OBJECT")
@@ -33,7 +33,7 @@ namespace SFS.Commands.StandardActions
                 .When((a, b) => !ObjectContainsObject(a, b))
                 .Do((actor, item) =>
                 {
-                    SendMessage(actor, "@dont have that");
+                    SendMessage(actor, "You don't have that.");
                     return CheckResult.Disallow;
                 });
 
@@ -41,7 +41,7 @@ namespace SFS.Commands.StandardActions
                 .When((a, b) => a.RelativeLocationOf(b) == RelativeLocations.Worn)
                 .Do((a, b) =>
                 {
-                    SendMessage(a, "@clothing already wearing");
+                    SendMessage(a, "You're already wearing that.");
                     return CheckResult.Disallow;
                 });
 
@@ -52,15 +52,15 @@ namespace SFS.Commands.StandardActions
             GlobalRules.Check<Actor, MudObject>("can wear?")
                 .Do((actor, item) =>
                 {
-                    SendMessage(actor, "@clothing cant wear");
+                    SendMessage(actor, "That isn't something that can be worn.");
                     return CheckResult.Disallow;
                 })
                 .Name("Can't wear unwearable things rule.");
 
             GlobalRules.Perform<Actor, Clothing>("wear").Do((actor, target) =>
                 {
-                    SendMessage(actor, "@clothing you wear", target);
-                    SendExternalMessage(actor, "@clothing they wear", actor, target);
+                    SendMessage(actor, "You don <the0>.", target);
+                    SendExternalMessage(actor, "^<the0> dons <a1>.", actor, target);
                     MoveObject(target, actor, RelativeLocations.Worn);
                     return PerformResult.Continue;
                 });

@@ -18,7 +18,7 @@ namespace SFS.Commands.StandardActions
                 Sequence(
                     KeyWord("DROP"),
                     BestScore("SUBJECT",
-                        MustMatch("@dont have that",
+                        MustMatch("You don't have that.",
                             Object("SUBJECT", InScope, PreferHeld)))))
                 .ID("StandardActions:Drop")
                 .Manual("Drop a held item. This can also be used to remove and drop a worn item.")
@@ -26,9 +26,6 @@ namespace SFS.Commands.StandardActions
                 .BeforeActing()
                 .Perform("drop", "ACTOR", "SUBJECT")
                 .AfterActing();
-
-            Core.StandardMessage("you drop", "You drop <the0>.");
-            Core.StandardMessage("they drop", "^<the0> drops <a1>.");
 
             GlobalRules.DeclareCheckRuleBook<Actor, MudObject>("can drop?", "[Actor, Item] : Determine if the item can be dropped.", "actor", "item");
             GlobalRules.DeclarePerformRuleBook<Actor, MudObject>("drop", "[Actor, Item] : Handle an item being dropped.", "actor", "item");
@@ -38,7 +35,7 @@ namespace SFS.Commands.StandardActions
                 .When((actor, item) => !ObjectContainsObject(actor, item))
                 .Do((actor, item) =>
                 {
-                    SendMessage(actor, "@dont have that");
+                    SendMessage(actor, "You don't have that.");
                     return CheckResult.Disallow;
                 })
                 .Name("Must be holding it to drop it rule.");
@@ -61,8 +58,8 @@ namespace SFS.Commands.StandardActions
 
             GlobalRules.Perform<Actor, MudObject>("drop").Do((actor, target) =>
             {
-                SendMessage(actor, "@you drop", target);
-                SendExternalMessage(actor, "@they drop", actor, target);
+                SendMessage(actor, "You drop <the0>.", target);
+                SendExternalMessage(actor, "^<the0> drops <a1>.", actor, target);
                 MoveObject(target, actor.Location);
                 return PerformResult.Continue;
             }).Name("Default drop handler rule.");

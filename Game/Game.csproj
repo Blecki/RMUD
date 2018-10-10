@@ -92,7 +92,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="SFS\Commands\Debug\Cons.cs" />
-    <Compile Include="SFS\Commands\Debug\DumpMessages.cs" />
     <Compile Include="SFS\Commands\Debug\Force.cs" />
     <Compile Include="SFS\Commands\Debug\Inspect.cs" />
     <Compile Include="SFS\Commands\Debug\Move.cs" />
@@ -113,7 +112,6 @@
     <Compile Include="SFS\Core\IsVisibleTo.cs" />
     <Compile Include="SFS\ManPages.cs" />
     <Compile Include="SFS\Core\MarkForUpdate.cs" />
-    <Compile Include="SFS\Core\MessageTable.cs" />
     <Compile Include="SFS\Commands\Meta\Alias.cs" />
     <Compile Include="SFS\Commands\Meta\Man.cs" />
     <Compile Include="SFS\Commands\Meta\Version.cs" />
@@ -198,9 +196,8 @@
     <Compile Include="SFS\Database.cs" />
     <Compile Include="SFS\Commands\StandardActions\Close.cs" />
     <Compile Include="SFS\WorldModel\Clothing.cs" />
-    <Compile Include="SFS\Commands\StandardActions\Messages.cs" />
     <Compile Include="SFS\Commands\StandardActions\Remove.cs" />
-    <Compile Include="SFS\Commands\StandardActions\Rules.cs" />
+    <Compile Include="SFS\Commands\StandardActions\ClothingRules.cs" />
     <Compile Include="SFS\Commands\StandardActions\Wear.cs" />
     <Compile Include="SFS\Commands\StandardActions\DescribeRules.cs" />
     <Compile Include="SFS\Commands\StandardActions\Drop.cs" />

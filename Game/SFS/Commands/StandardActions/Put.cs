@@ -18,11 +18,11 @@ namespace SFS.Commands.StandardActions
                 Sequence(
                     KeyWord("PUT"),
                     BestScore("SUBJECT",
-                        MustMatch("@dont have that",
+                        MustMatch("You don't have that.",
                             Object("SUBJECT", InScope, PreferHeld))),
                     Optional(RelativeLocation("RELLOC")),
                     BestScore("OBJECT",
-                        MustMatch("@not here",
+                        MustMatch("I don't see that here.",
                             Object("OBJECT", InScope, (actor, thing) =>
                             {
                                 //Prefer objects that are actually containers. No means curently to prefer
@@ -49,10 +49,6 @@ namespace SFS.Commands.StandardActions
                 .AfterActing()
                 .MarkLocaleForUpdate();
 
-            Core.StandardMessage("cant put relloc", "You can't put things <s0> that.");
-            Core.StandardMessage("you put", "You put <the0> <s1> <the2>.");
-            Core.StandardMessage("they put", "^<the0> puts <the1> <s2> <the3>.");
-                
             GlobalRules.DeclareCheckRuleBook<MudObject, MudObject, MudObject, RelativeLocations>("can put?", "[Actor, Item, Container, Location] : Determine if the actor can put the item in or on or under the container.", "actor", "item", "container", "relloc");
             GlobalRules.DeclarePerformRuleBook<MudObject, MudObject, MudObject, RelativeLocations>("put", "[Actor, Item, Container, Location] : Handle an actor putting the item in or on or under the container.", "actor", "item", "container", "relloc");
 
@@ -66,7 +62,7 @@ namespace SFS.Commands.StandardActions
                 {
                     if (!(container is Container))
                     {
-                        SendMessage(actor, "@cant put relloc", Relloc.GetRelativeLocationName(relloc));
+                        SendMessage(actor, "You can't put things <s0> that.", Relloc.GetRelativeLocationName(relloc));
                         return CheckResult.Disallow;
                     }
                     return CheckResult.Continue;
@@ -85,8 +81,8 @@ namespace SFS.Commands.StandardActions
             GlobalRules.Perform<Actor, MudObject, Container, RelativeLocations>("put")
                 .Do((actor, item, container, relloc) =>
                 {
-                    SendMessage(actor, "@you put", item, Relloc.GetRelativeLocationName(relloc), container);
-                    SendExternalMessage(actor, "@they put", actor, item, Relloc.GetRelativeLocationName(relloc), container);
+                    SendMessage(actor, "You put <the0> <s1> <the2>.", item, Relloc.GetRelativeLocationName(relloc), container);
+                    SendExternalMessage(actor, "^<the0> puts <the1> <s2> <the3>.", actor, item, Relloc.GetRelativeLocationName(relloc), container);
                     MoveObject(item, container, relloc);
                     return PerformResult.Continue;
                 })
@@ -95,7 +91,7 @@ namespace SFS.Commands.StandardActions
             GlobalRules.Check<Actor, MudObject, Container, RelativeLocations>("can put?")
                 .Do((actor, item, container, relloc) =>
                 {
-                    if ((container.LocationsSupported & relloc) != relloc)
+                    if ((container.SupportedLocations & relloc) != relloc)
                     {
                         SendMessage(actor, "@cant put relloc", Relloc.GetRelativeLocationName(relloc));
                         return CheckResult.Disallow;
@@ -109,7 +105,7 @@ namespace SFS.Commands.StandardActions
                 {
                     if (relloc == RelativeLocations.In && !container.Open)
                     {
-                        SendMessage(actor, "@is closed error", container);
+                        SendMessage(actor, "^<the0> is closed.", container);
                         return CheckResult.Disallow;
                     }
 

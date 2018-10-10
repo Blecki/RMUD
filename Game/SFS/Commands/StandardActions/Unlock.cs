@@ -18,11 +18,11 @@ namespace SFS.Commands.StandardActions
                 Sequence(
                     KeyWord("UNLOCK"),
                     BestScore("ITEM",
-                        MustMatch("@not here",
+                        MustMatch("I don't see that here.",
                             Object("ITEM", InScope))),
                     OptionalKeyWord("WITH"),
                     BestScore("KEY",
-                        MustMatch("@not here",
+                        MustMatch("I don't see that here.",
                             Object("KEY", InScope, PreferHeld)))))
                 .ID("StandardActions:Unlock")
                 .Manual("Use the KEY to unlock the ITEM.")
@@ -33,15 +33,12 @@ namespace SFS.Commands.StandardActions
 
             // Todo: Provide a key that matches if they leave it out of the command.
 
-            Core.StandardMessage("you unlock", "You unlock <the0>.");
-            Core.StandardMessage("they unlock", "^<the0> unlocks <the1> with <a2>.");
-
             GlobalRules.DeclarePerformRuleBook<Actor, MudObject, MudObject>("unlock", "[Actor, Item, Key] : Handle the actor unlocking the item with the key.", "actor", "item", "key");
 
             GlobalRules.Perform<Actor, MudObject, MudObject>("unlock").Do((actor, target, key) =>
             {
-                SendMessage(actor, "@you unlock", target);
-                SendExternalMessage(actor, "@they unlock", actor, target, key);
+                SendMessage(actor, "You unlock <the0>.", target);
+                SendExternalMessage(actor, "^<the0> unlocks <the1> with <a2>.", actor, target, key);
                 return SFS.Rules.PerformResult.Continue;
             });
         }

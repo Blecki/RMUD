@@ -18,10 +18,10 @@ namespace SFS.Commands.StandardActions
                 .Do(a =>
                 {
                     var wornObjects = a.GetContents(RelativeLocations.Worn);
-                    if (wornObjects.Count == 0) SendMessage(a, "@nude");
+                    if (wornObjects.Count == 0) SendMessage(a, "You are naked.");
                     else
                     {
-                        SendMessage(a, "@clothing wearing");
+                        SendMessage(a, "You are wearing..");
                         foreach (var item in wornObjects)
                             SendMessage(a, "  <a0>", item);
                     }
@@ -35,7 +35,7 @@ namespace SFS.Commands.StandardActions
                     foreach (Clothing wornItem in actor.EnumerateObjects(RelativeLocations.Worn).OfType<Clothing>())
                         if (wornItem.Layer == item.Layer && wornItem.BodyPart == item.BodyPart)
                         {
-                            SendMessage(actor, "@clothing remove first", wornItem);
+                            SendMessage(actor, "You'll have to remove <the0> first.", wornItem);
                             return CheckResult.Disallow;
                         }
                     return CheckResult.Continue;
@@ -48,7 +48,7 @@ namespace SFS.Commands.StandardActions
                     foreach (var wornItem in actor.EnumerateObjects(RelativeLocations.Worn).OfType<Clothing>())
                         if (wornItem.Layer < item.Layer && wornItem.BodyPart == item.BodyPart)
                         {
-                            SendMessage(actor, "@clothing remove first", wornItem);
+                            SendMessage(actor, "You'll have to remove <the0> first.", wornItem);
                             return CheckResult.Disallow;
                         }
                     return CheckResult.Allow;
@@ -62,9 +62,9 @@ namespace SFS.Commands.StandardActions
                 {
                     var wornItems = actor.GetContents(RelativeLocations.Worn);
                     if (wornItems.Count == 0)
-                        SendMessage(viewer, "@clothing they are nude", actor);
+                        SendMessage(viewer, "^<the0> is naked.", actor);
                     else
-                        SendMessage(viewer, "@clothing they are wearing", actor, wornItems);
+                        SendMessage(viewer, "^<the0> is wearing <l1>.", actor, wornItems);
                     return PerformResult.Continue;
                 })
                 .Name("List worn items when describing an actor rule.");

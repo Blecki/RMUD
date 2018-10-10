@@ -18,7 +18,7 @@ namespace SFS.Commands.StandardActions
                 Sequence(
                     KeyWord("CLOSE"),
                     BestScore("SUBJECT",
-                        MustMatch("@not here",
+                        MustMatch("I don't see that here.",
                             Object("SUBJECT", InScope, (actor, thing) =>
                             {
                                 if (GlobalRules.ConsiderCheckRuleSilently("can close?", actor, thing) == CheckResult.Allow) return MatchPreference.Likely;
@@ -31,9 +31,6 @@ namespace SFS.Commands.StandardActions
                 .Perform("close", "ACTOR", "SUBJECT")
                 .AfterActing();
 
-            Core.StandardMessage("you close", "You close <the0>.");
-            Core.StandardMessage("they close", "^<the0> closes <the1>.");
-
             GlobalRules.DeclareCheckRuleBook<MudObject, MudObject>("can close?", "[Actor, Item] : Determine if the item can be closed.", "actor", "item");
 
             GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("close", "[Actor, Item] : Handle the item being closed.", "actor", "item");
@@ -41,15 +38,15 @@ namespace SFS.Commands.StandardActions
             GlobalRules.Check<Actor, MudObject>("can close?")
                 .Do((a, b) =>
                 {
-                    SendMessage(a, "@not openable");
+                    SendMessage(a, "I don't think the concept of 'open' applies to that.");
                     return CheckResult.Disallow;
                 })
                 .Name("Default can't close unopenable things rule.");
 
             GlobalRules.Perform<Actor, MudObject>("close").Do((actor, target) =>
             {
-                SendMessage(actor, "@you close", target);
-                SendExternalMessage(actor, "@they close", actor, target);
+                SendMessage(actor, "You close <the0>.", target);
+                SendExternalMessage(actor, "^<the0> closes <the1>.", actor, target);
                 return PerformResult.Continue;
             }).Name("Default close reporting rule.");
 

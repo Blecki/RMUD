@@ -13,13 +13,6 @@ namespace SFS.Commands.StandardActions
         [AtStartup]
         public static void __()
         {
-            Core.StandardMessage("is open", "^<the0> is open.");
-            Core.StandardMessage("is closed", "^<the0> is closed.");
-            Core.StandardMessage("describe on", "On <the0> is <l1>.");
-            Core.StandardMessage("describe in", "In <the0> is <l1>.");
-            Core.StandardMessage("empty handed", "^<the0> is empty handed.");
-            Core.StandardMessage("holding", "^<the0> is holding <l1>.");
-
             GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("describe", "[Actor, Item] : Generates descriptions of the item.", "actor", "item");
 
             GlobalRules.Perform<Actor, MudObject>("describe")
@@ -45,12 +38,12 @@ namespace SFS.Commands.StandardActions
             //    .Name("Describe open or closed state rule.");
 
             GlobalRules.Perform<Actor, Container>("describe")
-                .When((viewer, item) => (item.LocationsSupported & RelativeLocations.On) == RelativeLocations.On)
+                .When((viewer, item) => (item.SupportedLocations & RelativeLocations.On) == RelativeLocations.On)
                 .Do((viewer, item) =>
                 {
                     var contents = item.GetContents(RelativeLocations.On);
                     if (contents.Count() > 0)
-                        SendMessage(viewer, "@describe on", item, contents);
+                        SendMessage(viewer, "On <the0> is <l1>.", item, contents);
                     return PerformResult.Continue;
                 })
                 .Name("List things on container in description rule.");
@@ -66,7 +59,7 @@ namespace SFS.Commands.StandardActions
                 {
                     var contents = item.GetContents(RelativeLocations.In);
                     if (contents.Count() > 0)
-                        SendMessage(viewer, "@describe in", item, contents);
+                        SendMessage(viewer, "In <the0> is <l1>.", item, contents);
                     return PerformResult.Continue;
                 })
                 .Name("List things in open container in description rule.");
@@ -78,9 +71,9 @@ namespace SFS.Commands.StandardActions
                 {
                     var heldItems = new List<MudObject>(actor.EnumerateObjects(RelativeLocations.Held));
                     if (heldItems.Count == 0)
-                        SendMessage(viewer, "@empty handed", actor);
+                        SendMessage(viewer, "^<the0> is empty handed.", actor);
                     else
-                        SendMessage(viewer, "@holding", actor, heldItems);
+                        SendMessage(viewer, "^<the0> is holding <l1>.", actor, heldItems);
 
                     return PerformResult.Continue;
                 })

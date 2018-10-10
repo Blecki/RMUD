@@ -18,7 +18,7 @@ namespace SFS.Commands.StandardActions
                 FirstOf(
                     Sequence(
                         KeyWord("GO"),
-                        MustMatch("@unmatched cardinal", Cardinal("DIRECTION"))),
+                        MustMatch("What way was that?", Cardinal("DIRECTION"))),
                     Cardinal("DIRECTION")))
                 .Manual("Move between rooms. 'Go' is optional, a raw cardinal works just as well.")
                 .ProceduralRule((match, actor) =>
@@ -40,22 +40,13 @@ namespace SFS.Commands.StandardActions
                     return PerformResult.Continue;
                 }, "Mark both sides of link for update rule");
 
-            Core.StandardMessage("unmatched cardinal", "What way was that?");
-            Core.StandardMessage("go to null link", "You can't go that way.");
-            Core.StandardMessage("go to closed door", "The door is closed.");
-            Core.StandardMessage("you went", "You went <s0>.");
-            Core.StandardMessage("they went", "^<the0> went <s1>.");
-            Core.StandardMessage("bad link", "Error - Link does not lead to a room.");
-            Core.StandardMessage("they arrive", "^<the0> arrives <s1>.");
-            Core.StandardMessage("first opening", "[first opening <the0>]");
-
             GlobalRules.DeclareCheckRuleBook<Actor, Portal>("can go?", "[Actor, Link] : Can the actor go through that link?", "actor", "link");
 
             GlobalRules.Check<Actor, Portal>("can go?")
                 .When((actor, link) => link == null)
                 .Do((actor, link) =>
                 {
-                    SendMessage(actor, "@go to null link");
+                    SendMessage(actor, "You can't go that way.");
                     return CheckResult.Disallow;
                 })
                 .Name("No link found rule.");
@@ -64,7 +55,7 @@ namespace SFS.Commands.StandardActions
                 .When((actor, link) => link != null && !link.Open)
                 .Do((actor, link) =>
                 {
-                    SendMessage(actor, "@first opening", link);
+                    SendMessage(actor, "[first opening <the0>]", link);
                     var tryOpen = Core.Try("StandardActions:Open", Core.ExecutingCommand.With("SUBJECT", link), actor);
                     if (tryOpen == PerformResult.Stop)
                         return CheckResult.Disallow;
@@ -82,8 +73,8 @@ namespace SFS.Commands.StandardActions
                 .Do((actor, link) =>
                 {
                     var direction = link.Direction;
-                    SendMessage(actor, "@you went", direction.ToString().ToLower());
-                    SendExternalMessage(actor, "@they went", actor, direction.ToString().ToLower());
+                    SendMessage(actor, "You went <s0>.", direction.ToString().ToLower());
+                    SendExternalMessage(actor, "^<the0> went <s1>.", actor, direction.ToString().ToLower());
                     return PerformResult.Continue;
                 })
                 .Name("Report leaving rule.");
@@ -94,7 +85,7 @@ namespace SFS.Commands.StandardActions
                     var destination = MudObject.GetObject(link.Destination) as Container;
                     if (destination == null)
                     {
-                        SendMessage(actor, "@bad link");
+                        SendMessage(actor, "[Error: Link does not lead to a room.]");
                         return PerformResult.Stop;
                     }
                     MoveObject(actor, destination);
@@ -107,7 +98,7 @@ namespace SFS.Commands.StandardActions
                 {
                     var direction = link.Direction;
                     var arriveMessage = Link.FromMessage(Link.Opposite(direction));
-                    SendExternalMessage(actor, "@they arrive", actor, arriveMessage);
+                    SendExternalMessage(actor, "^<the0> arrives <s1>.", actor, arriveMessage);
                     return PerformResult.Continue;
                 })
                 .Name("Report arrival rule.");

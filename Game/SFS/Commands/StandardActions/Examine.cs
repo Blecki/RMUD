@@ -25,13 +25,11 @@ namespace SFS.Commands.StandardActions
                         Sequence(
                             Or(KeyWord("LOOK"), KeyWord("L")),
                             KeyWord("AT"))),
-                    MustMatch("@dont see that", Object("OBJECT", InScope))))
+                    MustMatch("I don't see that here.", Object("OBJECT", InScope))))
                 .ID("StandardActions:ExamineThing")
                 .Manual("Take a close look at an object.")
                 .Check("can examine?", "ACTOR", "OBJECT")
                 .Perform("describe", "ACTOR", "OBJECT");
-
-            Core.StandardMessage("dont see that", "I don't see that here.");
 
             GlobalRules.DeclareCheckRuleBook<Actor, MudObject>("can examine?", "[Actor, Item] : Can the viewer examine the item?", "actor", "item");
 

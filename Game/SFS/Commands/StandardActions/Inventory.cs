@@ -22,8 +22,6 @@ namespace SFS.Commands.StandardActions
                 .Manual("Displays what you are wearing and carrying.")
                 .Perform("inventory", "ACTOR");
 
-            Core.StandardMessage("carrying", "You are carrying..");
-
             GlobalRules.DeclarePerformRuleBook<Actor>("inventory", "[Actor] : Describes a player's inventory to themselves.", "actor");
 
             GlobalRules.Perform<Actor>("inventory")
@@ -33,7 +31,7 @@ namespace SFS.Commands.StandardActions
                     if (heldObjects.Count == 0) SendMessage(a, "@empty handed", a);
                     else
                     {
-                        SendMessage(a, "@carrying");
+                        SendMessage(a, "You are carrying..");
                         foreach (var item in heldObjects)
                             SendMessage(a, "  <a0>", item);
                     }

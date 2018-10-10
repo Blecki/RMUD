@@ -19,10 +19,10 @@ namespace SFS.Commands.StandardActions
                     BestScore("SUBJECT",
                         Sequence(
                             KeyWord("LOCK"),
-                            MustMatch("@not here",
+                            MustMatch("I don't see that here.",
                                 Object("SUBJECT", InScope)),
                             OptionalKeyWord("WITH"),
-                            MustMatch("@not here",
+                            MustMatch("I don't see that here.",
                                 Object("KEY", InScope, PreferHeld))))))
                 .ID("StandardActions:Lock")
                 .Manual("Lock the subject with a key.")
@@ -30,11 +30,7 @@ namespace SFS.Commands.StandardActions
                 .BeforeActing()
                 .Perform("lock", "ACTOR", "SUBJECT", "KEY")
                 .AfterActing();
-
-            Core.StandardMessage("not lockable", "I don't think the concept of 'locked' applies to that.");
-            Core.StandardMessage("you lock", "You lock <the0>.");
-            Core.StandardMessage("they lock", "^<the0> locks <the1> with <the2>.");
-
+            
             GlobalRules.DeclareCheckRuleBook<Actor, MudObject, MudObject>("can lock?", "[Actor, Item, Key] : Can the item be locked by the actor with the key?", "actor", "item", "key");
 
             GlobalRules.Check<Actor, MudObject, MudObject>("can lock?")
@@ -48,7 +44,7 @@ namespace SFS.Commands.StandardActions
             GlobalRules.Check<Actor, MudObject, MudObject>("can lock?")
                 .Do((a, b, c) =>
                 {
-                    SendMessage(a, "@not lockable");
+                    SendMessage(a, "I don't think the concept of 'locked' applies to that.");
                     return SFS.Rules.CheckResult.Disallow;
                 })
                 .Name("Can't lock the unlockable rule.");
@@ -57,8 +53,8 @@ namespace SFS.Commands.StandardActions
 
             GlobalRules.Perform<Actor, MudObject, MudObject>("lock").Do((actor, target, key) =>
             {
-                SendMessage(actor, "@you lock", target);
-                SendExternalMessage(actor, "@they lock", actor, target, key);
+                SendMessage(actor, "You lock <the0>.", target);
+                SendExternalMessage(actor, "^<the0> locks <the1>.", actor, target, key);
                 return SFS.Rules.PerformResult.Continue;
             });
         }

@@ -9,13 +9,13 @@ namespace SFS
     {
         public Dictionary<RelativeLocations, List<MudObject>> Lists { get; set; }
 
-        public RelativeLocations Supported = RelativeLocations.None;
-        public RelativeLocations Default = RelativeLocations.None;
+        public RelativeLocations SupportedLocations = RelativeLocations.None;
+        public RelativeLocations DefaultLocation = RelativeLocations.None;
 
         public Container(RelativeLocations Locations, RelativeLocations Default)
         {
-            this.Supported = Locations;
-            this.Default = Default;
+            this.SupportedLocations = Locations;
+            this.DefaultLocation = Default;
             this.Lists = new Dictionary<RelativeLocations, List<MudObject>>();
         }
 
@@ -40,9 +40,9 @@ namespace SFS
         {
             if (Lists == null) return;
 
-            if (Locations == RelativeLocations.Default) Locations = Default;
+            if (Locations == RelativeLocations.Default) Locations = DefaultLocation;
 
-            if ((Supported & Locations) == Locations)
+            if ((SupportedLocations & Locations) == Locations)
             {
                 if (!Lists.ContainsKey(Locations)) Lists.Add(Locations, new List<MudObject>());
                 Lists[Locations].Add(Object);
@@ -93,17 +93,13 @@ namespace SFS
 
         public bool Contains(MudObject Object, RelativeLocations Locations)
         {
-            if (Locations == RelativeLocations.Default) Locations = Default;
+            if (Locations == RelativeLocations.Default) Locations = DefaultLocation;
 
             if (Lists != null)
                 if (Lists.ContainsKey(Locations))
                     return Lists[Locations].Contains(Object);
             return false;
         }
-
-        public RelativeLocations LocationsSupported { get { return Supported; } }
-
-        public RelativeLocations DefaultLocation { get { return Default; } }
 
         public RelativeLocations RelativeLocationOf(MudObject Object)
         {

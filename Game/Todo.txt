@@ -2,6 +2,6 @@
 Revisit output of !RULES so there's no new lines
 Implement save games
 Move more stuff into Core so I can just using static SFS.Core; and get access to it.
-
+Since we're "white boxing", do I want to ditch standard messages entirely?
 
 

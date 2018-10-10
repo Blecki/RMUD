@@ -51,7 +51,7 @@ namespace SFS
         {
             if (!ObjectContainsObject(Actor, Item))
             {
-                SendMessage(Actor, "@dont have that");
+                SendMessage(Actor, "You don't have that.");
                 return CheckResult.Disallow;
             }
             return CheckResult.Continue;

@@ -12,9 +12,6 @@ namespace SFS.Commands.Meta
         [AtStartup]
         public static void __()
 		{
-            Core.StandardMessage("help topics", "Available help topics");
-            Core.StandardMessage("no help topic", "There is no help available for that topic.");
-
             Core.DefaultParser.AddCommand(
                 Sequence(
                     Or(
@@ -27,7 +24,7 @@ namespace SFS.Commands.Meta
                 {
                     if (!match.ContainsKey("TOPIC"))
                     {
-                        SendMessage(actor, "@help topics");
+                        SendMessage(actor, "Available help topics:");
                         var line = "";
                         foreach (var manPage in ManPages.Pages.Select(p => p.Name).Distinct().OrderBy(s => s))
                         {
@@ -49,7 +46,7 @@ namespace SFS.Commands.Meta
                             foreach (var manPage in pages)
                                 manPage.SendManPage(actor);
                         else
-                            SendMessage(actor, "@no help topic");
+                            SendMessage(actor, "There is no help available for that topic.");
 
                     }
                     return SFS.Rules.PerformResult.Continue;

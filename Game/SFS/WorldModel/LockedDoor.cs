@@ -9,8 +9,6 @@ namespace SFS
 {
     /// <summary>
     /// This is a fancy door - it can be locked!
-    /// 
-    /// TODO: "IsMatchingKey" should be replaced with a rule.
     /// </summary>
 	public class LockedDoor : Door
 	{

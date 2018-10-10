@@ -18,7 +18,7 @@ namespace SFS.Commands.StandardActions
                 Sequence(
                     KeyWord("REMOVE"),
                     BestScore("OBJECT",
-                        MustMatch("@clothing remove what",
+                        MustMatch("I couldn't figure out what you're trying to remove.",
                             Object("OBJECT", InScope, PreferWorn)))))
                 .Manual("Expose your amazingly supple flesh.")
                 .Check("can remove?", "ACTOR", "OBJECT")
@@ -33,7 +33,7 @@ namespace SFS.Commands.StandardActions
                 .When((a, b) => !a.Contains(b, RelativeLocations.Worn))
                 .Do((actor, item) =>
                 {
-                    SendMessage(actor, "@clothing not wearing");
+                    SendMessage(actor, "You aren't actually wearing that.");
                     return CheckResult.Disallow;
                 });
 
@@ -41,8 +41,8 @@ namespace SFS.Commands.StandardActions
 
             GlobalRules.Perform<Actor, Clothing>("remove").Do((actor, target) =>
                 {
-                    SendMessage(actor, "@clothing you remove", target);
-                    SendExternalMessage(actor, "@clothing they remove", actor, target);
+                    SendMessage(actor, "You take off <the0>.", target);
+                    SendExternalMessage(actor, "^<the0> takes off <the1>.", actor, target);
                     MoveObject(target, actor, RelativeLocations.Held);
                     return PerformResult.Continue;
                 });
