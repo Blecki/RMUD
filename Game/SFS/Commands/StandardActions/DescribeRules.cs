@@ -24,19 +24,6 @@ namespace SFS.Commands.StandardActions
                 })
                 .Name("Basic description rule.");
 
-            //Todo: Containers/Doors implement this rule.
-            //GlobalRules.Perform<MudObject, MudObject>("describe")
-            //    .When((viewer, item) => item.GetProperty<bool>("openable?"))
-            //    .Do((viewer, item) =>
-            //    {
-            //        if (item.GetProperty<bool>("open?"))
-            //            SendMessage(viewer, "@is open", item);
-            //        else
-            //            SendMessage(viewer, "@is closed", item);
-            //        return PerformResult.Continue;
-            //    })
-            //    .Name("Describe open or closed state rule.");
-
             GlobalRules.Perform<Actor, Container>("describe")
                 .When((viewer, item) => (item.SupportedLocations & RelativeLocations.On) == RelativeLocations.On)
                 .Do((viewer, item) =>

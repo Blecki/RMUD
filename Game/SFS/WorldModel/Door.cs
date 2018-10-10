@@ -85,5 +85,20 @@ namespace SFS
             })
             .Name("Close a door rule");
         }
+
+        [AtStartup]
+        public static void __()
+        {
+            GlobalRules.Perform<Actor, Door>("describe")
+                .Do((viewer, item) =>
+                {
+                    if (item.Open)
+                        SendMessage(viewer, "(<the0 is open)", item);
+                    else
+                        SendMessage(viewer, "(<the0> is closed)", item);
+                    return PerformResult.Continue;
+                })
+                .Name("Describe open or closed state rule.");
+        }
     }
 }
