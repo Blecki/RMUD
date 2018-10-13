@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{40AF19A5-FC72-4B2D-982A-E9A6F0D21E8E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GameLib</RootNamespace>
+    <AssemblyName>GameLib</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Game\Database\Bar.cs">
+      <LastGenOutput>Bar2.cs</LastGenOutput>
+    </Compile>
+    <Compile Include="Game\Database\Cloak.cs" />
+    <Compile Include="Game\Database\Cloakroom.cs" />
+    <Compile Include="Game\Database\Foyer.cs" />
+    <Compile Include="Game\Database\Outside.cs" />
+    <Compile Include="Game\Database\Player.cs" />
+    <Compile Include="Game\Game.cs" />
+    <Compile Include="Game\GameInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SFS\Commands\Debug\Cons.cs" />
+    <Compile Include="SFS\Commands\Debug\Force.cs" />
+    <Compile Include="SFS\Commands\Debug\Inspect.cs" />
+    <Compile Include="SFS\Commands\Debug\Move.cs" />
+    <Compile Include="SFS\Commands\Debug\Rules.cs" />
+    <Compile Include="SFS\Commands\Debug\Scope.cs" />
+    <Compile Include="SFS\Commands\Debug\Set.cs" />
+    <Compile Include="SFS\Commands\Debug\Sonar.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="SFS\Commands\Meta\Alias.cs" />
+    <Compile Include="SFS\Commands\Meta\Man.cs" />
+    <Compile Include="SFS\Commands\Meta\Version.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Close.cs" />
+    <Compile Include="SFS\Commands\StandardActions\ClothingRules.cs" />
+    <Compile Include="SFS\Commands\StandardActions\DescribeRules.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Drop.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Examine.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Go.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Inventory.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Lock.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Look.cs" />
+    <Compile Include="SFS\Commands\StandardActions\LookUnderOrBehind.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Open.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Pull.cs" />
+    <Compile Include="SFS\Commands\StandardActions\PushBetweenRooms.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Put.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Remove.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Say.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Take.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Unlock.cs" />
+    <Compile Include="SFS\Commands\StandardActions\Wear.cs" />
+    <Compile Include="SFS\Core\CommandQueue.cs" />
+    <Compile Include="SFS\Core\Core.cs" />
+    <Compile Include="SFS\Core\ExecuteCommand.cs" />
+    <Compile Include="SFS\Core\FindLocale.cs" />
+    <Compile Include="SFS\Core\FormatMessage.cs" />
+    <Compile Include="SFS\Core\IsVisibleTo.cs" />
+    <Compile Include="SFS\Core\Lighting.cs" />
+    <Compile Include="SFS\Core\MarkForUpdate.cs" />
+    <Compile Include="SFS\Core\Move.cs" />
+    <Compile Include="SFS\Core\ObjectContainsObject.cs" />
+    <Compile Include="SFS\Core\PendingMessages.cs" />
+    <Compile Include="SFS\Core\Random.cs" />
+    <Compile Include="SFS\Core\SendMessage.cs" />
+    <Compile Include="SFS\Core\Startup.cs" />
+    <Compile Include="SFS\Database.cs" />
+    <Compile Include="SFS\HelperExtensions.cs" />
+    <Compile Include="SFS\ManPages.cs" />
+    <Compile Include="SFS\Parser\ClientCommandHandler.cs" />
+    <Compile Include="SFS\Parser\CommandEntry.cs" />
+    <Compile Include="SFS\Parser\CommandFactory.cs" />
+    <Compile Include="SFS\Parser\CommandParser.cs" />
+    <Compile Include="SFS\Parser\CommandTokenMatcher.cs" />
+    <Compile Include="SFS\Parser\DisambigCommandHandler.cs" />
+    <Compile Include="SFS\Parser\MatchContext.cs" />
+    <Compile Include="SFS\Parser\Matchers\CardinalMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\DebugGate.cs" />
+    <Compile Include="SFS\Parser\Matchers\FailIf.cs" />
+    <Compile Include="SFS\Parser\Matchers\FailIfNoMatches.cs" />
+    <Compile Include="SFS\Parser\Matchers\FirstOfMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\GenericMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\InScopeObjectSource.cs" />
+    <Compile Include="SFS\Parser\Matchers\KeywordMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\NumberMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\ObjectMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\OptionalMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\OrMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\PathMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\RelativeLocationMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\RestMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\ScoreGate.cs" />
+    <Compile Include="SFS\Parser\Matchers\SequenceMatcher.cs" />
+    <Compile Include="SFS\Parser\Matchers\SingleWordMatcher.cs" />
+    <Compile Include="SFS\Parser\ParserCommandHandler.cs" />
+    <Compile Include="SFS\Parser\PossibleMatch.cs" />
+    <Compile Include="SFS\Rules\Rule.cs" />
+    <Compile Include="SFS\Rules\RuleBook.cs" />
+    <Compile Include="SFS\Rules\RuleBuilderGen1.cs">
+      <DependentUpon>RuleBuilderGen.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="SFS\Rules\RuleDelegatesGen1.cs">
+      <DependentUpon>RuleDelegatesGen.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="SFS\Rules\RuleEngine.cs" />
+    <Compile Include="SFS\Rules\RuleEngineAddRuleGen1.cs">
+      <DependentUpon>RuleEngineAddRuleGen.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="SFS\Rules\RuleResult.cs" />
+    <Compile Include="SFS\Rules\RuleSet.cs" />
+    <Compile Include="SFS\Rules\RuleSetAddRuleGen1.cs">
+      <DependentUpon>RuleSetAddRuleGen.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="SFS\Rules\RuleSource.cs" />
+    <Compile Include="SFS\Rules\RuleSourceAddRuleGen.cs">
+      <DependentUpon>RuleSourceAddRuleGen.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="SFS\StringIterator.cs" />
+    <Compile Include="SFS\WorldModel\Actor.cs" />
+    <Compile Include="SFS\WorldModel\Clothing.cs" />
+    <Compile Include="SFS\WorldModel\Container.cs" />
+    <Compile Include="SFS\WorldModel\Directions.cs" />
+    <Compile Include="SFS\WorldModel\Door.cs" />
+    <Compile Include="SFS\WorldModel\EnumerateObjectTree.cs" />
+    <Compile Include="SFS\WorldModel\Gender.cs" />
+    <Compile Include="SFS\WorldModel\LockedDoor.cs" />
+    <Compile Include="SFS\WorldModel\MudObject.cs" />
+    <Compile Include="SFS\WorldModel\MudObjectRules.cs" />
+    <Compile Include="SFS\WorldModel\NounList.cs" />
+    <Compile Include="SFS\WorldModel\ObjectState.cs" />
+    <Compile Include="SFS\WorldModel\OpenableContainer.cs" />
+    <Compile Include="SFS\WorldModel\Portal.cs" />
+    <Compile Include="SFS\WorldModel\RelativeLocations.cs" />
+    <Compile Include="SFS\WorldModel\Room.cs" />
+    <Compile Include="SFS\WorldModel\RoomLightingRules.cs" />
+    <Compile Include="SFS\WorldModel\RoomType.cs" />
+    <Compile Include="SFS\WorldModel\Scenery.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SFS\Rules\RuleBuilderGen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RuleBuilderGen1.cs</LastGenOutput>
+    </None>
+    <None Include="SFS\Rules\RuleGen.t4" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SFS\Rules\RuleDelegatesGen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RuleDelegatesGen1.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SFS\Rules\RuleEngineAddRuleGen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RuleEngineAddRuleGen1.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SFS\Rules\RuleSetAddRuleGen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RuleSetAddRuleGen1.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SFS\Rules\RuleSourceAddRuleGen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RuleSourceAddRuleGen.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Documentation\CommandProcessing.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Documentation\RuleOrder.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Todo.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
