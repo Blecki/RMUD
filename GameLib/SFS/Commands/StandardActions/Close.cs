@@ -11,7 +11,7 @@ namespace SFS.Commands.StandardActions
 {
 	internal class OpenClose
 	{
-        [AtStartup]
+        [Initialize]
         public static void __()
         {
             Core.DefaultParser.AddCommand(

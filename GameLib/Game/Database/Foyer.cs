@@ -24,7 +24,7 @@ the weather outside seems to be getting worse."
 
             OpenLink(Direction.NORTH, "Game.Outside");
             OpenLink(Direction.SOUTH, "Game.Bar");
-            OpenLink(Direction.WEST, "Game.Cloakroom");
+            OpenLink(Direction.WEST, "Game.Cloakroom", new Door());
 
             Check<Actor, Portal>("can go?")
                .First

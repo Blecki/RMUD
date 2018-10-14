@@ -12,7 +12,7 @@ namespace SFS
     /// </summary>
 	public class LockedDoor : Door
 	{
-        [AtStartup]
+        [Initialize]
         public static void __x()
         {
             GlobalRules.DeclareCheckRuleBook<Actor, MudObject, MudObject>("can lock with?", "[Actor, Item, Key] : Can this key be used to lock this thing?", "actor", "item", "key");

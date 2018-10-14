@@ -30,9 +30,10 @@ to the game, they would automatically be described correctly as well.]
             Short = "Cloakroom";
             Long = "The walls of this small room were clearly once lined with hooks, though now only one remains.";
 
-            OpenLink(Direction.EAST, "Game.Foyer");
+            var cloakRoomDoor = new Door();
+            OpenLink(Direction.EAST, "Game.Foyer", cloakRoomDoor);
 
-            MoveObject(MudObject.GetObject("Game.Hook"), this);
+            MoveObject(GetObject("Game.Hook"), this);
 
             AmbientLight = LightingLevel.Bright;
         }
@@ -45,8 +46,7 @@ to the game, they would automatically be described correctly as well.]
         public override void Initialize()
         {
             Short = "small brass hook";
-            Nouns = new NounList();
-            Nouns.Add("small", "brass", "hook", "peg");
+            Noun("SMALL", "BRASS", "HOOK", "PEG");
             Long = "It's just a small brass hook.";
 
             Check<Actor, MudObject>("can take?")

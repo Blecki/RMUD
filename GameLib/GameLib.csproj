@@ -170,7 +170,7 @@
     <Compile Include="SFS\WorldModel\LockedDoor.cs" />
     <Compile Include="SFS\WorldModel\MudObject.cs" />
     <Compile Include="SFS\WorldModel\MudObjectRules.cs" />
-    <Compile Include="SFS\WorldModel\NounList.cs" />
+    <Compile Include="SFS\WorldModel\Noun.cs" />
     <Compile Include="SFS\WorldModel\ObjectState.cs" />
     <Compile Include="SFS\WorldModel\OpenableContainer.cs" />
     <Compile Include="SFS\WorldModel\Portal.cs" />

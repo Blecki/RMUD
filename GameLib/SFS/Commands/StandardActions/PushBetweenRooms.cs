@@ -11,12 +11,8 @@
 
 // First, boiler plate nonsense.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SFS;
 using SFS.Rules;
+using System.Linq;
 using static SFS.CommandFactory;
 using static SFS.Core;
 
@@ -29,7 +25,7 @@ namespace SFS.Commands.StandardActions
 
         // Any function with this attribute will be called when the module is loaded. This is our chance to
         // do anything we want, but usually all we'll do is define some rules.
-        [AtStartup]
+        [Initialize]
         public static void __()
         {
             // The engine has a default parser already. We want to add the command to it.
@@ -160,7 +156,7 @@ namespace SFS.Commands.StandardActions
             GlobalRules.Perform<Actor, MudObject, Portal>("push direction")
                 .Do((actor, subject, link) =>
                 {
-                    var destination = MudObject.GetObject(link.Destination) as Container;
+                    var destination = GetObject(link.Destination) as Container;
                     if (destination == null)
                     {
                         SendMessage(actor, "You can't go that way.");

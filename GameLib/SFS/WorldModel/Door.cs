@@ -17,10 +17,12 @@ namespace SFS
 
         public Door()
         {
-            Nouns = new NounList();
-            Nouns.Add("DOOR");
-            Nouns.Add("CLOSED", actor => !Open);
-            Nouns.Add("OPEN", actor => Open);
+            Noun("DOOR");
+            Noun("CLOSED").When(a => !Open);
+            Noun("OPEN").When(a => Open);
+
+            Short = "door";
+            Long = "It's an ordinary door.";
 
             Check<Actor, Door>("can open?")
                 .Last
@@ -86,7 +88,7 @@ namespace SFS
             .Name("Close a door rule");
         }
 
-        [AtStartup]
+        [Initialize]
         public static void __()
         {
             GlobalRules.Perform<Actor, Door>("describe")

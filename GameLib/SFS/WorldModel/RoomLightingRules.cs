@@ -11,7 +11,7 @@ namespace SFS
     {
         public static LightingLevel AmbientExteriorLightingLevel = LightingLevel.Bright;
 
-        [AtStartup]
+        [Initialize]
         public static void __()
         {
             GlobalRules.DeclareValueRuleBook<MudObject, LightingLevel>("light level", "[item] -> LightingLevel, How much light does the item emit?", "item");

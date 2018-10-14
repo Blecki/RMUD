@@ -10,7 +10,7 @@ namespace SFS.Commands.StandardActions
 {
     internal class Inventory
     {
-        [AtStartup]
+        [Initialize]
         public static void __()
         {
             Core.DefaultParser.AddCommand(

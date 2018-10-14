@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SFS.Rules;
 using System.Linq;
-using System.Text;
-using SFS;
-using SFS.Rules;
 using static SFS.CommandFactory;
 using static SFS.Core;
 
 namespace SFS.Commands.StandardActions
 {
-	internal class Go
+    internal class Go
 	{
-		[AtStartup]
+		[Initialize]
         public static void __()
         {
             Core.DefaultParser.AddCommand(
@@ -82,7 +78,7 @@ namespace SFS.Commands.StandardActions
             GlobalRules.Perform<Actor, Portal>("go")
                 .Do((actor, link) =>
                 {
-                    var destination = MudObject.GetObject(link.Destination) as Container;
+                    var destination = GetObject(link.Destination) as Container;
                     if (destination == null)
                     {
                         SendMessage(actor, "[Error: Link does not lead to a room.]");

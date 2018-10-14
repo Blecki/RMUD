@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static SFS.Core;
 
 namespace SFS
 {
@@ -24,13 +22,16 @@ namespace SFS
                 if (r != null)
                 {
                     r.Path = Path;
-                    r.State = ObjectState.Unitialized;
                     NamedObjects.Upsert(Path, r);
                 }
             }
 
             if (r != null && r.State == ObjectState.Unitialized)
-                MudObject.InitializeObject(r);
+            {
+                r.Initialize();
+                r.State = ObjectState.Alive;
+                GlobalRules.ConsiderPerformRule("update", r);
+            }
 
             return r;
         }

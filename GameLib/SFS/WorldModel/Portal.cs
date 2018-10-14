@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using static SFS.Core;
 
 namespace SFS
 {
@@ -25,9 +24,9 @@ namespace SFS
         /// <returns></returns>
         public static MudObject FindOppositeSide(Portal Portal)
         {
-            var destination = MudObject.GetObject(Portal.Destination) as Room;
-            if (destination == null) return null; // Link is malformed in some way.
-            
+            if (!(GetObject(Portal.Destination) is Room destination))
+                return null; // Link is malformed in some way.
+
             var oppositeDirection = Link.Opposite(Portal.Direction);
             return destination.EnumerateObjects().FirstOrDefault(p =>  p is Portal && (p as Portal).Direction == oppositeDirection);
         }

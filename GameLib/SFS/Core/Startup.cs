@@ -8,7 +8,7 @@ using System.Reflection;
 namespace SFS
 {
     [System.AttributeUsage(AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
-    sealed class AtStartupAttribute : Attribute
+    sealed class InitializeAttribute : Attribute
     {
     }
 
@@ -33,7 +33,7 @@ namespace SFS
                 foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
                     foreach (var method in type.GetMethods())
                     {
-                        var atStartup = method.GetCustomAttribute<AtStartupAttribute>();
+                        var atStartup = method.GetCustomAttribute<InitializeAttribute>();
                         if (atStartup != null)
                             method.Invoke(null, null);
                     }
@@ -45,7 +45,7 @@ namespace SFS
 
                 GlobalRules.ConsiderPerformRule("at startup");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //LogError("Failed to start mud engine.");
                 //LogError(e.Message);

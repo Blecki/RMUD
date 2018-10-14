@@ -11,7 +11,7 @@ namespace SFS.Commands.StandardActions
 {
     internal class Open
     {
-        [AtStartup]
+        [Initialize]
         public static void __()
         {
             Core.DefaultParser.AddCommand(

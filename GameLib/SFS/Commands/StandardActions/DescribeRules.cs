@@ -10,7 +10,7 @@ namespace SFS.Commands.StandardActions
 {
     internal static class DescribeRules
     {
-        [AtStartup]
+        [Initialize]
         public static void __()
         {
             GlobalRules.DeclarePerformRuleBook<MudObject, MudObject>("describe", "[Actor, Item] : Generates descriptions of the item.", "actor", "item");

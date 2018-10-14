@@ -10,7 +10,7 @@ namespace SFS.Commands.StandardActions
 {
 	internal class Pull
 	{
-        [AtStartup]
+        [Initialize]
         public static void __()
         {
             Core.DefaultParser.AddCommand(

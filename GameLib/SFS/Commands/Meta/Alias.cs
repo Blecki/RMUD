@@ -13,7 +13,7 @@ namespace SFS.Commands.Meta
         //Todo: PERSIST
         internal static Dictionary<String, String> Aliases = new Dictionary<string, string>();
 
-        [AtStartup]
+        [Initialize]
         public static void __()
         {
             Core.DefaultParser.AddCommand(

@@ -11,7 +11,7 @@ namespace SFS.Commands.StandardActions
 {
     public class ClothingRules 
     {
-        [AtStartup]
+        [Initialize]
         public static void __()
         {
             GlobalRules.Perform<Actor>("inventory")

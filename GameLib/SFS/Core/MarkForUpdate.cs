@@ -10,7 +10,7 @@ namespace SFS
 {
     public class UpdateRules
     {
-        [AtStartup]
+        [Initialize]
         public static void __()
         {
             GlobalRules.DeclarePerformRuleBook<MudObject>("update", "[Thing] : Considered for all things that have been marked for update.", "item");

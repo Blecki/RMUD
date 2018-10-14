@@ -15,45 +15,46 @@ namespace SFS
         public String Short = "object";
         public String Long = "";
         public String Article = "a";
-        public NounList Nouns = null;
+        public List<Noun> Nouns = new List<Noun>();
 
         public virtual void Initialize() { }
 
 		public MudObject()
 		{
-		    State = ObjectState.Alive;
-            Nouns = new NounList();
 		}
 
         public MudObject(String Short, String Long)
         {
             this.Short = Short;
             this.Long = Long;
-            this.Nouns = new NounList(Short.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+            Noun(Short.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
 
             var firstChar = Short.ToLower()[0];
             if (firstChar == 'a' || firstChar == 'e' || firstChar == 'i' || firstChar == 'o' || firstChar == 'u')
                 Article = "an";
-
-            State = ObjectState.Alive;
         }
 
-        public static MudObject GetObject(String Path)
+        #region Nouns
+        public Noun Noun(String N)
         {
-            return Core.Database.GetObject(Path);
+            var r = new Noun(N);
+            Nouns.Add(r);
+            return r;
         }
 
-        public static MudObject InitializeObject(MudObject Object)
+        public Noun Noun(params String[] Ns)
         {
-            Object.Initialize();
-            Object.State = ObjectState.Alive;
-            GlobalRules.ConsiderPerformRule("update", Object);
-            return Object;
+            var r = new Noun(Ns);
+            Nouns.Add(r);
+            return r;
         }
 
-        public static T GetObject<T>(String Path) where T: MudObject
+        public Noun Noun(IEnumerable<String> Ns)
         {
-            return GetObject(Path) as T;
+            var r = new Noun(Ns);
+            Nouns.Add(r);
+            return r;
         }
+        #endregion
     }
 }

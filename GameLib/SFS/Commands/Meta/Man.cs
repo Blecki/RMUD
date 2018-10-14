@@ -9,7 +9,7 @@ namespace SFS.Commands.Meta
 {
 	internal class Man
 	{
-        [AtStartup]
+        [Initialize]
         public static void __()
 		{
             Core.DefaultParser.AddCommand(

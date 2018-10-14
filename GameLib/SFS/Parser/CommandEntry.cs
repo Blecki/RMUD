@@ -9,7 +9,7 @@ namespace SFS
 {
     public class StandardProceduralRules 
     {
-        [AtStartup]
+        [Initialize]
         public static void __()
         {
             GlobalRules.DeclarePerformRuleBook<PossibleMatch, Actor>("before acting", "[Match, Actor] : Considered before performing in world actions.");

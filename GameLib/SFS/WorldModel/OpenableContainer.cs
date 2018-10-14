@@ -54,7 +54,7 @@ namespace SFS
             .Name("Close an openable container rule");
         }
 
-        [AtStartup]
+        [Initialize]
         public static void __()
         {
             GlobalRules.Perform<Actor, OpenableContainer>("describe")

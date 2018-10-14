@@ -11,5 +11,10 @@ namespace SFS
     {
         public static Database Database;
         public static Rules.RuleEngine GlobalRules;
+
+        public static MudObject GetObject(String Path)
+        {
+            return Database.GetObject(Path);
+        }
     }
 }

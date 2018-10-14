@@ -78,7 +78,7 @@ namespace SFS
 
     public class BeforeAndAfterCommandRules 
     {
-        [AtStartup]
+        [Initialize]
         public static void __()
         {
             GlobalRules.DeclarePerformRuleBook<PossibleMatch, MudObject>("before command", "[Match, Actor] : Considered before every command's procedural rules are run.", "match", "actor");

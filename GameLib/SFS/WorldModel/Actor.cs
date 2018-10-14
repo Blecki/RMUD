@@ -15,10 +15,8 @@ namespace SFS
 
         public Actor() : base(RelativeLocations.Held | RelativeLocations.Worn, RelativeLocations.Held)
         {
-            Nouns = new NounList();
-            Nouns.Add("MAN", (a) => (a as Actor).Gender == SFS.Gender.Male);
-            Nouns.Add("WOMAN", (a) => (a as Actor).Gender == SFS.Gender.Female);
+            Noun("MAN").When(a => Gender == Gender.Male);
+            Noun("WOMAN").When(a => Gender == Gender.Female);
         }
-
     }
 }

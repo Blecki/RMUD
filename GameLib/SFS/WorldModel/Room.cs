@@ -2,11 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static SFS.Core;
 
 namespace SFS
 {
     public class Room : Container
 	{
+        [Initialize]
+        public static void __room()
+        {
+            GlobalRules.Value<Actor, Room, String, String>("printed name")
+               .First
+               .Do((viewer, room, article) => room.Short)
+               .Name("Rooms are proper-named rule.");
+        }
+
         public RoomType RoomType = RoomType.Interior;
         public LightingLevel Light = LightingLevel.Dark;
         public LightingLevel AmbientLight = LightingLevel.Dark;

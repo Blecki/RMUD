@@ -8,7 +8,7 @@ namespace SFS
 {
     public class MudObjectRules 
     {
-        [AtStartup]
+        [Initialize]
         public static void __()
         {
             GlobalRules.DeclareValueRuleBook<Actor, MudObject, String, String>("printed name", "[Viewer, Object, Article -> String] : Find the name that should be displayed for an object.", "actor", "item", "article");

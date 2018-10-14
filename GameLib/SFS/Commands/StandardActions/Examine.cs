@@ -10,7 +10,7 @@ namespace SFS.Commands.StandardActions
 {
     internal class Examine
     {
-        [AtStartup]
+        [Initialize]
         public static void __()
         {
             Core.DefaultParser.AddCommand(Or(KeyWord("EXAMINE"), KeyWord("X")))

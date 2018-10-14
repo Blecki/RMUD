@@ -17,8 +17,7 @@ Its blackness is so deep that it almost seems to suck light from the room."
             Layer = ClothingLayer.Outer;
             BodyPart = ClothingBodyPart.Cloak;
             Short = "velvet cloak";
-            Nouns = new NounList();
-            Nouns.Add("dark", "black", "satin", "velvet", "cloak");
+            Noun("DARK", "BLACK", "SATIN", "VELVET", "CLOAK");
             Long = "A handsome cloak, of velvet trimmed with satin, and slightly spattered with raindrops. Its blackness is so deep that it almost seems to suck light from the room.";
 
             //Carry out taking the cloak:

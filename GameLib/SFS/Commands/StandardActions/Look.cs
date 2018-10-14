@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SFS;
 using static SFS.CommandFactory;
 using static SFS.Core;
 
@@ -10,7 +9,7 @@ namespace SFS.Commands.StandardActions
 {
     internal class Look
     {
-        [AtStartup]
+        [Initialize]
         public static void __()
         {
             Core.DefaultParser.AddCommand(
@@ -151,7 +150,7 @@ namespace SFS.Commands.StandardActions
                             if (!link.Anonymous)
                                 builder.Append(" " + Core.FormatMessage(viewer, "through <the0>", link));
 
-                            var destinationRoom = MudObject.GetObject(link.Destination);
+                            var destinationRoom = GetObject(link.Destination);
                             if (destinationRoom != null)
                                 builder.Append(" " + Core.FormatMessage(viewer, "to <the0>", destinationRoom));
 
