@@ -165,9 +165,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Todo.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\GameLib\GameLib.csproj">
       <Project>{40af19a5-fc72-4b2d-982a-e9a6f0d21e8e}</Project>
       <Name>GameLib</Name>

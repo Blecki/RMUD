@@ -2,10 +2,12 @@
 Revisit output of !RULES so there's no new lines
 Implement save games
 
-Fix noun system
-	When declaring object - I just want to go like 'Noun(...)', with any number of strings.
-	But also Noun(...).when(...).
-
 Write a demo area featuring all existing features.
 
+For output - specifically for more advanced, 'helpful' interfaces like on android - need to spit out some meta info for objects in the scene and other stuff. These can be used to generate on screen buttons.
 
+Directions find opposites by looking for back links. This is to eliminate built-in directions if wanted.
+	Actually lets just eliminate them.
+Go command accepts the name of a portal.
+Links share portal objects - remove searching for opposites.
+Roll database into core.
