@@ -22,7 +22,7 @@ bld/
 [Oo]bj/
 Out/
 
-!Game/SFS/Commands/Debug
+!GameLib/SFS/Commands/Debug
 
 # Roslyn cache directories
 *.ide/
