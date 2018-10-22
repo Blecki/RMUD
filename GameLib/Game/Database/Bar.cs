@@ -22,7 +22,7 @@ There seems to be some sort of message scrawled in the sawdust on the floor."
 
             // The scrawled message is scenery in the Bar. Understand "floor" or "sawdust" as the message.
 
-            var message = new Scenery("", "message", "floor", "sawdust", "scrawled");
+            var message = new Scenery("", "MESSAGE", "FLOOR", "SAWDUST", "SCRAWLED");
             Add(message, RelativeLocations.Contents);
 
             //Neatness is a kind of value. The neatnesses are neat, scuffed, and trampled. The message has a neatness. The message is neat.

@@ -110,7 +110,10 @@ namespace SFS
                         Core.ProcessPlayerCommand(matchedCommand.Command, matchedCommand.Matches[0], Command.Actor);
                 }
                 else
+                {
                     SendMessage(Command.Actor, "huh?");
+                    Core.SendPendingMessages();
+                }
             }
 
             GlobalRules.LogRules(null);
